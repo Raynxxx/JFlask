@@ -5,8 +5,11 @@ package org.rayn.jflask.framework;
  * Constants
  * Created by Raynxxx on 2016/05/21.
  */
-public class Constants {
+public final class Constants {
 
-    public static String HOME = "src/main/java";
+    public static String UTF8 = "UTF-8";
+
+    public static String CONFIG_PROPS = "jflask.properties";
+
 
 }

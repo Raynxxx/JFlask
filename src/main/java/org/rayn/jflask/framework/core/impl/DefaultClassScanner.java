@@ -105,7 +105,7 @@ public class DefaultClassScanner implements ClassScanner {
                     }
                 }
             } catch (Exception e) {
-                logger.error("加载类错误", e);
+                logger.error("加载类错误:", e);
             }
             return classList;
         }
