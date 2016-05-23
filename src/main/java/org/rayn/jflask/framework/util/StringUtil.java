@@ -27,6 +27,13 @@ public class StringUtil {
     }
 
     /**
+     * 获取值, 否则返回默认值
+     */
+    public static String getOrDefault(String str, String defaultValue) {
+        return StringUtils.defaultIfEmpty(str, defaultValue);
+    }
+
+    /**
      * 是否为数字
      */
     public static boolean isNumber(String str) {

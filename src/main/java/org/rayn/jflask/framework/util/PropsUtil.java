@@ -76,10 +76,32 @@ public class PropsUtil {
     }
 
     /**
+     * 获取字符串型属性, 可设置默认值
+     */
+    public static String getString(Properties props, String key, String defaultValue) {
+        String value = defaultValue;
+        if (props.containsKey(key)) {
+            value = props.getProperty(key);
+        }
+        return value;
+    }
+
+    /**
      * 获取整数型属性
      */
-    public static Integer getInteger(Properties props, String key) {
-        Integer value = null;
+    public static int getInteger(Properties props, String key) {
+        int value = 0;
+        if (props.containsKey(key)) {
+            value = Integer.parseInt(props.getProperty(key));
+        }
+        return value;
+    }
+
+    /**
+     * 获取整数型属性, 可设置默认值
+     */
+    public static int getInteger(Properties props, String key, int defaultValue) {
+        int value = defaultValue;
         if (props.containsKey(key)) {
             value = Integer.parseInt(props.getProperty(key));
         }
@@ -89,15 +111,15 @@ public class PropsUtil {
     /**
      * 获取布尔型属性
      */
-    public static Boolean getBoolean(Properties props, String key) {
+    public static boolean getBoolean(Properties props, String key) {
         return getBoolean(props, key, false);
     }
 
     /**
-     * 获取布尔型属性
+     * 获取布尔型属性, 可设置默认值
      */
-    public static Boolean getBoolean(Properties props, String key, Boolean defaultValue) {
-        Boolean value = defaultValue;
+    public static boolean getBoolean(Properties props, String key, boolean defaultValue) {
+        boolean value = defaultValue;
         if (props.containsKey(key)) {
             value = Boolean.parseBoolean(props.getProperty(key));
         }

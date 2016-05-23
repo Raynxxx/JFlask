@@ -11,5 +11,4 @@ public final class Constants {
 
     public static String CONFIG_PROPS = "jflask.properties";
 
-
 }

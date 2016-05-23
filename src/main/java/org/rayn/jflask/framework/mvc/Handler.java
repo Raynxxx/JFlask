@@ -3,10 +3,10 @@ package org.rayn.jflask.framework.mvc;
 import java.lang.reflect.Method;
 
 /**
- * RouteHandler
+ * Handler
  * Created by Raynxxx on 2016/05/14.
  */
-public class RouteHandler {
+public class Handler {
     private Class<?> controllerClass;
     private Method routeMethod;
 
