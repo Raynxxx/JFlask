@@ -29,13 +29,13 @@ public class DefaultClassScanner implements ClassScanner {
      * 取得指定包下的所有类
      */
     @Override
-    public List<Class<?>> getClassList(String packageName) {
+    public List<Class<?>> getClassList(final String packageName) {
         return new ScannerHelper(packageName) {
             @Override
             public boolean accept(Class<?> clazz) {
                 String className = clazz.getName();
                 String pkgName = className.substring(0, className.lastIndexOf("."));
-                return pkgName.startsWith(this.packageName);
+                return pkgName.startsWith(packageName);
             }
         }.getClassList();
     }

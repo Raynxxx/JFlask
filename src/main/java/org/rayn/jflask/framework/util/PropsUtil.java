@@ -65,14 +65,10 @@ public class PropsUtil {
     }
 
     /**
-     * 获取字符串型属性 (空为 null)
+     * 获取字符串型属性, 默认为 ""
      */
     public static String getString(Properties props, String key) {
-        String value = null;
-        if (props.containsKey(key)) {
-            value = props.getProperty(key);
-        }
-        return value;
+        return getString(props, key, "");
     }
 
     /**
@@ -87,14 +83,10 @@ public class PropsUtil {
     }
 
     /**
-     * 获取整数型属性
+     * 获取整数型属性, 默认 0
      */
     public static int getInteger(Properties props, String key) {
-        int value = 0;
-        if (props.containsKey(key)) {
-            value = Integer.parseInt(props.getProperty(key));
-        }
-        return value;
+        return getInteger(props, key, 0);
     }
 
     /**
@@ -109,7 +101,7 @@ public class PropsUtil {
     }
 
     /**
-     * 获取布尔型属性
+     * 获取布尔型属性, 默认 false
      */
     public static boolean getBoolean(Properties props, String key) {
         return getBoolean(props, key, false);

@@ -1,5 +1,6 @@
 package org.rayn.jflask.framework.mvc;
 
+import org.rayn.jflask.framework.util.WebUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 前端控制器
  * DispatcherServlet
  * Created by Raynxxx on 2016/05/13.
  */
@@ -26,10 +28,10 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.service(req, resp);
-        String currentRequestMethod = req.getMethod();
-        String currentRequestURL = req.getRequestURI();
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        super.service(request, response);
+        String currentRequestMethod = request.getMethod();
+        String currentRequestURL = WebUtil.getRequestPath(request);
 
     }
 }

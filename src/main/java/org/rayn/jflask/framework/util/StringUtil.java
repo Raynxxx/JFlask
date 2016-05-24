@@ -79,4 +79,15 @@ public class StringUtil {
     public static String capitalize(String str) {
         return Character.toUpperCase(str.charAt(0)) + str.substring(1);
     }
+
+    public static String replaceAll(String str, String regex, String replacement) {
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(str);
+        StringBuffer sb = new StringBuffer();
+        while (m.find()) {
+            m.appendReplacement(sb, replacement);
+        }
+        m.appendTail(sb);
+        return sb.toString();
+    }
 }
