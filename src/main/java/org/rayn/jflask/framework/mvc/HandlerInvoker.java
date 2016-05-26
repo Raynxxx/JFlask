@@ -1,5 +1,7 @@
 package org.rayn.jflask.framework.mvc;
 
+import org.rayn.jflask.framework.mvc.model.Handler;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

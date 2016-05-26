@@ -1,4 +1,4 @@
-package org.rayn.jflask.framework.mvc;
+package org.rayn.jflask.framework.mvc.model;
 
 import java.lang.reflect.Method;
 

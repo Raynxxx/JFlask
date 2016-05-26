@@ -2,6 +2,8 @@ package org.rayn.jflask.framework;
 
 import org.rayn.jflask.framework.core.ClassScanner;
 import org.rayn.jflask.framework.core.impl.DefaultClassScanner;
+import org.rayn.jflask.framework.ioc.BeanFactory;
+import org.rayn.jflask.framework.ioc.impl.AnnotationBeanFactory;
 import org.rayn.jflask.framework.mvc.HandlerExceptionResolver;
 import org.rayn.jflask.framework.mvc.HandlerInvoker;
 import org.rayn.jflask.framework.mvc.HandlerMapping;
@@ -27,6 +29,7 @@ public class InstanceFactory {
     private static final Map<String, Object> cache = new ConcurrentHashMap<String, Object>();
 
     private static final String CLASS_SCANNER = "framework.class_scanner";
+    private static final String BEAN_FACTORY = "framework.bean_factory";
     private static final String HANDLER_MAPPING = "framework.handler_mapping";
     private static final String HANDLER_INVOKER = "framework.handler_invoker";
     private static final String HANDLER_EXCEPTION_RESOLVER = "framework.handler_exception_resolver";
@@ -35,6 +38,10 @@ public class InstanceFactory {
 
     public static ClassScanner getClassScanner() {
         return getInstance(CLASS_SCANNER, DefaultClassScanner.class);
+    }
+
+    public static BeanFactory getBeanFactory() {
+        return getInstance(BEAN_FACTORY, AnnotationBeanFactory.class);
     }
 
     public static HandlerMapping getHandlerMapping() {

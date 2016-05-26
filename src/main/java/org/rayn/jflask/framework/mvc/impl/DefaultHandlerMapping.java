@@ -1,11 +1,12 @@
 package org.rayn.jflask.framework.mvc.impl;
 
-import org.rayn.jflask.framework.mvc.Handler;
+import org.rayn.jflask.framework.mvc.model.Handler;
 import org.rayn.jflask.framework.mvc.HandlerMapping;
-import org.rayn.jflask.framework.mvc.Request;
+import org.rayn.jflask.framework.mvc.model.Request;
 import org.rayn.jflask.framework.mvc.RouteBuilder;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +16,8 @@ import java.util.regex.Pattern;
  * Created by Raynxxx on 2016/05/25.
  */
 public class DefaultHandlerMapping implements HandlerMapping {
+
+    private static final Map<String, Handler> cache = new ConcurrentHashMap<String, Handler>();
 
     /**
      * 查找 Handler
@@ -26,6 +29,10 @@ public class DefaultHandlerMapping implements HandlerMapping {
     @Override
     public Handler getHandler(String currentRequestMethod, String currentRequestPath) {
         Handler handler = null;
+        String cacheKey = currentRequestMethod + ":" + currentRequestPath;
+        if (cache.containsKey(cacheKey)) {
+            return cache.get(cacheKey);
+        }
 
         // 遍历所有 route
         Map<Request, Handler> routeMap = RouteBuilder.getRouteMap();
@@ -42,6 +49,9 @@ public class DefaultHandlerMapping implements HandlerMapping {
                     break;
                 }
             }
+        }
+        if (handler != null) {
+            cache.put(cacheKey, handler);
         }
         return handler;
     }

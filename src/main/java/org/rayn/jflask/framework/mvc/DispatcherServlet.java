@@ -2,6 +2,7 @@ package org.rayn.jflask.framework.mvc;
 
 import org.rayn.jflask.framework.Constants;
 import org.rayn.jflask.framework.InstanceFactory;
+import org.rayn.jflask.framework.mvc.model.Handler;
 import org.rayn.jflask.framework.util.WebUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +58,5 @@ public class DispatcherServlet extends HttpServlet {
             handlerExceptionResolver.resolveHandlerException(request, response, e);
             e.printStackTrace();
         }
-
     }
 }

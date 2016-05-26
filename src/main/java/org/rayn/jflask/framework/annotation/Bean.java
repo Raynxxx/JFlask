@@ -1,4 +1,4 @@
-package org.rayn.jflask.framework.mvc.annotation;
+package org.rayn.jflask.framework.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,11 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 控制器类的注解
- * Controller
- * Created by Raynxxx on 2016/05/24.
+ * Bean
+ * Created by Raynxxx on 2016/05/26.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Controller {
+public @interface Bean {
 }
