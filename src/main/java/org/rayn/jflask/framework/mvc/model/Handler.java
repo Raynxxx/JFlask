@@ -1,6 +1,7 @@
 package org.rayn.jflask.framework.mvc.model;
 
 import java.lang.reflect.Method;
+import java.util.regex.Matcher;
 
 /**
  * Handler
@@ -9,6 +10,7 @@ import java.lang.reflect.Method;
 public class Handler {
     private Class<?> controllerClass;
     private Method routeMethod;
+    private Matcher pathMatcher;
 
     public Handler(Class<?> controllerClass, Method routeMethod) {
         this.controllerClass = controllerClass;
@@ -21,5 +23,13 @@ public class Handler {
 
     public Method getRouteMethod() {
         return routeMethod;
+    }
+
+    public Matcher getPathMatcher() {
+        return pathMatcher;
+    }
+
+    public void setPathMatcher(Matcher pathMatcher) {
+        this.pathMatcher = pathMatcher;
     }
 }

@@ -25,6 +25,8 @@ public class DefaultClassScanner implements ClassScanner {
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultClassScanner.class);
 
+    private static List<Class<?>> cacheClassList;
+
     /**
      * 取得指定包下的所有类
      */
@@ -68,6 +70,7 @@ public class DefaultClassScanner implements ClassScanner {
 
 
     private abstract class ScannerHelper {
+
         private String packageName;
 
         ScannerHelper(String packageName) {
@@ -75,7 +78,10 @@ public class DefaultClassScanner implements ClassScanner {
         }
 
         List<Class<?>> getClassList() {
-            List<Class<?>> classList = new ArrayList<>();
+            if (cacheClassList != null) {
+                return filter(cacheClassList);
+            }
+            cacheClassList = new ArrayList<>();
             try {
                 // 从包内获取所有资源的URL
                 Enumeration<URL> urls = ClassUtil.getClassLoader().getResources(packageName.replace(".", "/"));
@@ -86,11 +92,13 @@ public class DefaultClassScanner implements ClassScanner {
                         String protocol = url.getProtocol();
                         if (protocol.equals("file")) {
                             String packagePath = url.getPath().replace("%20", " ");
-                            addClass(classList, packagePath, packageName);
+                            // 子过程搜索文件或文件夹的 class
+                            addClass(cacheClassList, packagePath, packageName);
                         } else if (protocol.equals("jar")) {
                             JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();
                             JarFile jarFile = jarURLConnection.getJarFile();
                             Enumeration<JarEntry> jarEntries = jarFile.entries();
+                            // 遍历 jar 文件的所有 class
                             while (jarEntries.hasMoreElements()) {
                                 JarEntry jarEntry = jarEntries.nextElement();
                                 String jarEntryName = jarEntry.getName();
@@ -98,7 +106,7 @@ public class DefaultClassScanner implements ClassScanner {
                                     String className = jarEntryName
                                             .substring(0, jarEntryName.lastIndexOf("."))
                                             .replace("/", ".");
-                                    addClass(classList, className);
+                                    addClass(cacheClassList, className);
                                 }
                             }
                         }
@@ -107,7 +115,7 @@ public class DefaultClassScanner implements ClassScanner {
             } catch (Exception e) {
                 logger.error("加载类错误:", e);
             }
-            return classList;
+            return filter(cacheClassList);
         }
 
         private void addClass(List<Class<?>> classList, String packagePath, String packageName) {
@@ -137,9 +145,22 @@ public class DefaultClassScanner implements ClassScanner {
 
         private void addClass(List<Class<?>> classList, String className) {
             Class<?> clazz = ClassUtil.loadClass(className, false);
+            /*
             if (accept(clazz)) {
                 classList.add(clazz);
             }
+            */
+            classList.add(clazz);
+        }
+
+        private List<Class<?>> filter(List<Class<?>> classList) {
+            List<Class<?>> tmp = new ArrayList<>();
+            for (Class<?> clazz : classList) {
+                if (accept(clazz)) {
+                    tmp.add(clazz);
+                }
+            }
+            return tmp;
         }
 
         public abstract boolean accept(Class<?> clazz);

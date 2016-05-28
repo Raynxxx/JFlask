@@ -30,6 +30,8 @@ public class DefaultHandlerMapping implements HandlerMapping {
     public Handler getHandler(String currentRequestMethod, String currentRequestPath) {
         Handler handler = null;
         String cacheKey = currentRequestMethod + ":" + currentRequestPath;
+
+        // 已存在缓存就取出来返回
         if (cache.containsKey(cacheKey)) {
             return cache.get(cacheKey);
         }
@@ -45,6 +47,7 @@ public class DefaultHandlerMapping implements HandlerMapping {
                 Matcher matcher = Pattern.compile(requestPath).matcher(currentRequestPath);
                 if (matcher.matches()) {
                     handler = route.getValue();
+                    handler.setPathMatcher(matcher);
                     // 匹配成功, 退出循环
                     break;
                 }

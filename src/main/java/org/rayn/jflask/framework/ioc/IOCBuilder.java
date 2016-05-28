@@ -17,6 +17,7 @@ import java.util.Map;
  */
 public class IOCBuilder {
 
+    // bean 工厂
     private static final BeanFactory beanFactory = InstanceFactory.getBeanFactory();
 
     // 类扫描器
@@ -51,8 +52,11 @@ public class IOCBuilder {
                                 beanField.setAccessible(true);
                                 beanField.set(beanInstance, instance);
                             } else {
-                                throw new RuntimeException(beanClass.getCanonicalName() + " / " + beanField.getName() + "注入失败, 不存在实现类");
+                                throw new RuntimeException(beanClass.getCanonicalName() + " / " +
+                                        beanField.getName() + " 注入失败, 不存在实现类");
                             }
+                        } else {
+                            // TODO (to throw exception whether or not)
                         }
                     }
                 }

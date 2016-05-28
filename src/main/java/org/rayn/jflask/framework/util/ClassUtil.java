@@ -82,4 +82,93 @@ public class ClassUtil {
     public static boolean isString(Class<?> clazz) {
         return clazz.equals(String.class);
     }
+
+    /**
+     * 转换为 int
+     */
+    public static int toInteger(Object obj) {
+        return toInteger(obj, 0);
+    }
+
+    /**
+     * 转换为 int, 带有默认值
+     */
+    public static int toInteger(Object obj, int defaultValue) {
+        int ret = defaultValue;
+        if (obj != null) {
+            String strInt = toString(obj);
+            if (StringUtil.isNotEmpty(strInt)) {
+                try {
+                    ret = Integer.parseInt(strInt);
+                } catch (Exception e) {
+                    ret = defaultValue;
+                }
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 转换为 long
+     */
+    public static long toLong(Object obj) {
+        return toLong(obj, 0);
+    }
+
+    /**
+     * 转换为 long, 带有默认值
+     */
+    public static long toLong(Object obj, long defaultValue) {
+        long ret = defaultValue;
+        if (obj != null) {
+            String strInt = toString(obj);
+            if (StringUtil.isNotEmpty(strInt)) {
+                try {
+                    ret = Long.parseLong(strInt);
+                } catch (Exception e) {
+                    ret = defaultValue;
+                }
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 转换为 long
+     */
+    public static double toDouble(Object obj) {
+        return toDouble(obj, 0);
+    }
+
+    /**
+     * 转换为 long, 带有默认值
+     */
+    public static double toDouble(Object obj, double defaultValue) {
+        double ret = defaultValue;
+        if (obj != null) {
+            String strInt = toString(obj);
+            if (StringUtil.isNotEmpty(strInt)) {
+                try {
+                    ret = Double.parseDouble(strInt);
+                } catch (Exception e) {
+                    ret = defaultValue;
+                }
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 转换为 String 类型
+     */
+    public static String toString(Object obj) {
+        return toString(obj, "");
+    }
+
+    /**
+     * 转换为 String 类型, 带有默认值
+     */
+    public static String toString(Object obj, String defaultValue) {
+        return obj != null ? String.valueOf(obj) : defaultValue;
+    }
 }
