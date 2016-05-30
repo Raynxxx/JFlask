@@ -2,6 +2,7 @@ package org.rayn.jflask.framework.util;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,6 +12,8 @@ import java.util.regex.Pattern;
  * Created by Raynxxx on 2016/05/22.
  */
 public class StringUtil {
+
+    public static final String SEPARATOR = String.valueOf((char) 29);
 
     /**
      * 是否为空
@@ -63,6 +66,9 @@ public class StringUtil {
         return builder.toString();
     }
 
+    /**
+     * 将下划线命名转换成驼峰式风格
+     */
     public static String underlineToCamel(String str) {
         StringBuilder builder = new StringBuilder(str);
         Matcher matcher = Pattern.compile("_[a-z]").matcher(str);
@@ -76,10 +82,16 @@ public class StringUtil {
         return builder.toString();
     }
 
+    /**
+     * 首字母大写
+     */
     public static String capitalize(String str) {
         return Character.toUpperCase(str.charAt(0)) + str.substring(1);
     }
 
+    /**
+     * 替换所有匹配的部分
+     */
     public static String replaceAll(String str, String regex, String replacement) {
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(str);
@@ -90,4 +102,27 @@ public class StringUtil {
         m.appendTail(sb);
         return sb.toString();
     }
+
+    public static String join(Object[] array) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < array.length; ++i) {
+            sb.append(array[i]);
+            if (i != array.length - 1) {
+                sb.append(StringUtil.SEPARATOR);
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String join(Object[] array, String separator) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < array.length; ++i) {
+            sb.append(array[i]);
+            if (i != array.length - 1) {
+                sb.append(separator);
+            }
+        }
+        return sb.toString();
+    }
+
 }

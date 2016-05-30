@@ -5,13 +5,18 @@ import org.rayn.jflask.framework.ioc.BeanFactory;
 import org.rayn.jflask.framework.mvc.model.Handler;
 import org.rayn.jflask.framework.mvc.HandlerInvoker;
 import org.rayn.jflask.framework.mvc.ViewResolver;
+import org.rayn.jflask.framework.mvc.model.Params;
 import org.rayn.jflask.framework.util.ClassUtil;
+import org.rayn.jflask.framework.util.CollectionUtil;
+import org.rayn.jflask.framework.util.WebUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 /**
@@ -28,7 +33,6 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
 
     /**
      * 执行 handler
-     *
      * @param request  请求对象
      * @param response 响应对象
      * @param handler  处理机
@@ -46,6 +50,14 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
         // 获取路由方法的参数列表
         List<Object> routeParamList = getRouteParamList(request, handler);
 
+        if (routeParamList.size() != routeMethod.getParameterTypes().length) {
+            throw new RuntimeException(String.format("请求参数(%d) 和路由函数参数(%d) 数目不匹配",
+                    routeParamList.size(), routeMethod.getParameterTypes().length));
+        }
+
+        Object routeResult = invokeRouteMethod(controllerInstance, routeMethod, routeParamList);
+
+        viewResolver.resolveView(request, response, routeResult);
     }
 
     private List<Object> getRouteParamList(HttpServletRequest request, Handler handler) {
@@ -56,8 +68,10 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
         paramList.addAll(getRoutePathParamList(handler.getPathMatcher(), paramTypes));
 
         // 取出 request 请求 Map (QueryString 或 FormData)
-        // TODO (取得 requestMap)
-
+        Map<String, Object> requestParamMap = WebUtil.getRequestParamMap(request);
+        if (CollectionUtil.isNotEmpty(requestParamMap)) {
+            paramList.add(new Params(requestParamMap));
+        }
         return paramList;
     }
 
@@ -80,6 +94,11 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
             }
         }
         return pathParamList;
+    }
+
+    private Object invokeRouteMethod(Object controllerInstance, Method routeMethod, List<Object> routeParamList) throws InvocationTargetException, IllegalAccessException {
+        routeMethod.setAccessible(true);
+        return routeMethod.invoke(controllerInstance, routeParamList.toArray());
     }
 
 }

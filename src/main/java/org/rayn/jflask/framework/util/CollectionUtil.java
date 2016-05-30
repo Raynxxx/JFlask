@@ -3,6 +3,8 @@ package org.rayn.jflask.framework.util;
 import org.apache.commons.lang.ArrayUtils;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 集合工具类
@@ -37,5 +39,19 @@ public class CollectionUtil {
      */
     public static boolean isNotEmpty(Object[] array) {
         return !isEmpty(array);
+    }
+
+    /**
+     * 判断数组是否为空
+     */
+    public static boolean isEmpty(Map<?, ?> map) {
+        return map == null || map.isEmpty();
+    }
+
+    /**
+     * 判断数组是否非空
+     */
+    public static boolean isNotEmpty(Map<?, ?> map) {
+        return !isEmpty(map);
     }
 }

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -29,9 +30,21 @@ public class WebUtil {
     /**
      * 获取请求中的所有参数
      */
-    public static Map<String, Object> getRequestParamMap() {
+    public static Map<String, Object> getRequestParamMap(HttpServletRequest request) {
         Map<String, Object> requestParamMap = new HashMap<>();
-        // TODO (requestParamMap)
+        // 取得所有请求参数名
+        Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            String paraName = parameterNames.nextElement();
+            String[] paraValues = request.getParameterValues(paraName);
+            if (CollectionUtil.isNotEmpty(paraValues)) {
+                if (paraValues.length == 1) {
+                    requestParamMap.put(paraName, paraValues[0]);
+                } else {
+                    requestParamMap.put(paraName, StringUtil.join(paraValues));
+                }
+            }
+        }
         return requestParamMap;
     }
 
