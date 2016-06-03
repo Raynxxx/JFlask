@@ -1,10 +1,10 @@
 package org.rayn.jflask.framework.ioc.impl;
 
+import org.rayn.jflask.framework.core.ClassScanner;
+import org.rayn.jflask.framework.core.ConfigHelper;
 import org.rayn.jflask.framework.InstanceFactory;
 import org.rayn.jflask.framework.annotation.Bean;
 import org.rayn.jflask.framework.annotation.Controller;
-import org.rayn.jflask.framework.core.ClassScanner;
-import org.rayn.jflask.framework.core.ConfigHelper;
 import org.rayn.jflask.framework.ioc.BeanFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

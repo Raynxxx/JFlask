@@ -1,5 +1,7 @@
 package org.rayn.jflask.framework;
 
+import org.rayn.jflask.framework.core.ConfigHelper;
+
 /**
  * 常量工厂
  * Constants
@@ -11,4 +13,5 @@ public final class Constants {
 
     public static String CONFIG_PROPS = "jflask.properties";
 
+    public static String JSP_PATH = ConfigHelper.getString("app.jsp_path", "/WEB_INF/jsp");
 }

@@ -1,9 +1,9 @@
 package org.rayn.jflask.framework.ioc;
 
-import org.rayn.jflask.framework.InstanceFactory;
-import org.rayn.jflask.framework.annotation.AutoWired;
 import org.rayn.jflask.framework.core.ClassScanner;
 import org.rayn.jflask.framework.core.ConfigHelper;
+import org.rayn.jflask.framework.InstanceFactory;
+import org.rayn.jflask.framework.annotation.AutoWired;
 import org.rayn.jflask.framework.util.CollectionUtil;
 
 import java.lang.reflect.Field;

@@ -49,7 +49,7 @@ public class DispatcherServlet extends HttpServlet {
 
         Handler handler = handlerMapping.getHandler(currentRequestMethod, currentRequestPath);
         if (handler == null) {
-            // TODO(404)
+            WebUtil.responseError(response, HttpServletResponse.SC_NOT_FOUND, "Not Found");
             return;
         }
         try {

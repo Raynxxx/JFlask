@@ -1,5 +1,6 @@
 package org.rayn.jflask.framework;
 
+import org.rayn.jflask.framework.mvc.impl.DefaultHandlerInvoker;
 import org.rayn.jflask.framework.core.ClassScanner;
 import org.rayn.jflask.framework.core.impl.DefaultClassScanner;
 import org.rayn.jflask.framework.ioc.BeanFactory;
@@ -9,7 +10,6 @@ import org.rayn.jflask.framework.mvc.HandlerInvoker;
 import org.rayn.jflask.framework.mvc.HandlerMapping;
 import org.rayn.jflask.framework.mvc.ViewResolver;
 import org.rayn.jflask.framework.mvc.impl.DefaultHandlerExceptionResolver;
-import org.rayn.jflask.framework.mvc.impl.DefaultHandlerInvoker;
 import org.rayn.jflask.framework.mvc.impl.DefaultHandlerMapping;
 import org.rayn.jflask.framework.mvc.impl.DefaultViewResolver;
 import org.rayn.jflask.framework.util.ClassUtil;

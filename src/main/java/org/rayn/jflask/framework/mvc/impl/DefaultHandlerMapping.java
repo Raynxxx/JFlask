@@ -1,7 +1,7 @@
 package org.rayn.jflask.framework.mvc.impl;
 
-import org.rayn.jflask.framework.mvc.model.Handler;
 import org.rayn.jflask.framework.mvc.HandlerMapping;
+import org.rayn.jflask.framework.mvc.model.Handler;
 import org.rayn.jflask.framework.mvc.model.Request;
 import org.rayn.jflask.framework.mvc.RouteBuilder;
 
