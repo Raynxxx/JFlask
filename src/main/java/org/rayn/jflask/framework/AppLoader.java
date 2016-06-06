@@ -1,6 +1,8 @@
 package org.rayn.jflask.framework;
 
+import org.rayn.jflask.framework.ioc.IOCBuilder;
 import org.rayn.jflask.framework.mvc.RouteBuilder;
+import org.rayn.jflask.framework.orm.ORMBuilder;
 
 /**
  * AppLoader
@@ -10,7 +12,9 @@ public final class AppLoader {
 
     static void init() {
         Class<?>[] loadWhenAppInit = {
-                RouteBuilder.class
+                RouteBuilder.class,
+                IOCBuilder.class,
+                ORMBuilder.class
         };
     }
 

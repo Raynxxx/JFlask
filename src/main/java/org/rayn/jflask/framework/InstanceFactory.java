@@ -32,8 +32,8 @@ public class InstanceFactory {
     private static final String BEAN_FACTORY = "framework.bean_factory";
     private static final String HANDLER_MAPPING = "framework.handler_mapping";
     private static final String HANDLER_INVOKER = "framework.handler_invoker";
-    private static final String HANDLER_EXCEPTION_RESOLVER = "framework.handler_exception_resolver";
     private static final String VIEW_RESOLVER = "framework.view_resolver";
+    private static final String HANDLER_EXCEPTION_RESOLVER = "framework.handler_exception_resolver";
 
 
     public static ClassScanner getClassScanner() {
@@ -52,12 +52,12 @@ public class InstanceFactory {
         return getInstance(HANDLER_INVOKER, DefaultHandlerInvoker.class);
     }
 
-    public static HandlerExceptionResolver getHandlerExceptionResolver() {
-        return getInstance(HANDLER_EXCEPTION_RESOLVER, DefaultHandlerExceptionResolver.class);
-    }
-
     public static ViewResolver getViewResolver() {
         return getInstance(VIEW_RESOLVER, DefaultViewResolver.class);
+    }
+
+    public static HandlerExceptionResolver getHandlerExceptionResolver() {
+        return getInstance(HANDLER_EXCEPTION_RESOLVER, DefaultHandlerExceptionResolver.class);
     }
 
     @SuppressWarnings("unchecked")
