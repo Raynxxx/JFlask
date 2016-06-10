@@ -12,6 +12,8 @@ import org.rayn.jflask.framework.mvc.ViewResolver;
 import org.rayn.jflask.framework.mvc.impl.DefaultHandlerExceptionResolver;
 import org.rayn.jflask.framework.mvc.impl.DefaultHandlerMapping;
 import org.rayn.jflask.framework.mvc.impl.DefaultViewResolver;
+import org.rayn.jflask.framework.orm.EbeanServerFactory;
+import org.rayn.jflask.framework.orm.impl.DefaultEbeanServerFactory;
 import org.rayn.jflask.framework.util.ClassUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,7 @@ public class InstanceFactory {
 
     private static final String CLASS_SCANNER = "framework.class_scanner";
     private static final String BEAN_FACTORY = "framework.bean_factory";
+    private static final String EBEAN_SERVER_FACTORY = "framework.ebean_server_factory";
     private static final String HANDLER_MAPPING = "framework.handler_mapping";
     private static final String HANDLER_INVOKER = "framework.handler_invoker";
     private static final String VIEW_RESOLVER = "framework.view_resolver";
@@ -42,6 +45,10 @@ public class InstanceFactory {
 
     public static BeanFactory getBeanFactory() {
         return getInstance(BEAN_FACTORY, AnnotationBeanFactory.class);
+    }
+
+    public static EbeanServerFactory getEbeanServerFactory() {
+        return getInstance(EBEAN_SERVER_FACTORY, DefaultEbeanServerFactory.class);
     }
 
     public static HandlerMapping getHandlerMapping() {

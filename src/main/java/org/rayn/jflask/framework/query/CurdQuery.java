@@ -32,5 +32,4 @@ public interface CurdQuery<T, ID extends Serializable>
 
     boolean exists(ID key);
 
-
 }

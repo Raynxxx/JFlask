@@ -18,6 +18,9 @@ public class ConfigHelper {
 
     private static final Properties config = PropsUtil.loadProps(Constants.CONFIG_PROPS);
 
+    public static Properties getConfig() {
+        return config;
+    }
 
     /**
      * 取得字符串值, 默认 null
