@@ -33,10 +33,11 @@ public class RouteBuilder {
     private static final String basePackage = ConfigHelper.getString("app.base_package");
 
     // 路由 Map
-    private static final Map<Request, Handler> routeMap = new LinkedHashMap<Request, Handler>();
+    private static final Map<Request, Handler> routeMap = new LinkedHashMap<>();
 
     // 静态初始化
     static {
+        logger.info("[JFlask] RouteBuilder 启动");
         // 取得所有控制器
         List<Class<?>> controllerList = classScanner.getClassListByAnnotation(basePackage, Controller.class);
         if (CollectionUtil.isNotEmpty(controllerList)) {
@@ -90,6 +91,8 @@ public class RouteBuilder {
             requestPath = StringUtil.replaceAll(requestPath, "<\\w+>", "(\\\\w+)");
         }
         routeMap.put(new Request(requestMethod, requestPath), new Handler(controller, route));
+        logger.debug("[JFlask][RouteBuilder] 加入 {}:{} => {}#{}", requestMethod, requestPath,
+                controller.getSimpleName(), route.getName());
     }
 
     public static Map<Request, Handler> getRouteMap() {

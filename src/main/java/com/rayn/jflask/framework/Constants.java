@@ -14,4 +14,6 @@ public final class Constants {
     public static String CONFIG_PROPS = "jflask.properties";
 
     public static String JSP_PATH = "/WEB-INF/jsp/";
+
+    public static String STATIC_PATH = "/static/";
 }

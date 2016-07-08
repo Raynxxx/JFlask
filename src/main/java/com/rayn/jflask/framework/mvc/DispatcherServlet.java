@@ -40,9 +40,9 @@ public class DispatcherServlet extends HttpServlet {
 
         String currentRequestMethod = request.getMethod();
         String currentRequestPath = WebUtil.getRequestPath(request);
-        logger.debug("[JFlask] {}:{}", currentRequestMethod, currentRequestPath);
+        logger.debug("[JFlask][DispatcherServlet] {}:{}", currentRequestMethod, currentRequestPath);
 
-        if (currentRequestPath.endsWith("/")) {
+        if (currentRequestPath.endsWith("/") && !currentRequestPath.equals("/")) {
             currentRequestPath = currentRequestPath.substring(0, currentRequestPath.length() - 1);
         }
 

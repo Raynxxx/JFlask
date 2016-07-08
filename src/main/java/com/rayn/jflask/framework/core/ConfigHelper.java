@@ -19,7 +19,7 @@ public class ConfigHelper {
     private static final Properties configProps;
 
     static {
-        logger.debug("[JFlask] 加载配置文件 {}", Constants.CONFIG_PROPS);
+        logger.info("[JFlask] ConfigHelper 启动, 加载配置文件: {}", Constants.CONFIG_PROPS);
         configProps = PropsUtil.loadProps(Constants.CONFIG_PROPS);
     }
 

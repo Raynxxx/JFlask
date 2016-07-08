@@ -5,6 +5,8 @@ import com.rayn.jflask.framework.annotation.AutoWired;
 import com.rayn.jflask.framework.core.ClassScanner;
 import com.rayn.jflask.framework.core.ConfigHelper;
 import com.rayn.jflask.framework.util.CollectionUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -17,6 +19,8 @@ import java.util.Map;
  */
 public class IOCBuilder {
 
+    private static final Logger logger = LoggerFactory.getLogger(IOCBuilder.class);
+
     // bean 工厂
     private static final BeanFactory beanFactory = InstanceFactory.getBeanFactory();
 
@@ -27,6 +31,7 @@ public class IOCBuilder {
     private static final String basePackage = ConfigHelper.getString("app.base_package");
 
     static {
+        logger.info("[JFlask] IOCBuilder 启动, Dependence Injection Processing");
         try {
             Map<Class<?>, Object> beanMap = beanFactory.getAllBeans();
             for (Map.Entry<Class<?>, Object> beanEntry : beanMap.entrySet()) {
@@ -51,6 +56,8 @@ public class IOCBuilder {
                             if (instance != null) {
                                 beanField.setAccessible(true);
                                 beanField.set(beanInstance, instance);
+                                logger.debug("[JFlask][IOCBuilder] 注入 {} => {}#{}", implClass.getName(),
+                                        beanClass.getName(), beanField.getName());
                             } else {
                                 throw new RuntimeException(beanClass.getCanonicalName() + " / " +
                                         beanField.getName() + " 注入失败, 不存在实现类");

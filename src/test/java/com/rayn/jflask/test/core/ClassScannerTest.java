@@ -8,6 +8,7 @@ import com.rayn.jflask.framework.InstanceFactory;
 import com.rayn.jflask.framework.core.ClassScanner;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * ClassScannerTest
@@ -24,8 +25,5 @@ public class ClassScannerTest {
         ClassScanner classScanner = InstanceFactory.getClassScanner();
         List<Class<?>> classList = classScanner.getClassList("com.rayn.jflask.framework");
         Assert.assertTrue(classList.contains(Bean.class));
-        for (Class<?> clazz: classList) {
-            System.out.println(clazz.getName());
-        }
     }
 }

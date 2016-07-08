@@ -62,6 +62,7 @@ public class WebUtil {
 
     public static void redirectRequest(String path, HttpServletRequest request, HttpServletResponse response) {
         try {
+            logger.debug("[JFlask] redirect to {}", path);
             response.sendRedirect(request.getContextPath() + path);
         } catch (Exception e) {
             logger.error("重定向错误", e);

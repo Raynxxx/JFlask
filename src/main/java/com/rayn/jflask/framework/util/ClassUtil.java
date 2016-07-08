@@ -44,8 +44,6 @@ public class ClassUtil {
      * 加载类
      */
     public static Class<?> loadClass(String className, boolean isInitialized) {
-        logger.debug("[JFlask] loadClass: {}", className);
-        logger.debug("[JFlask] classPath: {}", getClassPath());
         Class<?> clazz = null;
         try {
             clazz = Class.forName(className, isInitialized, getClassLoader());

@@ -72,9 +72,9 @@ public class DefaultClassScanner implements ClassScanner {
 
     private abstract class ScannerHelper {
 
-        private String packageName;
+        private final String packageName;
 
-        ScannerHelper(String packageName) {
+        ScannerHelper(final String packageName) {
             this.packageName = packageName;
         }
 
@@ -82,6 +82,7 @@ public class DefaultClassScanner implements ClassScanner {
             if (cacheClassList != null) {
                 return filter(cacheClassList);
             }
+            logger.info("[JFlask] ClassScanner 启动, 扫描 {}", this.packageName);
             cacheClassList = new ArrayList<>();
             try {
                 // 从包内获取所有资源的URL
@@ -149,10 +150,7 @@ public class DefaultClassScanner implements ClassScanner {
         }
 
         private void addClass(List<Class<?>> classList, String className) {
-            logger.debug("[JFlask] 缓存 class {}", className);
-            if (className.startsWith(".")) {
-                className = className.substring(1);
-            }
+            logger.debug("[JFlask][ClassScanner] 加入缓存 class {}", className);
             Class<?> clazz = ClassUtil.loadClass(className, false);
             classList.add(clazz);
         }
