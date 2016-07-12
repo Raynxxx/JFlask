@@ -1,4 +1,4 @@
-package com.rayn.jflask.framework.annotation;
+package com.rayn.jflask.framework.core.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,10 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Bean
+ * AutoWired
  * Created by Raynxxx on 2016/05/26.
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Bean {
+public @interface AutoWired {
 }

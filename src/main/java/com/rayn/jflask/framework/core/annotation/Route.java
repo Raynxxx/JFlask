@@ -1,4 +1,4 @@
-package com.rayn.jflask.framework.annotation;
+package com.rayn.jflask.framework.core.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

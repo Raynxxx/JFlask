@@ -1,26 +1,40 @@
 package com.rayn.jflask.framework.mvc.model;
 
 import com.rayn.jflask.framework.util.ClassUtil;
+import com.rayn.jflask.framework.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.Map;
+import java.util.*;
 
 /**
  * Params
  * Created by Raynxxx on 2016/05/30.
  */
 public class Params {
+
+    private static final Logger logger = LoggerFactory.getLogger(Params.class);
+
     private Map<String, Object> requestMap;
 
-    public Params(Map<String, Object> paramsMap) {
-        this.requestMap = paramsMap;
+    private List<MultipartFile> files;
+
+    public Params(Map<String, Object> requestMap, List<MultipartFile> files) {
+        this.requestMap = requestMap;
+        this.files = files;
     }
 
-    public Map<String, Object> getRequestMap() {
-        return requestMap;
+    public Params(Map<String, Object> paramsMap) {
+        this(paramsMap, new ArrayList<MultipartFile>());
     }
 
     public Object get(String key) {
         return requestMap.get(key);
+    }
+
+    public List<String> getList(String key) {
+        String[] values = ClassUtil.toString(requestMap.get(key)).split(StringUtil.SEPARATOR);
+        return new ArrayList<>(Arrays.asList(values));
     }
 
     public String getString(String key) {
@@ -39,4 +53,17 @@ public class Params {
         return ClassUtil.toLong(requestMap.get(key));
     }
 
+    public List<MultipartFile> getFiles() {
+        return files;
+    }
+
+    public MultipartFile getFile(String key) {
+        MultipartFile file =  null;
+        for (MultipartFile multipartFile : files) {
+            if (multipartFile.getFieldName().equals(key)) {
+                file = multipartFile;
+            }
+        }
+        return file;
+    }
 }

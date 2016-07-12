@@ -66,6 +66,6 @@ public class ConfigHelper {
      * 取得整数值, 含默认值
      */
     public static int getInteger(String str, int defaultValue) {
-        return PropsUtil.getInteger(configProps, str);
+        return PropsUtil.getInteger(configProps, str, defaultValue);
     }
 }

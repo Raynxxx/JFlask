@@ -1,8 +1,8 @@
 package com.rayn.jflask.framework.mvc;
 
 import com.rayn.jflask.framework.InstanceFactory;
-import com.rayn.jflask.framework.annotation.Controller;
-import com.rayn.jflask.framework.annotation.Route;
+import com.rayn.jflask.framework.core.annotation.Controller;
+import com.rayn.jflask.framework.core.annotation.Route;
 import com.rayn.jflask.framework.core.ClassScanner;
 import com.rayn.jflask.framework.core.ConfigHelper;
 import com.rayn.jflask.framework.mvc.model.Handler;

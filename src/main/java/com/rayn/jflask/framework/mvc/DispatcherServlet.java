@@ -3,7 +3,6 @@ package com.rayn.jflask.framework.mvc;
 import com.rayn.jflask.framework.InstanceFactory;
 import com.rayn.jflask.framework.mvc.model.Handler;
 import com.rayn.jflask.framework.Constants;
-import com.rayn.jflask.framework.util.WebUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,12 +25,17 @@ public class DispatcherServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
 
     private static final HandlerMapping handlerMapping = InstanceFactory.getHandlerMapping();
+
     private static final HandlerInvoker handlerInvoker = InstanceFactory.getHandlerInvoker();
+
+    private static final ViewResolver viewResolver = InstanceFactory.getViewResolver();
+
     private static final HandlerExceptionResolver handlerExceptionResolver = InstanceFactory.getHandlerExceptionResolver();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+        MultipartHelper.init(config.getServletContext());
     }
 
     @Override
@@ -39,7 +43,7 @@ public class DispatcherServlet extends HttpServlet {
         request.setCharacterEncoding(Constants.UTF8);
 
         String currentRequestMethod = request.getMethod();
-        String currentRequestPath = WebUtil.getRequestPath(request);
+        String currentRequestPath = ServletHelper.getRequestPath(request);
         logger.debug("[JFlask][DispatcherServlet] {}:{}", currentRequestMethod, currentRequestPath);
 
         if (currentRequestPath.endsWith("/") && !currentRequestPath.equals("/")) {
@@ -48,11 +52,12 @@ public class DispatcherServlet extends HttpServlet {
 
         Handler handler = handlerMapping.getHandler(currentRequestMethod, currentRequestPath);
         if (handler == null) {
-            WebUtil.responseError(response, HttpServletResponse.SC_NOT_FOUND, "Not Found");
+            ServletHelper.responseError(response, HttpServletResponse.SC_NOT_FOUND, "Not Found");
             return;
         }
         try {
-            handlerInvoker.invokeHandler(request, response, handler);
+            Object result = handlerInvoker.invokeHandler(request, response, handler);
+            viewResolver.resolveView(request, response, result);
         } catch (Exception e) {
             handlerExceptionResolver.resolveHandlerException(request, response, e);
             e.printStackTrace();

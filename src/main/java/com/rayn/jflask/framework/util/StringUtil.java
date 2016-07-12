@@ -1,7 +1,13 @@
 package com.rayn.jflask.framework.util;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,6 +17,8 @@ import java.util.regex.Pattern;
  * Created by Raynxxx on 2016/05/22.
  */
 public class StringUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(StringUtil.class);
 
     public static final String SEPARATOR = String.valueOf((char) 29);
 
@@ -120,6 +128,21 @@ public class StringUtil {
             if (i != array.length - 1) {
                 sb.append(separator);
             }
+        }
+        return sb.toString();
+    }
+
+    public static String toString(InputStream is) {
+        StringBuffer sb = new StringBuffer();
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            logger.error("[JFlask] InputStream to String error", e);
+            throw new RuntimeException(e);
         }
         return sb.toString();
     }

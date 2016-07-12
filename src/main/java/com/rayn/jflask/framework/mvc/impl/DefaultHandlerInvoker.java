@@ -1,14 +1,14 @@
 package com.rayn.jflask.framework.mvc.impl;
 
 import com.rayn.jflask.framework.InstanceFactory;
-import com.rayn.jflask.framework.mvc.ViewResolver;
+import com.rayn.jflask.framework.mvc.MultipartHelper;
 import com.rayn.jflask.framework.mvc.model.Params;
 import com.rayn.jflask.framework.util.ClassUtil;
 import com.rayn.jflask.framework.ioc.BeanFactory;
 import com.rayn.jflask.framework.mvc.model.Handler;
 import com.rayn.jflask.framework.mvc.HandlerInvoker;
 import com.rayn.jflask.framework.util.CollectionUtil;
-import com.rayn.jflask.framework.util.WebUtil;
+import com.rayn.jflask.framework.mvc.ServletHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,10 +24,6 @@ import java.util.regex.Matcher;
  * Created by Raynxxx on 2016/05/25.
  */
 public class DefaultHandlerInvoker implements HandlerInvoker {
-
-    // 视图处理器
-    private static final ViewResolver viewResolver = InstanceFactory.getViewResolver();
-
     // bean 工厂
     private static final BeanFactory beanFactory = InstanceFactory.getBeanFactory();
 
@@ -39,7 +35,7 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
      * @throws Exception 异常
      */
     @Override
-    public void invokeHandler(HttpServletRequest request, HttpServletResponse response, Handler handler) throws Exception {
+    public Object invokeHandler(HttpServletRequest request, HttpServletResponse response, Handler handler) throws Exception {
         // 获取控制器类和路由方法
         Class<?> controllerClass = handler.getControllerClass();
         Method routeMethod = handler.getRouteMethod();
@@ -51,31 +47,37 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
         List<Object> routeParamList = getRouteParamList(request, handler);
 
         if (routeParamList.size() != routeMethod.getParameterTypes().length) {
-            throw new RuntimeException(String.format("请求参数(%d) 和路由函数参数(%d) 数目不匹配",
-                    routeParamList.size(), routeMethod.getParameterTypes().length));
+            throw new RuntimeException(String.format("[%s#%s] 请求参数(%d) 和路由函数参数(%d) 数目不匹配",
+                    controllerClass.getName(), routeMethod.getName(), routeParamList.size(),
+                    routeMethod.getParameterTypes().length));
         }
 
-        Object routeResult = invokeRouteMethod(controllerInstance, routeMethod, routeParamList);
-
-        viewResolver.resolveView(request, response, routeResult);
+        return invokeRouteMethod(controllerInstance, routeMethod, routeParamList);
     }
 
-    private List<Object> getRouteParamList(HttpServletRequest request, Handler handler) {
+    private List<Object> getRouteParamList(HttpServletRequest request, Handler handler) throws Exception {
         List<Object> paramList = new ArrayList<>();
         // 获取参数类型
         Class<?>[] paramTypes = handler.getRouteMethod().getParameterTypes();
-        // 获取占位符的参数列表
-        paramList.addAll(getRoutePathParamList(handler.getPathMatcher(), paramTypes));
 
-        // 取出 request 请求 Map (QueryString 或 FormData)
-        Map<String, Object> requestParamMap = WebUtil.getRequestParamMap(request);
-        if (CollectionUtil.isNotEmpty(requestParamMap)) {
-            paramList.add(new Params(requestParamMap));
+        // 获取路径占位符的参数列表
+        paramList.addAll(getPathParamList(handler.getPathMatcher(), paramTypes));
+
+        // 根据 contentType 类型提供不同处理
+        if (MultipartHelper.isMultipart(request)) {
+            // Multipart
+            paramList.addAll(MultipartHelper.parseMultipartParamList(request));
+        } else {
+            // 取出 request 请求 Map (QueryString 或 FormData)
+            Map<String, Object> requestParamMap = ServletHelper.getRequestParamMap(request);
+            if (CollectionUtil.isNotEmpty(requestParamMap)) {
+                paramList.add(new Params(requestParamMap));
+            }
         }
         return paramList;
     }
 
-    private List<Object> getRoutePathParamList(Matcher routePathMatcher, Class<?>[] routeParamTypes) {
+    private List<Object> getPathParamList(Matcher routePathMatcher, Class<?>[] routeParamTypes) {
         List<Object> pathParamList = new ArrayList<>();
         for (int i = 1; i <= routePathMatcher.groupCount(); ++i) {
             // 获取占位符上的参数名

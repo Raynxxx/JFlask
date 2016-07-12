@@ -1,6 +1,5 @@
 package com.rayn.jflask.framework.mvc.model;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,13 +7,13 @@ import java.util.Map;
  * JSPView
  * Created by Raynxxx on 2016/05/30.
  */
-public class JSPView implements Serializable {
+public class JSPView extends Result {
     private String path;
     private Map<String, Object> data;
 
     public JSPView(String path) {
         this.path = path;
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
     }
 
     public JSPView put(String key, Object value) {

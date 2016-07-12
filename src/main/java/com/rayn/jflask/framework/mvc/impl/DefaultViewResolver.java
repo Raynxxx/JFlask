@@ -2,10 +2,12 @@ package com.rayn.jflask.framework.mvc.impl;
 
 import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.mvc.ViewResolver;
+import com.rayn.jflask.framework.mvc.model.JSONResult;
 import com.rayn.jflask.framework.mvc.model.JSPView;
-import com.rayn.jflask.framework.mvc.model.Result;
 import com.rayn.jflask.framework.util.CollectionUtil;
-import com.rayn.jflask.framework.util.WebUtil;
+import com.rayn.jflask.framework.mvc.ServletHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,19 +19,17 @@ import java.util.Map;
  */
 public class DefaultViewResolver implements ViewResolver {
 
+    private static final Logger logger = LoggerFactory.getLogger(ViewResolver.class);
+
     @Override
     public void resolveView(HttpServletRequest request, HttpServletResponse response, Object routeResult) {
         if (routeResult != null) {
-            if (routeResult instanceof Result) {
-                // 结果转为 Json
-                Result result = (Result) routeResult;
-                WebUtil.responseJSON(response, routeResult);
-            } else if (routeResult instanceof JSPView) {
-                JSPView jspView = (JSPView) routeResult;
+            if (routeResult instanceof JSPView) {
                 // 处理 JSP 转发 or 重定向
+                JSPView jspView = (JSPView) routeResult;
                 if (jspView.isRedirect()) {
                     String path = jspView.getPath();
-                    WebUtil.redirectRequest(path, request, response);
+                    ServletHelper.redirectRequest(path, request, response);
                 } else {
                     String path = Constants.JSP_PATH + jspView.getPath();
                     Map<String, Object> data = jspView.getData();
@@ -38,9 +38,17 @@ public class DefaultViewResolver implements ViewResolver {
                             request.setAttribute(entry.getKey(), entry.getValue());
                         }
                     }
-                    WebUtil.forwardRequest(path, request, response);
+                    ServletHelper.forwardRequest(path, request, response);
                 }
+            } else if (routeResult instanceof JSONResult) {
+                // 结果转为 Json
+                JSONResult result = (JSONResult) routeResult;
+                ServletHelper.responseJSON(response, result);
+            } else {
+                logger.error("[JFlask][ViewResolver] 不支持的路由返回值类型 {}", routeResult);
             }
+        } else {
+            logger.error("[JFlask][ViewResolver] 路由返回值不存在");
         }
     }
 

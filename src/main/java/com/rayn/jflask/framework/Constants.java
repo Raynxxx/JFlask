@@ -7,13 +7,16 @@ import com.rayn.jflask.framework.core.ConfigHelper;
  * Constants
  * Created by Raynxxx on 2016/05/21.
  */
-public final class Constants {
+public interface Constants {
 
-    public static String UTF8 = "UTF-8";
+    String UTF8 = "UTF-8";
 
-    public static String CONFIG_PROPS = "jflask.properties";
+    String CONFIG_PROPS = "jflask.properties";
 
-    public static String JSP_PATH = "/WEB-INF/jsp/";
+    String JSP_PATH = ConfigHelper.getString("app.jsp_path", "/WEB-INF/jsp/");
 
-    public static String STATIC_PATH = "/static/";
+    String STATIC_PATH = ConfigHelper.getString("app.static_path", "/static/");
+
+    // default 10 MB
+    int UPLOAD_MAX = ConfigHelper.getInteger("app.upload_max", 10 * 1024 * 1024);
 }

@@ -1,14 +1,12 @@
 package com.rayn.jflask.test.core;
 
-import com.rayn.jflask.framework.annotation.Bean;
-import com.rayn.jflask.framework.util.ClassUtil;
+import com.rayn.jflask.framework.core.annotation.Bean;
 import org.junit.Assert;
 import org.junit.Test;
 import com.rayn.jflask.framework.InstanceFactory;
 import com.rayn.jflask.framework.core.ClassScanner;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * ClassScannerTest
