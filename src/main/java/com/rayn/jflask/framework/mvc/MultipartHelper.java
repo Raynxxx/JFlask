@@ -1,10 +1,10 @@
 package com.rayn.jflask.framework.mvc;
 
-import com.avaje.ebeaninternal.server.lib.util.Str;
 import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.core.exception.MultipartException;
 import com.rayn.jflask.framework.mvc.model.MultipartFile;
 import com.rayn.jflask.framework.mvc.model.Params;
+import com.rayn.jflask.framework.util.CollectionUtil;
 import com.rayn.jflask.framework.util.FileUtil;
 import com.rayn.jflask.framework.util.StringUtil;
 import org.apache.commons.fileupload.FileItem;
@@ -63,13 +63,14 @@ public class MultipartHelper {
         List<MultipartFile> multipartFiles = new ArrayList<>();
         for (FileItem fileItem : fileItemList) {
             String fieldName = fileItem.getFieldName();
+            logger.debug("[JFlask][MultipartHelper] 表单字段 {}", fieldName);
             if (fileItem.isFormField()) {
                 String fieldValue = fileItem.getString(Constants.UTF8);
                 fieldMap.put(fieldName, fieldValue);
             } else {
                 String fileName = FileUtil.getRealFileName(fileItem.getName());
                 if (StringUtil.isEmpty(fileName)) {
-                    logger.warn("[JFlask][MultipartHelper] upload file 表单字段 => {} 文件名为空", fieldName);
+                    logger.warn("[JFlask][MultipartHelper] upload file 字段 => {} 文件名为空", fieldName);
                 }
                 long fileSize = fileItem.getSize();
                 String contentType = fileItem.getContentType();
@@ -79,7 +80,10 @@ public class MultipartHelper {
                 multipartFiles.add(multipartFile);
             }
         }
-        paramList.add(new Params(fieldMap, multipartFiles));
+        logger.debug("[JFlask][MultipartHelper] fieldMap {} / files {}", fieldMap.size(), multipartFiles.size());
+        if (CollectionUtil.isNotEmpty(fieldMap) || CollectionUtil.isNotEmpty(multipartFiles)) {
+            paramList.add(new Params(fieldMap, multipartFiles));
+        }
         return paramList;
     }
 

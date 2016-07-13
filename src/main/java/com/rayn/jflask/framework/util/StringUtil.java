@@ -8,6 +8,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -145,6 +148,19 @@ public class StringUtil {
             throw new RuntimeException(e);
         }
         return sb.toString();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Map<String, Integer> getNamedGroups(Pattern pattern) {
+        Map<String, Integer> ret = null;
+        try {
+            Method namedGroups = Pattern.class.getDeclaredMethod("namedGroups");
+            namedGroups.setAccessible(true);
+            ret = (Map<String, Integer>) namedGroups.invoke(pattern);
+        } catch (Exception e) {
+            logger.error("[JFlask] ");
+        }
+        return ret;
     }
 
 }

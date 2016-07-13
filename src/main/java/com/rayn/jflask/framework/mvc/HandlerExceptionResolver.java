@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Handler 异常处理器
+ * StaticHandler 异常处理器
  * HandlerExceptionResolver
  * Created by Raynxxx on 2016/05/25.
  */

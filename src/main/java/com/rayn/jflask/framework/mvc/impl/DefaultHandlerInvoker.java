@@ -3,12 +3,16 @@ package com.rayn.jflask.framework.mvc.impl;
 import com.rayn.jflask.framework.InstanceFactory;
 import com.rayn.jflask.framework.mvc.MultipartHelper;
 import com.rayn.jflask.framework.mvc.model.Params;
+import com.rayn.jflask.framework.routing.handler.DynamicHandler;
+import com.rayn.jflask.framework.routing.handler.Handler;
 import com.rayn.jflask.framework.util.ClassUtil;
 import com.rayn.jflask.framework.ioc.BeanFactory;
-import com.rayn.jflask.framework.mvc.model.Handler;
+import com.rayn.jflask.framework.routing.handler.StaticHandler;
 import com.rayn.jflask.framework.mvc.HandlerInvoker;
 import com.rayn.jflask.framework.util.CollectionUtil;
 import com.rayn.jflask.framework.mvc.ServletHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,11 +28,15 @@ import java.util.regex.Matcher;
  * Created by Raynxxx on 2016/05/25.
  */
 public class DefaultHandlerInvoker implements HandlerInvoker {
+
+    // logger
+    private static final Logger logger = LoggerFactory.getLogger(HandlerInvoker.class);
+
     // bean 工厂
     private static final BeanFactory beanFactory = InstanceFactory.getBeanFactory();
 
     /**
-     * 执行 handler
+     * 执行 staticHandler
      * @param request  请求对象
      * @param response 响应对象
      * @param handler  处理机
@@ -37,7 +45,7 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
     @Override
     public Object invokeHandler(HttpServletRequest request, HttpServletResponse response, Handler handler) throws Exception {
         // 获取控制器类和路由方法
-        Class<?> controllerClass = handler.getControllerClass();
+        Class<?> controllerClass = handler.getController();
         Method routeMethod = handler.getRouteMethod();
 
         // 从 bean 工厂获取实例
@@ -46,6 +54,7 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
         // 获取路由方法的参数列表
         List<Object> routeParamList = getRouteParamList(request, handler);
 
+        // 参数数量错误
         if (routeParamList.size() != routeMethod.getParameterTypes().length) {
             throw new RuntimeException(String.format("[%s#%s] 请求参数(%d) 和路由函数参数(%d) 数目不匹配",
                     controllerClass.getName(), routeMethod.getName(), routeParamList.size(),
@@ -60,30 +69,49 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
         // 获取参数类型
         Class<?>[] paramTypes = handler.getRouteMethod().getParameterTypes();
 
-        // 获取路径占位符的参数列表
-        paramList.addAll(getPathParamList(handler.getPathMatcher(), paramTypes));
+        if (handler instanceof DynamicHandler) {
+            // 获取路径占位符的参数列表
+            DynamicHandler dynamicHandler = (DynamicHandler) handler;
+            paramList.addAll(getPathParamList(dynamicHandler, paramTypes));
+        }
 
         // 根据 contentType 类型提供不同处理
         if (MultipartHelper.isMultipart(request)) {
             // Multipart
-            paramList.addAll(MultipartHelper.parseMultipartParamList(request));
+            logger.debug("[JFlask] isMultipart Request");
+            List<Object> multipartParamList = MultipartHelper.parseMultipartParamList(request);
+            if (CollectionUtil.isNotEmpty(multipartParamList)) {
+                logger.debug("[JFlask] 加入 multipartParams");
+                paramList.addAll(multipartParamList);
+            }
         } else {
             // 取出 request 请求 Map (QueryString 或 FormData)
             Map<String, Object> requestParamMap = ServletHelper.getRequestParamMap(request);
             if (CollectionUtil.isNotEmpty(requestParamMap)) {
+                logger.debug("[JFlask] 加入 requestParams");
                 paramList.add(new Params(requestParamMap));
             }
         }
         return paramList;
     }
 
-    private List<Object> getPathParamList(Matcher routePathMatcher, Class<?>[] routeParamTypes) {
+    private List<Object> getPathParamList(DynamicHandler dynamicHandler, Class<?>[] routeParamTypes) {
         List<Object> pathParamList = new ArrayList<>();
-        for (int i = 1; i <= routePathMatcher.groupCount(); ++i) {
+        Matcher pathMatcher = dynamicHandler.getPathMatcher();
+        if (pathMatcher.groupCount() - 1 > routeParamTypes.length) {
+            logger.warn("[JFlask] Route {}#{} 参数过少", dynamicHandler.getController().getName(),
+                    dynamicHandler.getRouteMethod().getName());
+        }
+        for (int i = 1; i <= pathMatcher.groupCount(); ++i) {
             // 获取占位符上的参数名
-            String param = routePathMatcher.group(i);
+            String param = pathMatcher.group(i);
+
             // 参数类型识别
+            if (i - 1 == routeParamTypes.length) {
+                break;
+            }
             Class<?> paramType = routeParamTypes[i - 1];
+
             // 支持四种基本类型 int, long, double, String
             if (ClassUtil.isInteger(paramType)) {
                 pathParamList.add(ClassUtil.toInteger(param));

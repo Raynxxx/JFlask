@@ -3,13 +3,14 @@ package com.rayn.jflask.framework.core.annotation;
 import java.lang.annotation.*;
 
 /**
- * Table
- * Created by Raynxxx on 2016/06/05.
+ * Routes
+ * Created by Raynxxx on 2016/07/12.
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Table {
+public @interface Routes {
 
-    String value();
+    Route[] value();
+
 }

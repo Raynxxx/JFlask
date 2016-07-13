@@ -38,7 +38,6 @@ public class ServletHelper {
     public static Map<String, Object> getRequestParamMap(HttpServletRequest request) {
         Map<String, Object> requestParamMap = new HashMap<>();
         try {
-            logger.info(StringUtil.toString(request.getInputStream()));
             // 取得所有请求参数名
             Enumeration<String> parameterNames = request.getParameterNames();
             while (parameterNames.hasMoreElements()) {

@@ -25,7 +25,11 @@ public class Params {
     }
 
     public Params(Map<String, Object> paramsMap) {
-        this(paramsMap, new ArrayList<MultipartFile>());
+        this(paramsMap, new ArrayList<>());
+    }
+
+    public Params() {
+        this(new HashMap<>(), new ArrayList<>());
     }
 
     public Object get(String key) {

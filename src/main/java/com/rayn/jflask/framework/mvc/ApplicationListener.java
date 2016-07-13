@@ -40,11 +40,6 @@ public class ApplicationListener extends ServletContextListener {
     }
 
     private void initServletMapping(ServletContext context) {
-        Map<String, ? extends ServletRegistration> registrationMap = context.getServletRegistrations();
-        for (Map.Entry<String, ? extends ServletRegistration> registration : registrationMap.entrySet()) {
-            logger.debug("[JFlask][ApplicationListener] {} => {}", registration.getKey(),
-                    registration.getValue());
-        }
         registerStaticServlet(context);
         registerJspServlet(context);
     }

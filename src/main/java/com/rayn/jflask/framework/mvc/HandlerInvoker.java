@@ -1,6 +1,6 @@
 package com.rayn.jflask.framework.mvc;
 
-import com.rayn.jflask.framework.mvc.model.Handler;
+import com.rayn.jflask.framework.routing.handler.Handler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 public interface HandlerInvoker {
 
     /**
-     * 执行 handler
+     * 执行 staticHandler
      *
      * @param request 请求对象
      * @param response 响应对象

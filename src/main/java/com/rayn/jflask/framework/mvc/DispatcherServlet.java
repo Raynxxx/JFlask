@@ -1,7 +1,8 @@
 package com.rayn.jflask.framework.mvc;
 
 import com.rayn.jflask.framework.InstanceFactory;
-import com.rayn.jflask.framework.mvc.model.Handler;
+import com.rayn.jflask.framework.routing.handler.Handler;
+import com.rayn.jflask.framework.routing.handler.StaticHandler;
 import com.rayn.jflask.framework.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +61,7 @@ public class DispatcherServlet extends HttpServlet {
             viewResolver.resolveView(request, response, result);
         } catch (Exception e) {
             handlerExceptionResolver.resolveHandlerException(request, response, e);
-            e.printStackTrace();
+            logger.error("[JFlask] {}", e.getMessage());
         }
     }
 }
