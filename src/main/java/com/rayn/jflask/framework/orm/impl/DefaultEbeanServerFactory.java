@@ -5,25 +5,33 @@ import com.avaje.ebean.config.ServerConfig;
 import com.rayn.jflask.framework.core.ConfigHelper;
 import com.rayn.jflask.framework.orm.EbeanServerFactory;
 
+import java.util.Properties;
+
 /**
  * DefaultEbeanServerFactory
  * Created by Raynxxx on 2016/06/10.
  */
 public class DefaultEbeanServerFactory implements EbeanServerFactory {
 
-    private static final ServerConfig serverConfig = new ServerConfig();
-    private static EbeanServer ebeanServer;
+    private ServerConfig serverConfig = new ServerConfig();
+    private EbeanServer ebeanServer;
 
-    static {
+    @Override
+    public void init(Properties properties) {
         serverConfig.setName("db");
-        serverConfig.loadFromProperties(ConfigHelper.getConfig());
+        serverConfig.loadFromProperties();
         serverConfig.setDefaultServer(true);
         serverConfig.setRegister(true);
         ebeanServer = com.avaje.ebean.EbeanServerFactory.create(serverConfig);
     }
 
     @Override
-    public EbeanServer getEbeanServer() {
+    public Class<?> getEbeanServerObjectType() {
+        return EbeanServer.class;
+    }
+
+    @Override
+    public EbeanServer getEbeanServerObject() {
         return ebeanServer;
     }
 }

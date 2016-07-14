@@ -43,7 +43,7 @@ public class DefaultViewResolver implements ViewResolver {
             } else if (routeResult instanceof JSONResult) {
                 // 结果转为 Json
                 JSONResult result = (JSONResult) routeResult;
-                ServletHelper.responseJSON(response, result);
+                ServletHelper.responseJSON(response, result.getData());
             } else {
                 logger.error("[JFlask][ViewResolver] 不支持的路由返回值类型 {}", routeResult);
             }

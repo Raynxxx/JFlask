@@ -63,6 +63,7 @@
     <commons-io.version>2.5</commons-io.version>
     <ebean-orm.version>7.9.1</ebean-orm.version>
     <ebean-orm-querybean.version>7.6.1</ebean-orm-querybean.version>
+    <ebeanorm-agent.version>4.9.2</ebeanorm-agent.version>
   </properties>
 
   <dependencies>
@@ -81,6 +82,18 @@
       <artifactId>javax.servlet-api</artifactId>
       <version>${servlet.version}</version>
       <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>taglibs</groupId>
+      <artifactId>standard</artifactId>
+      <version>1.1.2</version>
     </dependency>
 
     <!-- Database -->

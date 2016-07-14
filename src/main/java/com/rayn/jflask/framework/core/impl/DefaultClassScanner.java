@@ -82,7 +82,7 @@ public class DefaultClassScanner implements ClassScanner {
             if (cacheClassList != null) {
                 return filter(cacheClassList);
             }
-            logger.info("[JFlask] ClassScanner 启动, 扫描 {}", this.packageName);
+            logger.info(String.format("[JFlask] ClassScanner 启动扫描 <= %s", this.packageName));
             cacheClassList = new ArrayList<>();
             try {
                 // 从包内获取所有资源的URL

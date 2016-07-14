@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface ViewResolver {
 
-    void resolveView(HttpServletRequest request, HttpServletResponse response, Object routeResult);
+    void resolveView(HttpServletRequest request, HttpServletResponse response,
+                     Object routeResult);
 
 }
