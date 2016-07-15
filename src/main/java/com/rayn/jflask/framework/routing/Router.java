@@ -1,9 +1,5 @@
 package com.rayn.jflask.framework.routing;
 
-import com.rayn.jflask.framework.routing.converter.DefaultRuleConverter;
-import com.rayn.jflask.framework.routing.converter.IntegerRuleConverter;
-import com.rayn.jflask.framework.routing.converter.PathRuleConverter;
-import com.rayn.jflask.framework.routing.converter.RuleConverter;
 import com.rayn.jflask.framework.routing.handler.DynamicHandler;
 import com.rayn.jflask.framework.routing.handler.Handler;
 import com.rayn.jflask.framework.routing.handler.StaticHandler;
@@ -11,12 +7,14 @@ import com.rayn.jflask.framework.routing.request.DynamicRequest;
 import com.rayn.jflask.framework.routing.request.Request;
 import com.rayn.jflask.framework.routing.request.StaticRequest;
 import com.rayn.jflask.framework.util.CollectionUtil;
-import com.rayn.jflask.framework.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -84,7 +82,7 @@ public class Router {
      * 添加 Route
      */
     public static void addRoute(String requestMethod, String requestPath,
-                                Class<?> controller,Method routeMethod) {
+                                Class<?> controller, Method routeMethod) {
         if (!requestPath.contains("<")) {
             Request request = new StaticRequest(requestMethod, requestPath);
             StaticHandler handler = new StaticHandler(controller, routeMethod);

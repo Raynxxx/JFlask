@@ -1,20 +1,16 @@
 package com.rayn.jflask.framework.routing;
 
 import com.rayn.jflask.framework.InstanceFactory;
-import com.rayn.jflask.framework.core.annotation.Controller;
-import com.rayn.jflask.framework.core.annotation.Route;
+import com.rayn.jflask.framework.annotation.Controller;
+import com.rayn.jflask.framework.annotation.Route;
 import com.rayn.jflask.framework.core.ClassScanner;
 import com.rayn.jflask.framework.core.ConfigHelper;
-import com.rayn.jflask.framework.routing.handler.DynamicHandler;
-import com.rayn.jflask.framework.routing.handler.StaticHandler;
-import com.rayn.jflask.framework.routing.request.Request;
 import com.rayn.jflask.framework.util.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 所有路由函数的扫描初始化

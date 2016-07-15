@@ -1,4 +1,4 @@
-package com.rayn.jflask.framework.core.annotation;
+package com.rayn.jflask.framework.annotation;
 
 import java.lang.annotation.*;
 

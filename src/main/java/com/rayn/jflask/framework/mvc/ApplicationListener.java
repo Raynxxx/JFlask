@@ -1,7 +1,5 @@
 package com.rayn.jflask.framework.mvc;
 
-import com.avaje.ebeaninternal.server.core.ServletContextListener;
-import com.avaje.ebeaninternal.server.lib.util.Str;
 import com.rayn.jflask.framework.AppLoader;
 import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.util.StringUtil;
@@ -10,16 +8,16 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import javax.servlet.ServletRegistration;
 import javax.servlet.annotation.WebListener;
-import java.util.Map;
 
 /**
  * ApplicationListener
  * Created by Raynxxx on 2016/07/07.
  */
 @WebListener
-public class ApplicationListener extends ServletContextListener {
+public class ApplicationListener implements ServletContextListener {
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationListener.class);
 
@@ -36,7 +34,6 @@ public class ApplicationListener extends ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent event) {
-        super.contextDestroyed(event);
     }
 
     private void initServletMapping(ServletContext context) {

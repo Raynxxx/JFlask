@@ -2,7 +2,6 @@ package com.rayn.jflask.framework;
 
 import com.rayn.jflask.framework.core.ConfigHelper;
 import com.rayn.jflask.framework.ioc.IOCBuilder;
-import com.rayn.jflask.framework.orm.EbeanLoader;
 import com.rayn.jflask.framework.routing.RouteLoader;
 import com.rayn.jflask.framework.util.ClassUtil;
 
@@ -16,11 +15,10 @@ public final class AppLoader {
         Class<?>[] loadWhenAppInit = {
                 ConfigHelper.class,
                 RouteLoader.class,
-                EbeanLoader.class,
                 IOCBuilder.class
         };
 
-        for (Class<?> cls: loadWhenAppInit) {
+        for (Class<?> cls : loadWhenAppInit) {
             ClassUtil.loadClass(cls.getName());
         }
     }

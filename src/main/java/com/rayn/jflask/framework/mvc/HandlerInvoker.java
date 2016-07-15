@@ -14,9 +14,9 @@ public interface HandlerInvoker {
     /**
      * 执行 staticHandler
      *
-     * @param request 请求对象
+     * @param request  请求对象
      * @param response 响应对象
-     * @param handler 处理机
+     * @param handler  处理机
      * @throws Exception 异常
      */
     Object invokeHandler(HttpServletRequest request, HttpServletResponse response, Handler handler) throws Exception;

@@ -13,8 +13,8 @@ public interface HandlerMapping {
     /**
      * 查找 StaticHandler
      *
-     * @param currentRequestMethod  当前请求的方法
-     * @param currentRequestPath    当前请求的路径
+     * @param currentRequestMethod 当前请求的方法
+     * @param currentRequestPath   当前请求的路径
      * @return StaticHandler
      */
     Handler getHandler(String currentRequestMethod, String currentRequestPath);

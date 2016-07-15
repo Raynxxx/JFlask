@@ -1,11 +1,7 @@
 package com.rayn.jflask.framework.routing.handler;
 
-import com.avaje.ebeaninternal.server.lib.util.Str;
-import com.rayn.jflask.framework.routing.Rule;
-
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 

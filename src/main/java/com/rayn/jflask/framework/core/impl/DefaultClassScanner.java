@@ -1,7 +1,6 @@
 package com.rayn.jflask.framework.core.impl;
 
 import com.rayn.jflask.framework.core.ClassScanner;
-import com.rayn.jflask.framework.core.ConfigHelper;
 import com.rayn.jflask.framework.util.ClassUtil;
 import com.rayn.jflask.framework.util.StringUtil;
 import org.slf4j.Logger;
@@ -167,9 +166,6 @@ public class DefaultClassScanner implements ClassScanner {
 
         public abstract boolean accept(Class<?> clazz);
     }
-
-
-
 
 
 }

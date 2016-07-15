@@ -32,16 +32,12 @@ public class Params {
         this(new HashMap<>(), new ArrayList<>());
     }
 
-    public Object get(String key) {
-        return requestMap.get(key);
-    }
-
     public List<String> getList(String key) {
         String[] values = ClassUtil.toString(requestMap.get(key)).split(StringUtil.SEPARATOR);
         return new ArrayList<>(Arrays.asList(values));
     }
 
-    public String getString(String key) {
+    public String get(String key) {
         return ClassUtil.toString(requestMap.get(key));
     }
 
@@ -62,10 +58,11 @@ public class Params {
     }
 
     public MultipartFile getFile(String key) {
-        MultipartFile file =  null;
+        MultipartFile file = null;
         for (MultipartFile multipartFile : files) {
             if (multipartFile.getFieldName().equals(key)) {
                 file = multipartFile;
+                break;
             }
         }
         return file;

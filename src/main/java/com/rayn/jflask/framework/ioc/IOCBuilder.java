@@ -1,7 +1,7 @@
 package com.rayn.jflask.framework.ioc;
 
 import com.rayn.jflask.framework.InstanceFactory;
-import com.rayn.jflask.framework.core.annotation.AutoWired;
+import com.rayn.jflask.framework.annotation.AutoWired;
 import com.rayn.jflask.framework.core.ClassScanner;
 import com.rayn.jflask.framework.core.ConfigHelper;
 import com.rayn.jflask.framework.util.CollectionUtil;

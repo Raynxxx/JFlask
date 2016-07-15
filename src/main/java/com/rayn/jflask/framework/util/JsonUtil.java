@@ -4,7 +4,7 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.rayn.jflask.framework.core.annotation.SkipJson;
+import com.rayn.jflask.framework.annotation.SkipJson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

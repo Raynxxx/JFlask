@@ -1,9 +1,8 @@
 package com.rayn.jflask.framework.mvc;
 
+import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.InstanceFactory;
 import com.rayn.jflask.framework.routing.handler.Handler;
-import com.rayn.jflask.framework.routing.handler.StaticHandler;
-import com.rayn.jflask.framework.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

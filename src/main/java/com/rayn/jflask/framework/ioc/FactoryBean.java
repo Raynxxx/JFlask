@@ -7,6 +7,7 @@ package com.rayn.jflask.framework.ioc;
 public interface FactoryBean<T> {
 
     T getObject() throws Exception;
+
     Class<?> getObjectType();
 
 }

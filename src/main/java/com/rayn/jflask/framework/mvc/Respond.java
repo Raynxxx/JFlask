@@ -17,7 +17,7 @@ public class Respond {
     /**
      * Respond JSP View
      */
-    public static Result jsp(String path,  Object... args) {
+    public static Result jsp(String path, Object... args) {
         logger.info("[JFlask] Respond => {}", path);
 
         JSPView view = new JSPView(path);
@@ -48,5 +48,19 @@ public class Respond {
     public static Result json(Object data) {
         logger.info("[JFlask] Respond => json {}", data);
         return new JSONResult(data);
+    }
+
+    /**
+     * Respond HTML File
+     */
+    public static Result html(String html) {
+        return null;
+    }
+
+    /**
+     * Respond Pure Text Data
+     */
+    public static Result text(String text) {
+        return null;
     }
 }

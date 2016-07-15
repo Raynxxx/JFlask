@@ -1,16 +1,15 @@
 package com.rayn.jflask.framework.mvc.impl;
 
 import com.rayn.jflask.framework.InstanceFactory;
+import com.rayn.jflask.framework.ioc.BeanFactory;
+import com.rayn.jflask.framework.mvc.HandlerInvoker;
 import com.rayn.jflask.framework.mvc.MultipartHelper;
+import com.rayn.jflask.framework.mvc.ServletHelper;
 import com.rayn.jflask.framework.mvc.model.Params;
 import com.rayn.jflask.framework.routing.handler.DynamicHandler;
 import com.rayn.jflask.framework.routing.handler.Handler;
 import com.rayn.jflask.framework.util.ClassUtil;
-import com.rayn.jflask.framework.ioc.BeanFactory;
-import com.rayn.jflask.framework.routing.handler.StaticHandler;
-import com.rayn.jflask.framework.mvc.HandlerInvoker;
 import com.rayn.jflask.framework.util.CollectionUtil;
-import com.rayn.jflask.framework.mvc.ServletHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +36,7 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
 
     /**
      * 执行 staticHandler
+     *
      * @param request  请求对象
      * @param response 响应对象
      * @param handler  处理机

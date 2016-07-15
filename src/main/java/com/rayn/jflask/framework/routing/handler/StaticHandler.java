@@ -5,7 +5,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.regex.Matcher;
 
 /**
  * StaticHandler

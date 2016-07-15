@@ -1,10 +1,7 @@
 package com.rayn.jflask.framework.util;
 
-import org.apache.commons.lang.ArrayUtils;
-
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 集合工具类

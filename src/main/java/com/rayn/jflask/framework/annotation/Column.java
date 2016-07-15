@@ -1,16 +1,14 @@
-package com.rayn.jflask.framework.core.annotation;
+package com.rayn.jflask.framework.annotation;
 
 import java.lang.annotation.*;
 
 /**
  * Column
- * Created by Raynxxx on 2016/06/05.
+ * Created by Raynxxx on 2016/07/15.
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Column {
-
     String value();
-
 }

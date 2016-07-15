@@ -11,4 +11,5 @@ public interface Handler {
     Class<?> getController();
 
     Method getRouteMethod();
+
 }
