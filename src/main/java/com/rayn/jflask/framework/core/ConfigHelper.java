@@ -5,6 +5,7 @@ import com.rayn.jflask.framework.util.PropsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Enumeration;
 import java.util.Properties;
 
 /**
@@ -21,6 +22,12 @@ public class ConfigHelper {
     static {
         logger.info("[JFlask] ConfigHelper 启动, 加载配置文件: {}", Constants.CONFIG_PROPS);
         configProps = PropsUtil.loadProps(Constants.CONFIG_PROPS);
+        Enumeration<?> keys = configProps.propertyNames();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            logger.debug("[JFlask][{}] {} => {}", Constants.CONFIG_PROPS,
+                    key, configProps.get(key));
+        }
     }
 
     public static Properties getConfig() {

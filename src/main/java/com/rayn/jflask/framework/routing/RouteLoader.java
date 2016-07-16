@@ -32,7 +32,8 @@ public class RouteLoader {
             for (Class<?> controller : controllerList) {
                 // 取得控制器中的路由方法
                 Method[] routeMethods = controller.getDeclaredMethods();
-                if (CollectionUtil.isEmpty(routeMethods)) continue;
+                if (CollectionUtil.isEmpty(routeMethods))
+                    continue;
                 for (Method routeMethod : routeMethods) {
                     Route[] routes = routeMethod.getDeclaredAnnotationsByType(Route.class);
                     for (Route route : routes) {

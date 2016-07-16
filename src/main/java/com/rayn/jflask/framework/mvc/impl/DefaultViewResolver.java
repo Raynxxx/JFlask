@@ -31,7 +31,7 @@ public class DefaultViewResolver implements ViewResolver {
                     String path = jspView.getPath();
                     ServletHelper.redirectRequest(path, request, response);
                 } else {
-                    String path = Constants.JSP_PATH + jspView.getPath();
+                    String path = Constants.VIEW_PATH + jspView.getPath();
                     Map<String, Object> data = jspView.getData();
                     if (CollectionUtil.isNotEmpty(data)) {
                         for (Map.Entry<String, Object> entry : data.entrySet()) {

@@ -29,6 +29,9 @@ public class JsonUtil {
         return gson.fromJson(jsonString, clazz);
     }
 
+    /**
+     * DefaultExclusionStrategy
+     */
     static class DefaultExclusionStrategy implements ExclusionStrategy {
 
         @Override

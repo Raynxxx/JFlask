@@ -29,7 +29,7 @@ public class PropsUtil {
                 throw new IllegalArgumentException();
             }
             String suffix = ".properties";
-            if (propsPath.lastIndexOf(suffix) != -1) {
+            if (propsPath.lastIndexOf(suffix) == -1) {
                 propsPath += suffix;
             }
             inputStream = ClassUtil.getClassLoader().getResourceAsStream(propsPath);

@@ -57,6 +57,13 @@ public class ClassUtil {
     /**
      * 判断是否为 int/Integer 类型
      */
+    public static boolean isBoolean(Class<?> clazz) {
+        return clazz.equals(boolean.class) || clazz.equals(Boolean.class);
+    }
+
+    /**
+     * 判断是否为 int/Integer 类型
+     */
     public static boolean isInteger(Class<?> clazz) {
         return clazz.equals(int.class) || clazz.equals(Integer.class);
     }
@@ -66,6 +73,13 @@ public class ClassUtil {
      */
     public static boolean isLong(Class<?> clazz) {
         return clazz.equals(long.class) || clazz.equals(Long.class);
+    }
+
+    /**
+     * 判断是否为 float/Float 类型
+     */
+    public static boolean isFloat(Class<?> clazz) {
+        return clazz.equals(float.class) || clazz.equals(Float.class);
     }
 
     /**
@@ -80,6 +94,31 @@ public class ClassUtil {
      */
     public static boolean isString(Class<?> clazz) {
         return clazz.equals(String.class);
+    }
+
+    /**
+     * 转换为 boolean
+     */
+    public static boolean toBoolean(Object obj) {
+        return toBoolean(obj, false);
+    }
+
+    /**
+     * 转换为 boolean, 带有默认值
+     */
+    public static boolean toBoolean(Object obj, boolean defaultValue) {
+        boolean ret = defaultValue;
+        if (obj != null) {
+            String strInt = toString(obj);
+            if (StringUtil.isNotEmpty(strInt)) {
+                try {
+                    ret = Boolean.parseBoolean(strInt);
+                } catch (Exception e) {
+                    ret = defaultValue;
+                }
+            }
+        }
+        return ret;
     }
 
     /**
@@ -149,6 +188,31 @@ public class ClassUtil {
             if (StringUtil.isNotEmpty(strInt)) {
                 try {
                     ret = Double.parseDouble(strInt);
+                } catch (Exception e) {
+                    ret = defaultValue;
+                }
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 转换为 long
+     */
+    public static float toFloat(Object obj) {
+        return toFloat(obj, 0);
+    }
+
+    /**
+     * 转换为 long, 带有默认值
+     */
+    public static float toFloat(Object obj, float defaultValue) {
+        float ret = defaultValue;
+        if (obj != null) {
+            String strInt = toString(obj);
+            if (StringUtil.isNotEmpty(strInt)) {
+                try {
+                    ret = Float.parseFloat(strInt);
                 } catch (Exception e) {
                     ret = defaultValue;
                 }

@@ -13,7 +13,7 @@ public interface Constants {
 
     String CONFIG_PROPS = "jflask.properties";
 
-    String JSP_PATH = ConfigHelper.getString("app.jsp_path", "/WEB-INF/jsp/");
+    String VIEW_PATH = ConfigHelper.getString("app.jsp_path", "/WEB-INF/views/");
 
     String STATIC_PATH = ConfigHelper.getString("app.static_path", "/static/");
 

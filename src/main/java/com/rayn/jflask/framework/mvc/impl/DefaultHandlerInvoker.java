@@ -112,13 +112,17 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
             }
             Class<?> paramType = routeParamTypes[i - 1];
 
-            // 支持四种基本类型 int, long, double, String
-            if (ClassUtil.isInteger(paramType)) {
+            // 支持基本类型 int, long, double, float, String
+            if (ClassUtil.isBoolean(paramType)) {
+                pathParamList.add(ClassUtil.toBoolean(param));
+            } else if (ClassUtil.isInteger(paramType)) {
                 pathParamList.add(ClassUtil.toInteger(param));
             } else if (ClassUtil.isLong(paramType)) {
                 pathParamList.add(ClassUtil.toLong(param));
             } else if (ClassUtil.isDouble(paramType)) {
                 pathParamList.add(ClassUtil.toDouble(param));
+            } else if (ClassUtil.isFloat(paramType)) {
+                pathParamList.add(ClassUtil.toFloat(param));
             } else if (ClassUtil.isString(paramType)) {
                 pathParamList.add(param);
             }

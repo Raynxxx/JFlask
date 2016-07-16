@@ -54,6 +54,7 @@ public class Respond {
      * Respond HTML File
      */
     public static Result html(String html) {
+        // TODO
         return null;
     }
 
@@ -61,6 +62,7 @@ public class Respond {
      * Respond Pure Text Data
      */
     public static Result text(String text) {
+        // TODO
         return null;
     }
 }

@@ -51,7 +51,7 @@ public class ApplicationListener implements ServletContextListener {
     private void registerJspServlet(ServletContext context) {
         ServletRegistration jspServlet = context.getServletRegistration("jsp");
         jspServlet.addMapping("/index.jsp");
-        String jspPath = Constants.JSP_PATH;
+        String jspPath = Constants.VIEW_PATH;
         if (StringUtil.isNotEmpty(jspPath)) {
             jspServlet.addMapping(jspPath + "*");
         }
