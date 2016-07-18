@@ -1,8 +1,8 @@
 package com.rayn.jflask.framework.ioc.impl;
 
 import com.rayn.jflask.framework.InstanceFactory;
-import com.rayn.jflask.framework.annotation.Bean;
-import com.rayn.jflask.framework.annotation.Controller;
+import com.rayn.jflask.framework.annotation.ioc.Bean;
+import com.rayn.jflask.framework.annotation.web.Controller;
 import com.rayn.jflask.framework.core.ClassScanner;
 import com.rayn.jflask.framework.core.ConfigHelper;
 import com.rayn.jflask.framework.ioc.BeanFactory;

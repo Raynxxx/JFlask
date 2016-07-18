@@ -1,8 +1,8 @@
 package com.rayn.jflask.framework.routing;
 
 import com.rayn.jflask.framework.InstanceFactory;
-import com.rayn.jflask.framework.annotation.Controller;
-import com.rayn.jflask.framework.annotation.Route;
+import com.rayn.jflask.framework.annotation.web.Controller;
+import com.rayn.jflask.framework.annotation.web.Route;
 import com.rayn.jflask.framework.core.ClassScanner;
 import com.rayn.jflask.framework.core.ConfigHelper;
 import com.rayn.jflask.framework.util.CollectionUtil;

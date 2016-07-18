@@ -32,6 +32,9 @@ public class MultipartHelper {
     // ServletFileUpload static 对象
     private static ServletFileUpload upload;
 
+    /**
+     * 初始化 ServletFileUpload
+     */
     public static void init(ServletContext servletContext) {
         File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
 
@@ -44,6 +47,9 @@ public class MultipartHelper {
         upload.setFileSizeMax(Constants.UPLOAD_MAX);
     }
 
+    /**
+     * 判定请求是否为 Multipart 类型
+     */
     public static boolean isMultipart(HttpServletRequest request) {
         String requestMethod = request.getMethod();
         String contentType = request.getContentType();
@@ -51,6 +57,9 @@ public class MultipartHelper {
                 contentType != null && contentType.toLowerCase(Locale.ENGLISH).startsWith("multipart/");
     }
 
+    /**
+     * 解析请求中的 Multipart 表单数据
+     */
     public static List<Object> parseMultipartParamList(HttpServletRequest request) throws Exception {
         List<Object> paramList = new ArrayList<>();
         List<FileItem> fileItemList;

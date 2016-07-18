@@ -103,6 +103,23 @@ public class ServletHelper {
     }
 
     /**
+     * 响应文本数据
+     */
+    public static void responseText(HttpServletResponse response, String text) {
+        try {
+            response.setContentType("text/html");
+            response.setCharacterEncoding(Constants.UTF8);
+            PrintWriter printWriter = response.getWriter();
+            printWriter.write(text);
+            printWriter.flush();
+            printWriter.close();
+        } catch (Exception e) {
+            logger.error("写入响应数据错误", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * 响应错误
      */
     public static void responseError(HttpServletResponse response, int errorCode, String message) {

@@ -1,13 +1,13 @@
-package com.rayn.jflask.framework.annotation;
+package com.rayn.jflask.framework.annotation.ioc;
 
 import java.lang.annotation.*;
 
 /**
- * AutoWired
+ * Bean
  * Created by Raynxxx on 2016/05/26.
  */
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface AutoWired {
+public @interface Bean {
 }

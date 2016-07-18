@@ -1,4 +1,4 @@
-package com.rayn.jflask.framework.annotation;
+package com.rayn.jflask.framework.annotation.entity;
 
 import java.lang.annotation.*;
 
@@ -10,5 +10,11 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Column {
-    String value();
+    String name();
+
+    int length();
+
+    boolean nullable();
+
+    boolean unique();
 }

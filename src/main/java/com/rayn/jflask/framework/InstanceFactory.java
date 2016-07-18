@@ -7,11 +7,11 @@ import com.rayn.jflask.framework.ioc.impl.AnnotationBeanFactory;
 import com.rayn.jflask.framework.mvc.HandlerExceptionResolver;
 import com.rayn.jflask.framework.mvc.HandlerInvoker;
 import com.rayn.jflask.framework.mvc.HandlerMapping;
-import com.rayn.jflask.framework.mvc.ViewResolver;
+import com.rayn.jflask.framework.mvc.ResultResolver;
 import com.rayn.jflask.framework.mvc.impl.DefaultHandlerExceptionResolver;
 import com.rayn.jflask.framework.mvc.impl.DefaultHandlerInvoker;
 import com.rayn.jflask.framework.mvc.impl.DefaultHandlerMapping;
-import com.rayn.jflask.framework.mvc.impl.DefaultViewResolver;
+import com.rayn.jflask.framework.mvc.impl.DefaultResultResolver;
 import com.rayn.jflask.framework.util.ClassUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,8 +53,8 @@ public class InstanceFactory {
         return getInstance(HANDLER_INVOKER, DefaultHandlerInvoker.class);
     }
 
-    public static ViewResolver getViewResolver() {
-        return getInstance(VIEW_RESOLVER, DefaultViewResolver.class);
+    public static ResultResolver getViewResolver() {
+        return getInstance(VIEW_RESOLVER, DefaultResultResolver.class);
     }
 
     public static HandlerExceptionResolver getHandlerExceptionResolver() {

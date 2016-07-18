@@ -1,14 +1,14 @@
-package com.rayn.jflask.framework.mvc.model;
+package com.rayn.jflask.framework.mvc.result;
 
 /**
- * JSONResult
+ * JsonResult
  * Created by Raynxxx on 2016/07/09.
  */
-public class JSONResult extends Result {
+public class JsonResult extends Result {
 
     private Object data;
 
-    public JSONResult(Object data) {
+    public JsonResult(Object data) {
         this.data = data;
     }
 
@@ -18,5 +18,10 @@ public class JSONResult extends Result {
 
     public void setData(Object data) {
         this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "<JsonResult>";
     }
 }

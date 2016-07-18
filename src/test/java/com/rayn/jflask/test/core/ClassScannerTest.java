@@ -1,6 +1,6 @@
 package com.rayn.jflask.test.core;
 
-import com.rayn.jflask.framework.annotation.Bean;
+import com.rayn.jflask.framework.annotation.ioc.Bean;
 import org.junit.Assert;
 import org.junit.Test;
 import com.rayn.jflask.framework.InstanceFactory;

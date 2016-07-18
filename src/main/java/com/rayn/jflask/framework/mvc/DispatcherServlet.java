@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * 前端控制器
@@ -28,7 +29,7 @@ public class DispatcherServlet extends HttpServlet {
 
     private static final HandlerInvoker handlerInvoker = InstanceFactory.getHandlerInvoker();
 
-    private static final ViewResolver viewResolver = InstanceFactory.getViewResolver();
+    private static final ResultResolver resultResolver = InstanceFactory.getViewResolver();
 
     private static final HandlerExceptionResolver handlerExceptionResolver = InstanceFactory.getHandlerExceptionResolver();
 
@@ -44,7 +45,8 @@ public class DispatcherServlet extends HttpServlet {
 
         String currentRequestMethod = request.getMethod();
         String currentRequestPath = ServletHelper.getRequestPath(request);
-        logger.debug("[JFlask][DispatcherServlet] {}:{}", currentRequestMethod, currentRequestPath);
+        logger.info("[JFlask][DispatcherServlet] {}:{} {}", currentRequestMethod,
+                currentRequestPath, new Date());
 
         if (currentRequestPath.endsWith("/") && !currentRequestPath.equals("/")) {
             currentRequestPath = currentRequestPath.substring(0, currentRequestPath.length() - 1);
@@ -55,12 +57,17 @@ public class DispatcherServlet extends HttpServlet {
             ServletHelper.responseError(response, HttpServletResponse.SC_NOT_FOUND, "Not Found");
             return;
         }
+        WebContext.init(request, response);
         try {
             Object result = handlerInvoker.invokeHandler(request, response, handler);
-            viewResolver.resolveView(request, response, result);
+            resultResolver.resolveResult(request, response, result);
         } catch (Exception e) {
             handlerExceptionResolver.resolveHandlerException(request, response, e);
             logger.error("[JFlask] {}", e.getMessage());
+        } finally {
+            WebContext.destory();
+            logger.info("[JFlask][DispatcherServlet] End {}:{} {}", currentRequestMethod,
+                    currentRequestPath, new Date());
         }
     }
 }

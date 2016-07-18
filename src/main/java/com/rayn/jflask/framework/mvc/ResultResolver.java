@@ -5,12 +5,12 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 页面
- * ViewResolver
+ * ResultResolver
  * Created by Raynxxx on 2016/05/25.
  */
-public interface ViewResolver {
+public interface ResultResolver {
 
-    void resolveView(HttpServletRequest request, HttpServletResponse response,
+    void resolveResult(HttpServletRequest request, HttpServletResponse response,
                      Object routeResult);
 
 }

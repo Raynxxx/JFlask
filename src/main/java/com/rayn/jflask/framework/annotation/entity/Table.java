@@ -1,14 +1,14 @@
-package com.rayn.jflask.framework.annotation;
+package com.rayn.jflask.framework.annotation.entity;
 
 import java.lang.annotation.*;
 
 /**
- * Entity
+ * TableInfo
  * Created by Raynxxx on 2016/07/15.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Entity {
+public @interface Table {
     String name();
 }
