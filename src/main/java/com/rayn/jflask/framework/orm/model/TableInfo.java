@@ -10,7 +10,7 @@ public class TableInfo {
 
     private Class<?> modelClass;
     private String tableName;
-    private Map<String, String> fieldMap;
+    private Map<String, ColumnInfo> fieldMap;
 
     public TableInfo(Class<?> modelClass) {
         this.modelClass = modelClass;
@@ -24,11 +24,11 @@ public class TableInfo {
         this.tableName = tableName;
     }
 
-    public Map<String, String> getFieldMap() {
+    public Map<String, ColumnInfo> getFieldMap() {
         return fieldMap;
     }
 
-    public void setFieldMap(Map<String, String> fieldMap) {
+    public void setFieldMap(Map<String, ColumnInfo> fieldMap) {
         this.fieldMap = fieldMap;
     }
 }

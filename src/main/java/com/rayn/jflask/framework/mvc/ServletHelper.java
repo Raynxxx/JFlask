@@ -38,8 +38,30 @@ public class ServletHelper {
     public static Map<String, Object> getRequestParamMap(HttpServletRequest request) {
         Map<String, Object> requestParamMap = new HashMap<>();
         try {
-            // TODO (request.getInputStream)
-            // 取得所有请求参数名
+            /* 获取 request body 的请求数据
+            String formString = StringUtil.decodeURL(
+                    StringUtil.toString(request.getInputStream())
+            );
+            if (StringUtil.isNotEmpty(formString)) {
+                logger.debug("[JFlask] GET formString => {}", formString);
+                String[] formArray = formString.split("&");
+                if (CollectionUtil.isNotEmpty(formArray)) {
+                    for (String kv : formArray) {
+                        String[] kvArray = kv.split("=");
+                        if (CollectionUtil.isNotEmpty(kvArray) && kvArray.length == 2) {
+                            String key = kvArray[0];
+                            String value = kvArray[1];
+                            if (requestParamMap.containsKey(key)) {
+                                value = requestParamMap.get(key) + StringUtil.SEPARATOR + value;
+                            }
+                            requestParamMap.put(key, value);
+                        }
+                    }
+                }
+            }
+            */
+
+            // 取得所有常规的请求参数名
             Enumeration<String> parameterNames = request.getParameterNames();
             while (parameterNames.hasMoreElements()) {
                 String paraName = parameterNames.nextElement();
@@ -62,7 +84,8 @@ public class ServletHelper {
     /**
      * 转发请求到 JSP
      */
-    public static void forwardRequest(String path, HttpServletRequest request, HttpServletResponse response) {
+    public static void forwardRequest(String path, HttpServletRequest request,
+                                      HttpServletResponse response) {
         try {
             logger.debug("[JFlask] forward to {}", path);
             request.getRequestDispatcher(path).forward(request, response);
@@ -75,7 +98,8 @@ public class ServletHelper {
     /**
      * 重定向请求
      */
-    public static void redirectRequest(String path, HttpServletRequest request, HttpServletResponse response) {
+    public static void redirectRequest(String path, HttpServletRequest request,
+                                       HttpServletResponse response) {
         try {
             logger.debug("[JFlask] redirect to {}", path);
             response.sendRedirect(request.getContextPath() + path);

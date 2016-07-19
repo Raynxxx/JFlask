@@ -1,5 +1,6 @@
 package com.rayn.jflask.framework.util;
 
+import com.rayn.jflask.framework.Constants;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
@@ -10,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -113,6 +116,9 @@ public class StringUtil {
         return sb.toString();
     }
 
+    /**
+     * 数组合并为字符串
+     */
     public static String join(Object[] array) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < array.length; ++i) {
@@ -124,6 +130,9 @@ public class StringUtil {
         return sb.toString();
     }
 
+    /**
+     * 数组合并为字符串，可设置分隔符
+     */
     public static String join(Object[] array, String separator) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < array.length; ++i) {
@@ -135,6 +144,9 @@ public class StringUtil {
         return sb.toString();
     }
 
+    /**
+     * 从 InputStream 读出字符串
+     */
     public static String toString(InputStream is) {
         StringBuffer sb = new StringBuffer();
         try {
@@ -150,6 +162,37 @@ public class StringUtil {
         return sb.toString();
     }
 
+    /**
+     * 将 URL 编码
+     */
+    public static String encodeURL(String origin) {
+        String target;
+        try {
+            target = URLEncoder.encode(origin, Constants.UTF8);
+        } catch (Exception e) {
+            logger.error("[JFlask] {} 编码出错", origin, e);
+            throw new RuntimeException(e);
+        }
+        return target;
+    }
+
+    /**
+     * 将 URL 解码
+     */
+    public static String decodeURL(String origin) {
+        String target;
+        try {
+            target = URLDecoder.decode(origin, Constants.UTF8);
+        } catch (Exception e) {
+            logger.error("[JFlask] {} 解码出错", origin, e);
+            throw new RuntimeException(e);
+        }
+        return target;
+    }
+
+    /**
+     * 获取正则捕获的所有组名
+     */
     @SuppressWarnings("unchecked")
     public static Map<String, Integer> getNamedGroups(Pattern pattern) {
         Map<String, Integer> ret = null;
@@ -158,7 +201,7 @@ public class StringUtil {
             namedGroups.setAccessible(true);
             ret = (Map<String, Integer>) namedGroups.invoke(pattern);
         } catch (Exception e) {
-            logger.error("[JFlask] ");
+            logger.error("[JFlask] getNamedGroups Error", e);
         }
         return ret;
     }

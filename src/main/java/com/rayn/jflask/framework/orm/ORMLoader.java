@@ -28,7 +28,7 @@ public class ORMLoader {
         logger.info("[JFlask] ORMLoader 启动");
         List<Class<?>> modelList = getModelList();
         for (Class<?> modelClass : modelList) {
-            tableMap.put(modelClass.getName(), TableBuilder.makeTable(modelClass));
+            tableMap.put(modelClass.getName(), TableBuilder.parseTable(modelClass));
         }
     }
 

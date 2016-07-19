@@ -12,9 +12,9 @@ import java.lang.annotation.*;
 public @interface Column {
     String name();
 
-    int length();
+    int length() default 512;
 
-    boolean nullable();
+    boolean nullable() default false;
 
-    boolean unique();
+    boolean unique() default false;
 }

@@ -1,8 +1,12 @@
 package com.rayn.jflask.framework.orm;
 
+import com.rayn.jflask.framework.annotation.entity.Column;
 import com.rayn.jflask.framework.annotation.entity.Table;
 import com.rayn.jflask.framework.orm.model.TableInfo;
+import com.rayn.jflask.framework.util.CollectionUtil;
 import com.rayn.jflask.framework.util.StringUtil;
+
+import java.lang.reflect.Field;
 
 /**
  * TableBuilder
@@ -13,7 +17,7 @@ public class TableBuilder {
     /**
      * 从一个 Model 生成 TableInfo 信息
      */
-    public static TableInfo makeTable(Class<?> modelClass) {
+    public static TableInfo parseTable(Class<?> modelClass) {
         TableInfo tableInfo = new TableInfo(modelClass);
         parseTableName(modelClass, tableInfo);
         parseTableField(modelClass, tableInfo);
@@ -37,6 +41,16 @@ public class TableBuilder {
      * 解析 Table Field
      */
     private static void parseTableField(Class<?> modelClass, TableInfo tableInfo) {
+        Field[] tableFields = modelClass.getDeclaredFields();
+        if (CollectionUtil.isNotEmpty(tableFields)) {
+            for (Field field : tableFields) {
+                String fieldName = parseColumnName(field);
+            }
+        }
         // TODO
+    }
+
+    private static String parseColumnName(Field field) {
+        return "";
     }
 }
