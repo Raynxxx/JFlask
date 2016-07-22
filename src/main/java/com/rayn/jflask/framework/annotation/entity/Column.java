@@ -14,7 +14,7 @@ public @interface Column {
 
     int length() default 512;
 
-    boolean nullable() default false;
+    boolean canNull() default false;
 
     boolean unique() default false;
 }

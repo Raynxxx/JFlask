@@ -6,8 +6,46 @@ package com.rayn.jflask.framework.orm.model;
  */
 public class ColumnInfo {
 
-    private boolean primary;
     private String name;
-    private boolean nullable;
+    private boolean primary;
+    private boolean canNull;
     private boolean unique;
+
+    public ColumnInfo() {
+        this.primary = false;
+        this.canNull = false;
+        this.unique = false;
+    }
+
+    public boolean isPrimary() {
+        return primary;
+    }
+
+    public void setPrimary(boolean primary) {
+        this.primary = primary;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isCanNull() {
+        return canNull;
+    }
+
+    public void setCanNull(boolean canNull) {
+        this.canNull = canNull;
+    }
+
+    public boolean isUnique() {
+        return unique;
+    }
+
+    public void setUnique(boolean unique) {
+        this.unique = unique;
+    }
 }

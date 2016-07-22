@@ -15,7 +15,7 @@ public interface Constants {
 
     String VIEW_PATH = ConfigHelper.getString("app.jsp_path", "/WEB-INF/views/");
 
-    String STATIC_PATH = ConfigHelper.getString("app.static_path", "/static/");
+    String STATIC_PATH = ConfigHelper.getString("app.static_path", "/public/");
 
     // default 10 MB
     int UPLOAD_MAX = ConfigHelper.getInteger("app.upload_max", 10 * 1024 * 1024);

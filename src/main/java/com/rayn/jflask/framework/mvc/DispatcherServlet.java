@@ -6,6 +6,7 @@ import com.rayn.jflask.framework.routing.handler.Handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -48,6 +49,10 @@ public class DispatcherServlet extends HttpServlet {
         logger.info("[JFlask][DispatcherServlet] {}:{} {}", currentRequestMethod,
                 currentRequestPath, new Date());
 
+        if (currentRequestPath.startsWith(Constants.STATIC_PATH)) {
+            handleStaticResource(request, response);
+        }
+
         if (currentRequestPath.endsWith("/") && !currentRequestPath.equals("/")) {
             currentRequestPath = currentRequestPath.substring(0, currentRequestPath.length() - 1);
         }
@@ -69,5 +74,15 @@ public class DispatcherServlet extends HttpServlet {
             logger.info("[JFlask][DispatcherServlet] End {}:{} {}", currentRequestMethod,
                     currentRequestPath, new Date());
         }
+    }
+
+    public static void handleStaticResource(HttpServletRequest request,
+                                            HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher rd = request.getServletContext().getNamedDispatcher("default");
+        if (rd == null) {
+            throw new IllegalStateException("A RequestDispatcher could not be located for the default servlet 'default'");
+        }
+        rd.forward(request, response);
     }
 }

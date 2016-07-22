@@ -150,7 +150,8 @@ public class StringUtil {
     public static String toString(InputStream is) {
         StringBuffer sb = new StringBuffer();
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(is, Constants.UTF8));
             String line;
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
