@@ -3,12 +3,14 @@ package com.rayn.jflask.framework.orm;
 import com.rayn.jflask.framework.annotation.entity.Column;
 import com.rayn.jflask.framework.annotation.entity.Primary;
 import com.rayn.jflask.framework.annotation.entity.Table;
+import com.rayn.jflask.framework.orm.model.BaseModel;
 import com.rayn.jflask.framework.orm.model.ColumnInfo;
 import com.rayn.jflask.framework.orm.model.TableInfo;
 import com.rayn.jflask.framework.util.CollectionUtil;
 import com.rayn.jflask.framework.util.StringUtil;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * TableBuilder
@@ -16,10 +18,14 @@ import java.lang.reflect.Field;
  */
 public class TableBuilder {
 
+    public static void build(List<Class<?>> modelList) {
+        // TODO
+    }
+
     /**
      * 从一个 Model 生成 TableInfo 信息
      */
-    public static TableInfo parseTable(Class<?> modelClass) {
+    public static TableInfo parseTable(Class<? extends BaseModel<?>> modelClass) {
         TableInfo tableInfo = new TableInfo(modelClass);
         parseTableName(modelClass, tableInfo);
         parseTableField(modelClass, tableInfo);

@@ -21,17 +21,12 @@ public class ORMLoader {
     // logger
     private static final Logger logger = LoggerFactory.getLogger(ORMLoader.class);
 
-    // ModelClass Name => TableInfo
-    private static final Map<String, TableInfo> tableMap = new HashMap<>();
-
     static {
         logger.info("[JFlask] ORMLoader 启动");
         List<Class<?>> modelList = getModelList();
-        for (Class<?> modelClass : modelList) {
-            tableMap.put(modelClass.getName(), TableBuilder.parseTable(modelClass));
-        }
+        TableBuilder.build(modelList);
     }
-
+    
     private static List<Class<?>> getModelList() {
         final ClassScanner classScanner = InstanceFactory.getClassScanner();
         final String basePackage = ConfigHelper.getString("app.base_package");

@@ -64,7 +64,6 @@ public class DefaultResultResolver implements ResultResolver {
              * 结果响应 纯文本数据
              */
             else if (routeResult instanceof TextResult) {
-                // 结果响应 纯文本数据
                 TextResult result = (TextResult) routeResult;
                 ServletHelper.responseText(response, result.getText());
             }

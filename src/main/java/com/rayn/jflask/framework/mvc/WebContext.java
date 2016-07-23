@@ -1,6 +1,11 @@
 package com.rayn.jflask.framework.mvc;
 
+import com.rayn.jflask.framework.util.ClassUtil;
+import com.rayn.jflask.framework.util.CollectionUtil;
+import com.rayn.jflask.framework.util.StringUtil;
+
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -33,7 +38,7 @@ public class WebContext {
     /**
      * 销毁 WebContext
      */
-    public static void destory() {
+    public static void destroy() {
         threadWebContext.remove();
     }
 
@@ -60,6 +65,10 @@ public class WebContext {
         return getRequest().getServletContext();
     }
 
+
+    /**
+     * 封装 Session
+     */
     public static class Session {
 
         @SuppressWarnings("unchecked")
@@ -90,8 +99,49 @@ public class WebContext {
         }
     }
 
+    /**
+     * 封装 Cookie
+     */
     public static class Cookie {
 
+        public static void put(String key, Object value) {
+            String strValue = StringUtil.encodeURL(ClassUtil.toString(value));
+            javax.servlet.http.Cookie cookie = new javax.servlet.http.Cookie(key, strValue);
+            getResponse().addCookie(cookie);
+        }
+
+        public static void put(String key, Object value, int maxAge) {
+            String strValue = StringUtil.encodeURL(ClassUtil.toString(value));
+            javax.servlet.http.Cookie cookie = new javax.servlet.http.Cookie(key, strValue);
+            cookie.setMaxAge(maxAge);
+            getResponse().addCookie(cookie);
+        }
+
+        @SuppressWarnings("unchecked")
+        public static <T> T get(String key) {
+            T value = null;
+            javax.servlet.http.Cookie[] cookies = getRequest().getCookies();
+            if (CollectionUtil.isNotEmpty(cookies)) {
+                for (javax.servlet.http.Cookie cookie : cookies) {
+                    if (key.equals(cookie.getName())) {
+                        value = (T) StringUtil.decodeURL(cookie.getValue());
+                        break;
+                    }
+                }
+            }
+            return value;
+        }
+
+        public static Map<String, Object> getAll() {
+            Map<String, Object> map = new HashMap<>();
+            javax.servlet.http.Cookie[] cookies = getRequest().getCookies();
+            if (CollectionUtil.isNotEmpty(cookies)) {
+                for (javax.servlet.http.Cookie cookie : cookies) {
+                    map.put(cookie.getName(), cookie.getValue());
+                }
+            }
+            return map;
+        }
     }
 
 }

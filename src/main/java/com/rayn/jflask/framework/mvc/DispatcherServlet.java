@@ -70,9 +70,8 @@ public class DispatcherServlet extends HttpServlet {
             handlerExceptionResolver.resolveHandlerException(request, response, e);
             logger.error("[JFlask] {}", e.getMessage());
         } finally {
-            WebContext.destory();
-            logger.info("[JFlask][DispatcherServlet] End {}:{} {}", currentRequestMethod,
-                    currentRequestPath, new Date());
+            WebContext.destroy();
+            logger.info("[JFlask][DispatcherServlet] ******************************");
         }
     }
 

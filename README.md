@@ -17,6 +17,7 @@ JFlask is light-weight Java Web Framework inspired by *Python Flask*
 import com.rayn.jflask.framework.annotation.ioc.AutoWired;
 import com.rayn.jflask.framework.annotation.web.*;
 import com.rayn.jflask.framework.mvc.Respond;
+import com.rayn.jflask.framework.mvc.WebContext;
 import com.rayn.jflask.framework.mvc.model.Params;
 import com.rayn.jflask.framework.mvc.result.Result;
 import com.rayn.jflask.sample.models.User;
@@ -33,12 +34,28 @@ public class ExampleController {
 
     @Route("/")
     public Result index() {
-        return Respond.text("Hello JFlask");
+        return Respond.html("index.html");
+    }
+
+    @Route("/login")
+    public Result login() {
+        String username = WebContext.Cookie.get("username");
+        if (username != null) {
+            System.out.println("has login: " + username);
+            return Respond.redirect("/");
+        }
+        return Respond.jsp("login.jsp");
+    }
+
+    @Route(value = "/login", method = "POST")
+    public Result checkLogin(Params params) {
+        WebContext.Cookie.put("username", params.get("username"), 3600);
+        return Respond.redirect("/");
     }
 
     @Route("/<text>")
     public Result echo(String text) {
-        return Respond.jsp("index.jsp",
+        return Respond.jsp("echo.jsp",
                 "greeting", "JFlask",
                 "text", text);
     }
@@ -55,7 +72,6 @@ public class ExampleController {
         Map<String, Object> data = new HashMap<>();
         data.put("status", "success");
         data.put("user", user.getUsername());
-        data.put("password", user.getPassword());
         return Respond.json(data);
     }
 }

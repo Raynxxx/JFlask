@@ -43,6 +43,7 @@ public class ApplicationListener implements ServletContextListener {
 
     private void registerStaticServlet(ServletContext context) {
         ServletRegistration defaultServlet = context.getServletRegistration("default");
+        defaultServlet.addMapping("/favicon.ico");
         defaultServlet.addMapping(Constants.STATIC_PATH + "*");
     }
 
