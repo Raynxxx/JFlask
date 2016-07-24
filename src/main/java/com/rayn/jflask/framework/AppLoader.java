@@ -22,4 +22,5 @@ public final class AppLoader {
             ClassUtil.loadClass(cls.getName());
         }
     }
+
 }

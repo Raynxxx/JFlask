@@ -21,9 +21,22 @@ public class ORMLoader {
     // logger
     private static final Logger logger = LoggerFactory.getLogger(ORMLoader.class);
 
+    // dataSourceProvider
+    private static final DataSourceProvider dataSourceProvider
+            = InstanceFactory.getDataSourceProvider();
+
     static {
         logger.info("[JFlask] ORMLoader 启动");
+
+        // 初始化 dataSourceProvider
+        try {
+            dataSourceProvider.init();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
         List<Class<?>> modelList = getModelList();
+        // 任务转交给 TableBuilder
         TableBuilder.build(modelList);
     }
     

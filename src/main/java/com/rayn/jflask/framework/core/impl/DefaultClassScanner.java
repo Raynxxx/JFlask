@@ -68,7 +68,9 @@ public class DefaultClassScanner implements ClassScanner {
         }.getClassList();
     }
 
-
+    /**
+     * ScannerHelper
+     */
     private abstract class ScannerHelper {
 
         private final String packageName;
@@ -166,6 +168,4 @@ public class DefaultClassScanner implements ClassScanner {
 
         public abstract boolean accept(Class<?> clazz);
     }
-
-
 }

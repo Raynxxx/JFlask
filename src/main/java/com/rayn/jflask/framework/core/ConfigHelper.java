@@ -38,7 +38,7 @@ public class ConfigHelper {
      * 取得字符串值, 默认 null
      */
     public static String getString(String str) {
-        return PropsUtil.getString(configProps, str);
+        return PropsUtil.getString(configProps, str, null);
     }
 
     /**

@@ -1,7 +1,6 @@
-package com.rayn.jflask.framework.mvc;
+package com.rayn.jflask.framework;
 
-import com.rayn.jflask.framework.AppLoader;
-import com.rayn.jflask.framework.Constants;
+import com.rayn.jflask.framework.orm.DataSourceProvider;
 import com.rayn.jflask.framework.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +18,7 @@ import javax.servlet.annotation.WebListener;
 @WebListener
 public class ApplicationListener implements ServletContextListener {
 
+    // logger
     private static final Logger logger = LoggerFactory.getLogger(ApplicationListener.class);
 
     @Override
@@ -49,7 +49,6 @@ public class ApplicationListener implements ServletContextListener {
 
     private void registerJspServlet(ServletContext context) {
         ServletRegistration jspServlet = context.getServletRegistration("jsp");
-        jspServlet.addMapping("/index.jsp");
         String jspPath = Constants.VIEW_PATH;
         if (StringUtil.isNotEmpty(jspPath)) {
             jspServlet.addMapping(jspPath + "*");

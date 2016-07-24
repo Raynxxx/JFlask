@@ -1,6 +1,7 @@
 package com.rayn.jflask.framework;
 
 import com.rayn.jflask.framework.core.ClassScanner;
+import com.rayn.jflask.framework.core.ConfigHelper;
 import com.rayn.jflask.framework.core.impl.DefaultClassScanner;
 import com.rayn.jflask.framework.ioc.BeanFactory;
 import com.rayn.jflask.framework.ioc.impl.AnnotationBeanFactory;
@@ -12,7 +13,10 @@ import com.rayn.jflask.framework.mvc.impl.DefaultHandlerExceptionResolver;
 import com.rayn.jflask.framework.mvc.impl.DefaultHandlerInvoker;
 import com.rayn.jflask.framework.mvc.impl.DefaultHandlerMapping;
 import com.rayn.jflask.framework.mvc.impl.DefaultResultResolver;
+import com.rayn.jflask.framework.orm.DataSourceProvider;
+import com.rayn.jflask.framework.orm.impl.C3p0DataSourceProvider;
 import com.rayn.jflask.framework.util.ClassUtil;
+import com.rayn.jflask.framework.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,12 +32,20 @@ public class InstanceFactory {
     private static final Logger logger = LoggerFactory.getLogger(InstanceFactory.class);
     private static final Map<String, Object> cache = new ConcurrentHashMap<String, Object>();
 
+    // core
     private static final String CLASS_SCANNER = "framework.class_scanner";
+
+    // ioc
     private static final String BEAN_FACTORY = "framework.bean_factory";
+
+    // mvc
     private static final String HANDLER_MAPPING = "framework.handler_mapping";
     private static final String HANDLER_INVOKER = "framework.handler_invoker";
     private static final String VIEW_RESOLVER = "framework.view_resolver";
     private static final String HANDLER_EXCEPTION_RESOLVER = "framework.handler_exception_resolver";
+
+    // db
+    private static final String DATA_SOURCE_PROVIDER = "framework.data_source_provider";
 
 
     public static ClassScanner getClassScanner() {
@@ -61,17 +73,24 @@ public class InstanceFactory {
         return getInstance(HANDLER_EXCEPTION_RESOLVER, DefaultHandlerExceptionResolver.class);
     }
 
+    public static DataSourceProvider getDataSourceProvider() {
+        return getInstance(DATA_SOURCE_PROVIDER, C3p0DataSourceProvider.class);
+    }
+
     @SuppressWarnings("unchecked")
     public static <T> T getInstance(String key, Class<T> defaultImpl) {
         if (cache.containsKey(key)) {
             return (T) cache.get(key);
         }
-        String implName = defaultImpl.getName();
-        T instance = null;
+        String implName = ConfigHelper.getString(key);
+        if (StringUtil.isEmpty(implName)) {
+            implName = defaultImpl.getName();
+        }
+        T instance;
         try {
             instance = (T) ClassUtil.loadClass(implName).newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            logger.error("生成实例对象错误", e);
+            logger.error("[JFlask] 实例化错误: {}", key);
             throw new RuntimeException(e);
         }
         if (instance != null) {

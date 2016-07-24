@@ -8,5 +8,11 @@ import javax.sql.DataSource;
  */
 public interface DataSourceProvider {
 
+    void init() throws Exception;
+
+    void destroy();
+
     DataSource getDataSource();
+
+    String getAppConfig(String key);
 }

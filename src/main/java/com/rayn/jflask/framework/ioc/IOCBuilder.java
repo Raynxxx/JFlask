@@ -1,5 +1,6 @@
 package com.rayn.jflask.framework.ioc;
 
+import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.InstanceFactory;
 import com.rayn.jflask.framework.annotation.ioc.AutoWired;
 import com.rayn.jflask.framework.core.ClassScanner;
@@ -26,9 +27,6 @@ public class IOCBuilder {
 
     // 类扫描器
     private static final ClassScanner classScanner = InstanceFactory.getClassScanner();
-
-    // 应用的基础包名
-    private static final String basePackage = ConfigHelper.getString("app.base_package");
 
     static {
         logger.info("[JFlask] IOCBuilder 启动, Dependence Injection Processing");
@@ -78,7 +76,8 @@ public class IOCBuilder {
 
     public static Class<?> getImplementClass(Class<?> interfaceClass) {
         Class<?> implClass = null;
-        List<Class<?>> implClassList = classScanner.getClassListBySuper(basePackage, interfaceClass);
+        List<Class<?>> implClassList = classScanner.getClassListBySuper(Constants.BASE_PACKAGE,
+                interfaceClass);
         if (CollectionUtil.isNotEmpty(implClassList)) {
             implClass = implClassList.get(0);
         }

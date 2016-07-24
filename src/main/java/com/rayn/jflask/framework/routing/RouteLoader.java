@@ -1,5 +1,6 @@
 package com.rayn.jflask.framework.routing;
 
+import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.InstanceFactory;
 import com.rayn.jflask.framework.annotation.web.Controller;
 import com.rayn.jflask.framework.annotation.web.Route;
@@ -51,7 +52,6 @@ public class RouteLoader {
 
     private static List<Class<?>> getControllerList() {
         final ClassScanner classScanner = InstanceFactory.getClassScanner();
-        final String basePackage = ConfigHelper.getString("app.base_package");
-        return classScanner.getClassListByAnnotation(basePackage, Controller.class);
+        return classScanner.getClassListByAnnotation(Constants.BASE_PACKAGE, Controller.class);
     }
 }

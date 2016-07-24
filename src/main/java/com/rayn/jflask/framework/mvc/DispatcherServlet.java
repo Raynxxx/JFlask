@@ -32,7 +32,8 @@ public class DispatcherServlet extends HttpServlet {
 
     private static final ResultResolver resultResolver = InstanceFactory.getViewResolver();
 
-    private static final HandlerExceptionResolver handlerExceptionResolver = InstanceFactory.getHandlerExceptionResolver();
+    private static final HandlerExceptionResolver handlerExceptionResolver
+            = InstanceFactory.getHandlerExceptionResolver();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -41,12 +42,13 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void service(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         request.setCharacterEncoding(Constants.UTF8);
 
         String currentRequestMethod = request.getMethod();
         String currentRequestPath = ServletHelper.getRequestPath(request);
-        logger.info("[JFlask][DispatcherServlet] {}:{} {}", currentRequestMethod,
+        logger.info("[JFlask][DispatcherServlet] {}:{} on {}", currentRequestMethod,
                 currentRequestPath, new Date());
 
         if (currentRequestPath.startsWith(Constants.STATIC_PATH)) {
@@ -71,11 +73,11 @@ public class DispatcherServlet extends HttpServlet {
             logger.error("[JFlask] {}", e.getMessage());
         } finally {
             WebContext.destroy();
-            logger.info("[JFlask][DispatcherServlet] ******************************");
+            logger.info("[JFlask][DispatcherServlet] End ******************************");
         }
     }
 
-    public static void handleStaticResource(HttpServletRequest request,
+    private static void handleStaticResource(HttpServletRequest request,
                                             HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher rd = request.getServletContext().getNamedDispatcher("default");
