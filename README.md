@@ -6,7 +6,7 @@ JFlask is light-weight Java Web Framework inspired by *Python Flask*
 - [X] 实现注解完成 URL 配置，自动参数注入
 - [X] Restful 风格接口支持
 - [X] 实现注解驱动的依赖注入
-- [ ] 文件上传支持
+- [X] 文件上传支持
 - [ ] ORM 支持 ~~整合 Ebean, 实现 JPA 规范~~
 - [ ] AOP 支持
 - [ ] 更多......
@@ -69,6 +69,8 @@ public class ExampleController {
     @Route(value = "/users", method = "POST")
     public Result createUser(Params params) {
         User user = params.toModel(User.class);
+        // WebContext 提供上传文件的接口
+        WebContext.uploadFile(params.getFile("avatar"));
         Map<String, Object> data = new HashMap<>();
         data.put("status", "success");
         data.put("user", user.getUsername());

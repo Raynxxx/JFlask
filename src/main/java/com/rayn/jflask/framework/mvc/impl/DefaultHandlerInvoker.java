@@ -81,14 +81,12 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
             logger.debug("[JFlask] isMultipart Request");
             List<Object> multipartParamList = MultipartHelper.parseMultipartParamList(request);
             if (CollectionUtil.isNotEmpty(multipartParamList)) {
-                logger.debug("[JFlask] 加入 multipartParams");
                 paramList.addAll(multipartParamList);
             }
         } else {
             // 取出 request 请求 Map (QueryString 或 FormData)
             Map<String, Object> requestParamMap = ServletHelper.getRequestParamMap(request);
             if (CollectionUtil.isNotEmpty(requestParamMap)) {
-                logger.debug("[JFlask] 加入 requestParams");
                 paramList.add(new Params(requestParamMap));
             }
         }

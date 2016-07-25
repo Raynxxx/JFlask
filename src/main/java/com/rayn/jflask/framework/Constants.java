@@ -20,6 +20,7 @@ public interface Constants {
 
     // default 10 MB
     int UPLOAD_MAX = ConfigHelper.getInteger("app.upload_max", 10 * 1024 * 1024);
+    String UPLOAD_PATH = ConfigHelper.getString("app.upload_path", "/upload/");
 
     // db
     interface JDBC {

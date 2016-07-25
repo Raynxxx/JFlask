@@ -4,9 +4,11 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.rayn.jflask.framework.annotation.SkipJson;
+import com.rayn.jflask.framework.annotation.entity.SkipJson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Modifier;
 
 /**
  * JsonUtil
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
  */
 public class JsonUtil {
 
+    // logger
     private static final Logger logger = LoggerFactory.getLogger(JsonUtil.class);
 
     private static final Gson gson = new GsonBuilder()
@@ -31,12 +34,14 @@ public class JsonUtil {
 
     /**
      * DefaultExclusionStrategy
+     * annotation @SkipJson will skip
      */
-    static class DefaultExclusionStrategy implements ExclusionStrategy {
+    private static class DefaultExclusionStrategy implements ExclusionStrategy {
 
         @Override
         public boolean shouldSkipField(FieldAttributes f) {
-            return f.getAnnotation(SkipJson.class) != null;
+            boolean hasSkipJson = f.getAnnotation(SkipJson.class) != null;
+            return hasSkipJson;
         }
 
         @Override

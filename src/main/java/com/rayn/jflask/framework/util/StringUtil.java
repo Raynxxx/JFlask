@@ -1,15 +1,13 @@
 package com.rayn.jflask.framework.util;
 
 import com.rayn.jflask.framework.Constants;
+import com.sun.corba.se.spi.orbutil.fsm.Input;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -161,6 +159,30 @@ public class StringUtil {
             throw new RuntimeException(e);
         }
         return sb.toString();
+    }
+
+    /**
+     * 传输流数据
+     */
+    public static void transferStream(InputStream inputStream, OutputStream outputStream) {
+        try {
+            int nRead;
+            byte[] buffer = new byte[4096];
+            while ((nRead = inputStream.read(buffer, 0, buffer.length)) != -1) {
+                outputStream.write(buffer, 0, nRead);
+            }
+            outputStream.flush();
+        } catch (IOException e) {
+            logger.error("[JFlask] 流传输出错！", e);
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                inputStream.close();
+                outputStream.close();
+            } catch (Exception e) {
+                logger.error("[JFlask] 流关闭出错！", e);
+            }
+        }
     }
 
     /**

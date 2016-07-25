@@ -1,5 +1,7 @@
 package com.rayn.jflask.framework.mvc;
 
+import com.rayn.jflask.framework.Constants;
+import com.rayn.jflask.framework.mvc.model.MultipartFile;
 import com.rayn.jflask.framework.util.ClassUtil;
 import com.rayn.jflask.framework.util.CollectionUtil;
 import com.rayn.jflask.framework.util.StringUtil;
@@ -63,6 +65,14 @@ public class WebContext {
 
     public static ServletContext getServletContext() {
         return getRequest().getServletContext();
+    }
+
+    public static String getBasePath() {
+        return getServletContext().getRealPath("/");
+    }
+
+    public static void uploadFile(MultipartFile file) {
+        MultipartHelper.uploadFile(file, getBasePath() + Constants.UPLOAD_PATH);
     }
 
 

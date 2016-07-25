@@ -16,8 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -96,8 +95,21 @@ public class MultipartHelper {
         return paramList;
     }
 
-    public static void uploadFile(String path, MultipartFile file) {
-        // TODO
+    public static void uploadFile(MultipartFile file, String path) {
+        try {
+            if (file == null) {
+                return;
+            }
+            String filePath = path + file.getFileName();
+            File createdFile = FileUtil.createFile(filePath);
+
+            BufferedInputStream is = new BufferedInputStream(file.getFileInputStream());
+            BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(createdFile));
+            StringUtil.transferStream(is, os);
+        } catch (Exception e) {
+            logger.error("[JFlask] 上传文件错误", e);
+            throw new RuntimeException(e);
+        }
     }
 
 }
