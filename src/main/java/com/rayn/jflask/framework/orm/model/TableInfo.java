@@ -1,6 +1,7 @@
 package com.rayn.jflask.framework.orm.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Map;
 public class TableInfo {
 
     // model class
-    private Class<? extends BaseModel<?>> modelClass;
+    private Class<?> modelClass;
 
     // table name
     private String tableName;
@@ -18,12 +19,12 @@ public class TableInfo {
     // field
     private Map<String, ColumnInfo> fieldToColumnMap;
 
-    public TableInfo(Class<? extends BaseModel<?>> modelClass) {
+    public TableInfo(Class<?> modelClass) {
         this.modelClass = modelClass;
         fieldToColumnMap = new HashMap<>();
     }
 
-    public Class<? extends BaseModel<?>> getModelClass() {
+    public Class<?> getModelClass() {
         return modelClass;
     }
 
@@ -37,5 +38,9 @@ public class TableInfo {
 
     public void putColumn(String key, ColumnInfo columnInfo) {
         fieldToColumnMap.put(key, columnInfo);
+    }
+
+    public Map<String, ColumnInfo> getColumnInfoMap() {
+        return fieldToColumnMap;
     }
 }

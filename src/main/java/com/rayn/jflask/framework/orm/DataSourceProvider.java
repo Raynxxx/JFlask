@@ -1,6 +1,8 @@
 package com.rayn.jflask.framework.orm;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * DataSourceProvider
@@ -8,11 +10,11 @@ import javax.sql.DataSource;
  */
 public interface DataSourceProvider {
 
-    void init() throws Exception;
+    void init();
 
     void destroy();
 
-    DataSource getDataSource();
-
     String getAppConfig(String key);
+
+    DataSource getDataSource();
 }

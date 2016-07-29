@@ -15,7 +15,7 @@ public abstract class AbstractDataSourceProvider implements DataSourceProvider {
 
 
     @Override
-    public void init() throws Exception {
+    public void init() {
         logger.info("[JFlask] DataSourceProvider 初始化");
     }
 

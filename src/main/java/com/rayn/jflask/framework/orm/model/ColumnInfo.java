@@ -8,8 +8,10 @@ public class ColumnInfo {
 
     private String name;
     private boolean primary;
+    private boolean autoIncrement;
     private boolean canNull;
     private boolean unique;
+    private int length;
 
     public ColumnInfo() {
         this.primary = false;
@@ -23,6 +25,14 @@ public class ColumnInfo {
 
     public void setPrimary(boolean primary) {
         this.primary = primary;
+    }
+
+    public boolean isAutoIncrement() {
+        return autoIncrement;
+    }
+
+    public void setAutoIncrement(boolean autoIncrement) {
+        this.autoIncrement = autoIncrement;
     }
 
     public String getName() {
@@ -47,5 +57,13 @@ public class ColumnInfo {
 
     public void setUnique(boolean unique) {
         this.unique = unique;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
     }
 }

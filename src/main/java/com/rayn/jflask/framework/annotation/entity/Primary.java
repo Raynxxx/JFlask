@@ -10,4 +10,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Primary {
+
+    boolean autoIncrement() default false;
 }

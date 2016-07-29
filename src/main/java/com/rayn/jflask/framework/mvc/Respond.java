@@ -67,8 +67,13 @@ public class Respond {
     /**
      * Respond Pure Text Data
      */
-    public static Result text(String text) {
-        logger.info("[JFlask] Respond.text => {}", text);
-        return new TextResult(text);
+    public static Result text(Object... textArray) {
+        StringBuffer sb = new StringBuffer();
+        for (Object text : textArray) {
+            sb.append(text);
+        }
+        String ret = sb.toString();
+        logger.info("[JFlask] Respond.text => {}", ret);
+        return new TextResult(ret);
     }
 }

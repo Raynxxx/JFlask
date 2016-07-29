@@ -5,6 +5,9 @@ import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.util.StringUtil;
 
 import javax.sql.DataSource;
+import java.beans.PropertyVetoException;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * C3p0DataSourceProvider
@@ -22,11 +25,9 @@ public class C3p0DataSourceProvider extends AbstractDataSourceProvider {
     private int maxIdleTime = 20;
     private int acquireIncrement = 2;
 
-    private ComboPooledDataSource dataSource;
-
 
     @Override
-    public void init() throws Exception {
+    public void init(){
         super.init();
         // init config
         jdbcUrl = getAppConfig(Constants.JDBC.URL);
@@ -40,28 +41,30 @@ public class C3p0DataSourceProvider extends AbstractDataSourceProvider {
             logger.error(message);
             throw new RuntimeException(message);
         }
-
-        // set dataSource
-        dataSource = new ComboPooledDataSource();
-        dataSource.setJdbcUrl(jdbcUrl);
-        dataSource.setDriverClass(driver);
-        dataSource.setUser(username);
-        dataSource.setPassword(password);
-        dataSource.setMaxPoolSize(maxPoolSize);
-        dataSource.setMinPoolSize(minPoolSize);
-        dataSource.setInitialPoolSize(initialPoolSize);
-        dataSource.setMaxIdleTime(maxIdleTime);
-        dataSource.setAcquireIncrement(acquireIncrement);
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        dataSource.close();
     }
 
     @Override
     public DataSource getDataSource() {
+        ComboPooledDataSource dataSource = null;
+        try {
+            dataSource = new ComboPooledDataSource();
+            dataSource.setJdbcUrl(jdbcUrl);
+            dataSource.setDriverClass(driver);
+            dataSource.setUser(username);
+            dataSource.setPassword(password);
+            dataSource.setMaxPoolSize(maxPoolSize);
+            dataSource.setMinPoolSize(minPoolSize);
+            dataSource.setInitialPoolSize(initialPoolSize);
+            dataSource.setMaxIdleTime(maxIdleTime);
+            dataSource.setAcquireIncrement(acquireIncrement);
+        } catch (PropertyVetoException e) {
+            logger.error("[JFlask] Can not getDataSource ", e);
+        }
         return dataSource;
     }
 }

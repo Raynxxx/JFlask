@@ -18,18 +18,37 @@ import java.util.List;
  */
 public class TableBuilder {
 
+    /**
+     * 构建 Model
+     */
     public static void build(List<Class<?>> modelList) {
-        // TODO
+        for (Class<?> model : modelList) {
+            parseTable(model);
+        }
     }
 
     /**
      * 从一个 Model 生成 TableInfo 信息
      */
-    public static TableInfo parseTable(Class<? extends BaseModel<?>> modelClass) {
+    public static TableInfo parseTable(Class<?> modelClass) {
         TableInfo tableInfo = new TableInfo(modelClass);
-        parseTableName(modelClass, tableInfo);
+        tableInfo.setTableName(parseTableName(modelClass));
         parseTableField(modelClass, tableInfo);
         return null;
+    }
+
+    /**
+     * 解析 Table Name
+     */
+    private static String parseTableName(Class<?> modelClass) {
+        String tableName;
+        if (modelClass.isAnnotationPresent(Table.class)) {
+            tableName = modelClass.getAnnotation(Table.class).name();
+        } else {
+            tableName = StringUtil.camelToUnderline(modelClass.getSimpleName());
+        }
+        return tableName;
+
     }
 
     /**
@@ -40,40 +59,45 @@ public class TableBuilder {
         if (CollectionUtil.isNotEmpty(tableFields)) {
             for (Field field : tableFields) {
                 String fieldName = field.getName();
-                tableInfo.putColumn(fieldName, parseColumnInfo(field));
+                ColumnInfo columnInfo = parseColumnInfo(field);
+                if (columnInfo != null) {
+                    tableInfo.putColumn(fieldName, parseColumnInfo(field));
+                }
             }
         }
     }
 
-    /**
-     * 解析 Table Name
-     */
-    private static void parseTableName(Class<?> modelClass, TableInfo tableInfo) {
-        String tableName = null;
-        if (modelClass.isAnnotationPresent(Table.class)) {
-            tableName = modelClass.getAnnotation(Table.class).name();
-        } else {
-            tableName = StringUtil.camelToUnderline(modelClass.getSimpleName());
-        }
-        tableInfo.setTableName(tableName);
-    }
 
     private static ColumnInfo parseColumnInfo(Field field) {
+        if (!field.isAnnotationPresent(Column.class)) {
+            return null;
+        }
+        Column columnAnnotation = field.getDeclaredAnnotation(Column.class);
         ColumnInfo columnInfo = new ColumnInfo();
+
+        // 键名
+        String columnName = columnAnnotation.name();
+        if (StringUtil.isNotEmpty(columnName)) {
+            columnName = StringUtil.camelToUnderline(field.getName());
+        }
+        columnInfo.setName(columnName);
+
         // 主键
         if (field.isAnnotationPresent(Primary.class)) {
             columnInfo.setPrimary(true);
+            columnInfo.setAutoIncrement(field.getAnnotation(Primary.class)
+                    .autoIncrement());
         }
-        // 建名
-        String columnName = StringUtil.camelToUnderline(field.getName());
-        if (field.isAnnotationPresent(Column.class)) {
-            String declaredName = field.getDeclaredAnnotation(Column.class).name();
-            if (StringUtil.isNotEmpty(declaredName)) {
-                columnName = declaredName;
-            }
-        }
-        columnInfo.setName(columnName);
-        // TODO
+
+        // can null
+        columnInfo.setCanNull(columnAnnotation.canNull());
+
+        // unique
+        columnInfo.setUnique(columnAnnotation.unique());
+
+        // length
+        columnInfo.setLength(columnAnnotation.length());
+
         return columnInfo;
     }
 }

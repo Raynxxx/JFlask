@@ -27,10 +27,11 @@ public class Router {
     // logger
     private static final Logger logger = LoggerFactory.getLogger(Router.class);
 
-    // Rule String
-    private static final String ruleString = "(?<static>[^<]*)  # static rule data\n" +
+    // Rule Regex String
+    private static final String ruleString =
+            "(?<static>[^<]*)                       # static rule data\n" +
             "<\n" +
-            "(?<variable>[a-zA-Z_][a-zA-Z0-9_]*) \n     # variable name\n" +
+            "(?<variable>[a-zA-Z_][a-zA-Z0-9_]*)    # variable name\n" +
             ">";
 
     private static final Pattern urlRulePattern = Pattern.compile(ruleString, Pattern.COMMENTS);
