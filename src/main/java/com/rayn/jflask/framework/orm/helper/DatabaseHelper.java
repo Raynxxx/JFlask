@@ -4,7 +4,6 @@ import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.InstanceFactory;
 import com.rayn.jflask.framework.orm.DataSourceProvider;
 import com.rayn.jflask.framework.orm.TableMapping;
-import com.rayn.jflask.framework.orm.model.ColumnInfo;
 import com.rayn.jflask.framework.util.CollectionUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
@@ -21,13 +20,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DatabaseUtil
+ * DatabaseHelper
  * Created by Raynxxx on 2016/07/29.
  */
-public class DatabaseUtil {
+public class DatabaseHelper {
 
     // logger
-    private static final Logger logger = LoggerFactory.getLogger(DatabaseUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseHelper.class);
 
     // dataSourceProvider
     private static final DataSourceProvider dataSourceProvider
@@ -79,7 +78,7 @@ public class DatabaseUtil {
         }
     }
 
-    public <T> T queryEntity(Class<T> entityClass, String sql, Object... params) {
+    public static <T> T queryEntity(Class<T> entityClass, String sql, Object... params) {
         T result = null;
         try {
             Map<String, String> columnMap = tableMapping.getColumnMap(entityClass);
@@ -95,7 +94,7 @@ public class DatabaseUtil {
         return result;
     }
 
-    public <T> List<T> queryEntityList(Class<T> entityClass, String sql, Object... params) {
+    public static <T> List<T> queryEntityList(Class<T> entityClass, String sql, Object... params) {
         List<T> result = null;
         try {
             Map<String, String> columnMap = tableMapping.getColumnMap(entityClass);

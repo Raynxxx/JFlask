@@ -1,4 +1,4 @@
-package com.rayn.jflask.framework.orm.model;
+package com.rayn.jflask.framework.orm;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;

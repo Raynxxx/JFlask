@@ -7,32 +7,10 @@ package com.rayn.jflask.framework.orm.model;
 public class ColumnInfo {
 
     private String name;
-    private boolean primary;
-    private boolean autoIncrement;
-    private boolean canNull;
-    private boolean unique;
-    private int length;
+    private boolean isPrimary;
+    private Class<?> columnType;
 
     public ColumnInfo() {
-        this.primary = false;
-        this.canNull = false;
-        this.unique = false;
-    }
-
-    public boolean isPrimary() {
-        return primary;
-    }
-
-    public void setPrimary(boolean primary) {
-        this.primary = primary;
-    }
-
-    public boolean isAutoIncrement() {
-        return autoIncrement;
-    }
-
-    public void setAutoIncrement(boolean autoIncrement) {
-        this.autoIncrement = autoIncrement;
     }
 
     public String getName() {
@@ -43,27 +21,19 @@ public class ColumnInfo {
         this.name = name;
     }
 
-    public boolean isCanNull() {
-        return canNull;
+    public boolean isPrimary() {
+        return isPrimary;
     }
 
-    public void setCanNull(boolean canNull) {
-        this.canNull = canNull;
+    public void setPrimary(boolean primary) {
+        isPrimary = primary;
     }
 
-    public boolean isUnique() {
-        return unique;
+    public Class<?> getColumnType() {
+        return columnType;
     }
 
-    public void setUnique(boolean unique) {
-        this.unique = unique;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
+    public void setColumnType(Class<?> columnType) {
+        this.columnType = columnType;
     }
 }

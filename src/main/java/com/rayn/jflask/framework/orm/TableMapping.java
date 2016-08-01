@@ -1,6 +1,5 @@
 package com.rayn.jflask.framework.orm;
 
-import com.rayn.jflask.framework.orm.model.BaseModel;
 import com.rayn.jflask.framework.orm.model.ColumnInfo;
 import com.rayn.jflask.framework.orm.model.TableInfo;
 
@@ -27,6 +26,14 @@ public class TableMapping {
 
     public TableInfo getTable(Class<?> modelClass) {
         return modelToTableMap.get(modelClass);
+    }
+
+    public String getTableName(Class<?> modelClass) {
+        TableInfo tableInfo = modelToTableMap.get(modelClass);
+        if (tableInfo != null) {
+            return tableInfo.getTableName();
+        }
+        return null;
     }
 
     public Map<String, String> getColumnMap(Class<?> modelClass) {

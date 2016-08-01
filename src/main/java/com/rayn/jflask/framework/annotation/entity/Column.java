@@ -11,10 +11,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface Column {
     String name();
-
-    int length() default 512;
-
-    boolean canNull() default false;
-
-    boolean unique() default false;
+    boolean isPrimary() default false;
 }

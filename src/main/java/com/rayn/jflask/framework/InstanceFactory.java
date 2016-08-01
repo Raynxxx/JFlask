@@ -14,6 +14,7 @@ import com.rayn.jflask.framework.mvc.impl.DefaultHandlerInvoker;
 import com.rayn.jflask.framework.mvc.impl.DefaultHandlerMapping;
 import com.rayn.jflask.framework.mvc.impl.DefaultResultResolver;
 import com.rayn.jflask.framework.orm.DataSourceProvider;
+import com.rayn.jflask.framework.orm.dialect.Dialect;
 import com.rayn.jflask.framework.orm.impl.C3p0DataSourceProvider;
 import com.rayn.jflask.framework.util.ClassUtil;
 import com.rayn.jflask.framework.util.StringUtil;

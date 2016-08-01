@@ -2,6 +2,7 @@ package com.rayn.jflask.framework;
 
 import com.rayn.jflask.framework.core.ConfigHelper;
 import com.rayn.jflask.framework.ioc.IOCBuilder;
+import com.rayn.jflask.framework.orm.ORMLoader;
 import com.rayn.jflask.framework.routing.RouteLoader;
 import com.rayn.jflask.framework.util.ClassUtil;
 
@@ -15,6 +16,7 @@ public final class AppLoader {
         Class<?>[] loadWhenAppInit = {
                 ConfigHelper.class,
                 RouteLoader.class,
+                ORMLoader.class,
                 IOCBuilder.class
         };
 

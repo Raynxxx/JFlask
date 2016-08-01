@@ -7,30 +7,67 @@ JFlask is light-weight Java Web Framework inspired by *Python Flask*
 - [X] Restful 风格接口支持
 - [X] 实现注解驱动的依赖注入
 - [X] 文件上传支持
-- [ ] ORM 支持 ~~整合 Ebean, 实现 JPA 规范~~
+- [ ] ActiveRecord 支持 ~~整合 Ebean, 实现 JPA 规范~~
 - [ ] AOP 支持
 - [ ] 更多......
 
 ### Demo
 
 ```java
-import com.rayn.jflask.framework.annotation.ioc.AutoWired;
+// Model
+import com.rayn.jflask.framework.annotation.entity.Column;
+import com.rayn.jflask.framework.annotation.entity.Table;
+import com.rayn.jflask.framework.orm.BaseModel;
+import com.rayn.jflask.framework.query.Query;
+import com.rayn.jflask.framework.query.impl.DefaultQuery;
+
+@Table(name = "user")
+public class User extends BaseModel<User> {
+
+    public static final Query<User> finder = new DefaultQuery<>(User.class);
+
+    @Column(name = "id", isPrimary = true)
+    private int id;
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "password")
+    private String password;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+}
+
+```
+
+```java
+// Controller
 import com.rayn.jflask.framework.annotation.web.*;
 import com.rayn.jflask.framework.mvc.Respond;
 import com.rayn.jflask.framework.mvc.WebContext;
 import com.rayn.jflask.framework.mvc.model.Params;
 import com.rayn.jflask.framework.mvc.result.Result;
 import com.rayn.jflask.sample.models.User;
-import com.rayn.jflask.sample.services.UserService;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
 public class ExampleController {
-
-    @AutoWired
-    private UserService userService;
 
     @Route("/")
     public Result index() {
@@ -63,7 +100,7 @@ public class ExampleController {
     @Route("/users")
     public Result users() {
         return Respond.jsp("users.jsp",
-                "users", userService.findAll());
+                "users", User.finder.findAll());
     }
 
     @Route(value = "/users", method = "POST")

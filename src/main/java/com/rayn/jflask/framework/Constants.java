@@ -28,6 +28,8 @@ public interface Constants {
         String DRIVER = "app.jdbc.driver";
         String USERNAME = "app.jdbc.username";
         String PASSWORD = "app.jdbc.password";
+
+        String DIALECT = "app.jdbc.dialect";
         boolean SHOW_SQL = ConfigHelper.getBoolean("app.jdbc.show_sql", false);
     }
 

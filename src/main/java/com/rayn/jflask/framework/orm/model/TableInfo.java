@@ -1,5 +1,6 @@
 package com.rayn.jflask.framework.orm.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,11 +11,14 @@ import java.util.Map;
  */
 public class TableInfo {
 
+    // table name
+    private String tableName;
+
     // model class
     private Class<?> modelClass;
 
-    // table name
-    private String tableName;
+    // priamry key
+    private String primaryKey;
 
     // field
     private Map<String, ColumnInfo> fieldToColumnMap;
@@ -34,6 +38,14 @@ public class TableInfo {
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
+    }
+
+    public String getPrimaryKey() {
+        return primaryKey;
+    }
+
+    public void setPrimaryKey(String primaryKey) {
+        this.primaryKey = primaryKey;
     }
 
     public void putColumn(String key, ColumnInfo columnInfo) {

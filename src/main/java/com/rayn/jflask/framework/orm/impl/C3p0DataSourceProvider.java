@@ -50,7 +50,7 @@ public class C3p0DataSourceProvider extends AbstractDataSourceProvider {
 
     @Override
     public DataSource getDataSource() {
-        ComboPooledDataSource dataSource = null;
+        ComboPooledDataSource dataSource;
         try {
             dataSource = new ComboPooledDataSource();
             dataSource.setJdbcUrl(jdbcUrl);
@@ -63,6 +63,7 @@ public class C3p0DataSourceProvider extends AbstractDataSourceProvider {
             dataSource.setMaxIdleTime(maxIdleTime);
             dataSource.setAcquireIncrement(acquireIncrement);
         } catch (PropertyVetoException e) {
+            dataSource = null;
             logger.error("[JFlask] Can not getDataSource ", e);
         }
         return dataSource;

@@ -13,6 +13,7 @@ public class BaseModelTest {
     @Test
     public void testBaseModelToString() {
         User user = new User();
+        System.out.println(user.toString());
         Assert.assertEquals(String.format("<Model \"%s\">",
                 user.getClass().getSimpleName()), user.toString());
     }
