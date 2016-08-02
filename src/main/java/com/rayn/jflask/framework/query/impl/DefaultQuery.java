@@ -1,41 +1,33 @@
 package com.rayn.jflask.framework.query.impl;
 
 import com.rayn.jflask.framework.orm.ORMLoader;
+import com.rayn.jflask.framework.query.QueryProvider;
 import com.rayn.jflask.framework.orm.dialect.Dialect;
-import com.rayn.jflask.framework.orm.helper.DatabaseHelper;
 import com.rayn.jflask.framework.query.Query;
 
-import java.util.List;
-
 /**
- * DefaultQuery
- * Created by Raynxxx on 2016/07/19.
+ * DefaultCurdQuery
+ * Created by Raynxxx on 2016/08/02.
  */
 public class DefaultQuery<T> implements Query<T> {
 
-    private static final Dialect dialect = ORMLoader.getDefaultDialect();
+    protected static final Dialect dialect = ORMLoader.getDefaultDialect();
 
-    private final Class<T> entityClass;
+    protected final Class<T> entityClass;
 
     public DefaultQuery(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 
     @Override
-    public <PK> T find(PK primary) {
-        String sql = dialect.forSelectById(entityClass);
-        return DatabaseHelper.queryEntity(entityClass, sql, primary);
+    public <PK> T find(PK primaryKey) {
+        StringBuffer sb = new StringBuffer(dialect.forSelectByPrimaryKey(entityClass));
+        sb.append(" LIMIT 1");
+        return QueryProvider.queryEntity(entityClass, sb.toString(), primaryKey);
     }
 
     @Override
-    public List<T> findAll() {
-        String sql = dialect.forSelect(entityClass, null);
-        return DatabaseHelper.queryEntityList(entityClass, sql);
-    }
-
-    @Override
-    public List<T> findAll(String condition, Object... params) {
-        String sql = dialect.forSelect(entityClass, condition);
-        return DatabaseHelper.queryEntityList(entityClass, sql, params);
+    public boolean exist(String conditions) {
+        return false;
     }
 }

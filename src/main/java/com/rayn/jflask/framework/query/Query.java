@@ -8,9 +8,7 @@ import java.util.List;
  */
 public interface Query<T> {
 
-    <PK> T find(PK primary);
+    <PK> T find(PK primaryKey);
 
-    List<T> findAll();
-
-    List<T> findAll(String condition, Object... params);
+    boolean exist(String conditions);
 }

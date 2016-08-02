@@ -1,5 +1,6 @@
 package com.rayn.jflask.framework.orm;
 
+import com.rayn.jflask.framework.core.exception.QueryException;
 import com.rayn.jflask.framework.orm.model.ColumnInfo;
 import com.rayn.jflask.framework.orm.model.TableInfo;
 
@@ -24,27 +25,44 @@ public class TableMapping {
         modelToTableMap.put(table.getModelClass(), table);
     }
 
-    public TableInfo getTable(Class<?> modelClass) {
+    public TableInfo getTableInfo(Class<?> modelClass) {
+        if (!modelToTableMap.containsKey(modelClass)) {
+            throw new QueryException(String.format("[JFlask] %s is not a Table",
+                    modelClass.getSimpleName()));
+        }
         return modelToTableMap.get(modelClass);
     }
 
     public String getTableName(Class<?> modelClass) {
-        TableInfo tableInfo = modelToTableMap.get(modelClass);
-        if (tableInfo != null) {
-            return tableInfo.getTableName();
-        }
-        return null;
+        return getTableInfo(modelClass).getTableName();
+    }
+
+    public Map<String, ColumnInfo> getColumnInfoMap(Class<?> modelClass) {
+        return getTableInfo(modelClass).getColumnInfoMap();
     }
 
     public Map<String, String> getColumnMap(Class<?> modelClass) {
-        TableInfo tableInfo = getTable(modelClass);
-        Map<String, String> columnMap = new HashMap<>();
-        if (tableInfo != null) {
+        TableInfo tableInfo = getTableInfo(modelClass);
+        if (tableInfo.getFieldToColumnNameMap() == null) {
+            Map<String, String> columnMap = new HashMap<>();
             Map<String, ColumnInfo> columnInfoMap = tableInfo.getColumnInfoMap();
             for (Map.Entry<String, ColumnInfo> entry : columnInfoMap.entrySet()) {
                 columnMap.put(entry.getKey(), entry.getValue().getName());
             }
+            tableInfo.setFieldToColumnNameMap(columnMap);
         }
-        return columnMap;
+        return tableInfo.getFieldToColumnNameMap();
+    }
+
+
+
+    public String toColumnName(Class<?> modelClass, String fieldName) {
+        TableInfo tableInfo = getTableInfo(modelClass);
+        Map<String, ColumnInfo> columnInfoMap = tableInfo.getColumnInfoMap();
+        if (!columnInfoMap.containsKey(fieldName)) {
+            throw new QueryException(String.format("[JFlask] %s has not field named %s",
+                    modelClass.getSimpleName(), fieldName));
+        }
+        return columnInfoMap.get(fieldName).getName();
     }
 }

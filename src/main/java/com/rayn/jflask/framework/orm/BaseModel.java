@@ -34,4 +34,16 @@ public class BaseModel<T> implements Serializable {
         Type[] params = type.getActualTypeArguments();
         return (Class<T>) params[0];
     }
+
+    public static void create() {
+
+    }
+
+    public void save() {
+
+    }
+
+    public void destroy() {
+
+    }
 }

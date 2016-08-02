@@ -17,11 +17,14 @@ public class TableInfo {
     // model class
     private Class<?> modelClass;
 
-    // priamry key
+    // primary key
     private String primaryKey;
 
-    // field
+    // fieldName => Column
     private Map<String, ColumnInfo> fieldToColumnMap;
+
+    // fieldName => ColumnName
+    private Map<String, String> fieldToColumnNameMap;
 
     public TableInfo(Class<?> modelClass) {
         this.modelClass = modelClass;
@@ -54,5 +57,13 @@ public class TableInfo {
 
     public Map<String, ColumnInfo> getColumnInfoMap() {
         return fieldToColumnMap;
+    }
+
+    public Map<String, String> getFieldToColumnNameMap() {
+        return fieldToColumnNameMap;
+    }
+
+    public void setFieldToColumnNameMap(Map<String, String> fieldToColumnNameMap) {
+        this.fieldToColumnNameMap = fieldToColumnNameMap;
     }
 }
