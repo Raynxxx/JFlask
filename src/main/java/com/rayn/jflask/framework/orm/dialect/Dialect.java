@@ -41,6 +41,9 @@ public interface Dialect {
 
     String generateSelectLast(Class<?> entity, boolean needOrder);
 
+    // ***************** 生成 insert 字句 ******************
+
+    String forInsert(Class<?> entity, boolean skipPrimary);
 
 
 }

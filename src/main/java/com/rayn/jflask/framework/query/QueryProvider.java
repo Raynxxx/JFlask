@@ -1,7 +1,7 @@
 package com.rayn.jflask.framework.query;
 
 import com.rayn.jflask.framework.core.exception.QueryException;
-import com.rayn.jflask.framework.orm.TableMapping;
+import com.rayn.jflask.framework.orm.mapping.TableMapping;
 import com.rayn.jflask.framework.orm.helper.DatabaseHelper;
 import com.rayn.jflask.framework.orm.helper.SqlHelper;
 import com.rayn.jflask.framework.util.CollectionUtil;
@@ -84,6 +84,19 @@ public class QueryProvider {
             logger.error("[JFlask] queryCount Error", e);
             throw new QueryException(e);
         }
+        SqlHelper.outputSQL(sql);
         return result;
+    }
+
+    public static <PK> PK insertEntity(String sql, Object... params) {
+        PK ret;
+        try {
+            ret = queryRunner.insert(sql, new ScalarHandler<PK>(), params);
+        } catch (SQLException e) {
+            logger.error("[JFlask] insertEntity Error", e);
+            throw new QueryException(e);
+        }
+        SqlHelper.outputSQL(sql);
+        return ret;
     }
 }

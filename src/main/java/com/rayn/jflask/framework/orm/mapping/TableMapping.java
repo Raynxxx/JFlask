@@ -1,10 +1,9 @@
-package com.rayn.jflask.framework.orm;
+package com.rayn.jflask.framework.orm.mapping;
 
 import com.rayn.jflask.framework.core.exception.QueryException;
-import com.rayn.jflask.framework.orm.model.ColumnInfo;
-import com.rayn.jflask.framework.orm.model.TableInfo;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -13,7 +12,7 @@ import java.util.Map;
  */
 public class TableMapping {
 
-    private final Map<Class<?>, TableInfo> modelToTableMap = new HashMap<>();
+    private final Map<Class<?>, TableInfo> modelToTableMap = new LinkedHashMap<>();
 
     private static TableMapping me = new TableMapping();
 
@@ -44,7 +43,7 @@ public class TableMapping {
     public Map<String, String> getColumnMap(Class<?> modelClass) {
         TableInfo tableInfo = getTableInfo(modelClass);
         if (tableInfo.getFieldToColumnNameMap() == null) {
-            Map<String, String> columnMap = new HashMap<>();
+            Map<String, String> columnMap = new LinkedHashMap<>();
             Map<String, ColumnInfo> columnInfoMap = tableInfo.getColumnInfoMap();
             for (Map.Entry<String, ColumnInfo> entry : columnInfoMap.entrySet()) {
                 columnMap.put(entry.getKey(), entry.getValue().getName());
@@ -53,7 +52,6 @@ public class TableMapping {
         }
         return tableInfo.getFieldToColumnNameMap();
     }
-
 
 
     public String toColumnName(Class<?> modelClass, String fieldName) {

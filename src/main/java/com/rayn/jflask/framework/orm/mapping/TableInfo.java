@@ -1,8 +1,7 @@
-package com.rayn.jflask.framework.orm.model;
+package com.rayn.jflask.framework.orm.mapping;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -14,7 +13,7 @@ public class TableInfo {
     // table name
     private String tableName;
 
-    // model class
+    // mapping class
     private Class<?> modelClass;
 
     // primary key
@@ -28,7 +27,7 @@ public class TableInfo {
 
     public TableInfo(Class<?> modelClass) {
         this.modelClass = modelClass;
-        fieldToColumnMap = new HashMap<>();
+        fieldToColumnMap = new LinkedHashMap<>();
     }
 
     public Class<?> getModelClass() {

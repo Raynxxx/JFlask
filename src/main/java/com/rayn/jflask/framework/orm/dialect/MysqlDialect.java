@@ -1,7 +1,12 @@
 package com.rayn.jflask.framework.orm.dialect;
 
 import com.rayn.jflask.framework.orm.helper.SqlHelper;
+import com.rayn.jflask.framework.orm.mapping.ColumnInfo;
 import com.rayn.jflask.framework.util.StringUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * MysqlDialect
@@ -145,6 +150,27 @@ public class MysqlDialect implements Dialect {
             sb.append(" DESC");
         }
         sb.append(" LIMIT 1");
+        return sb.toString();
+    }
+
+    @Override
+    public String forInsert(Class<?> entity, boolean skipPrimary) {
+        StringBuffer sb = new StringBuffer("INSERT INTO ");
+        sb.append(SqlHelper.getTableName(entity));
+
+        Map<String, ColumnInfo> columnInfoMap = SqlHelper.getColumnInfoMap(entity);
+        List<String> columnNames = new ArrayList<>();
+        List<String> questionMarks = new ArrayList<>();
+        for (Map.Entry<String, ColumnInfo> entry : columnInfoMap.entrySet()) {
+            if (skipPrimary && entry.getValue().isPrimary()) {
+                continue;
+            }
+            columnNames.add(entry.getValue().getName());
+            questionMarks.add("?");
+        }
+        sb.append("(").append(StringUtil.join(columnNames.toArray(), ",")).append(")");
+        sb.append(" VALUES ");
+        sb.append("(").append(StringUtil.join(questionMarks.toArray(), ",")).append(")");
         return sb.toString();
     }
 

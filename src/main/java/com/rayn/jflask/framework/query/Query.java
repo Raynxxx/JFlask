@@ -1,7 +1,5 @@
 package com.rayn.jflask.framework.query;
 
-import java.util.List;
-
 /**
  * Query
  * Created by Raynxxx on 2016/07/19.
@@ -9,6 +7,8 @@ import java.util.List;
 public interface Query<T> {
 
     <PK> T find(PK primaryKey);
+
+    <PK> PK save(T entity);
 
     boolean exist(String conditions);
 }

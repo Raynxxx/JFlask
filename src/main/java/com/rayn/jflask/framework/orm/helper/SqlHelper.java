@@ -2,13 +2,18 @@ package com.rayn.jflask.framework.orm.helper;
 
 import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.core.exception.QueryException;
-import com.rayn.jflask.framework.orm.TableMapping;
-import com.rayn.jflask.framework.orm.model.TableInfo;
+import com.rayn.jflask.framework.orm.mapping.TableMapping;
+import com.rayn.jflask.framework.orm.mapping.ColumnInfo;
+import com.rayn.jflask.framework.orm.mapping.TableInfo;
 import com.rayn.jflask.framework.util.CollectionUtil;
 import com.rayn.jflask.framework.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,8 +49,16 @@ public class SqlHelper {
         return tableMapping.getTableInfo(entity);
     }
 
-    public static  <T> String getTableName(Class<T> entity) {
+    public static <T> String getTableName(Class<T> entity) {
         return tableMapping.getTableName(entity);
+    }
+
+    public static Map<String, ColumnInfo> getColumnInfoMap(Class<?> entity) {
+        return getTableInfo(entity).getColumnInfoMap();
+    }
+
+    public static int getColumnSize(Class<?> entity) {
+        return getTableInfo(entity).getColumnInfoMap().size();
     }
 
     /**
@@ -130,6 +143,26 @@ public class SqlHelper {
             fields[i] = column + " " + order;
         }
         return StringUtil.join(fields);
+    }
+
+    public static Object[] transferModelValues(Class<?> entityClass, Object bean, boolean skipPrimary) {
+        Map<String, ColumnInfo> columnInfoMap = getColumnInfoMap(entityClass);
+        List<Object> values = new ArrayList<>();
+        try {
+            for (Map.Entry<String, ColumnInfo> entry : columnInfoMap.entrySet()) {
+                if (skipPrimary && entry.getValue().isPrimary()) {
+                    continue;
+                }
+                String fieldName = entry.getKey();
+                Field field = entityClass.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                values.add(field.get(bean));
+            }
+        } catch (Exception e) {
+            logger.error("[JFlask] transferModelValues Error!", e);
+            throw new RuntimeException(e);
+        }
+        return values.toArray();
     }
 
 }

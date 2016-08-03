@@ -4,14 +4,12 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
 /**
  * BaseModel
  * Created by Raynxxx on 2016/07/18.
  */
-public class BaseModel<T> implements Serializable {
+public class BaseModel implements Serializable {
 
     @Override
     public int hashCode() {
@@ -25,25 +23,6 @@ public class BaseModel<T> implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("<Model \"%s\">", this.getSubClassType().getSimpleName());
-    }
-
-    @SuppressWarnings("unchecked")
-    public Class<T> getSubClassType() {
-        ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
-        Type[] params = type.getActualTypeArguments();
-        return (Class<T>) params[0];
-    }
-
-    public static void create() {
-
-    }
-
-    public void save() {
-
-    }
-
-    public void destroy() {
-
+        return "<Model>";
     }
 }

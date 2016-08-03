@@ -3,11 +3,11 @@ package com.rayn.jflask.framework.orm;
 import com.rayn.jflask.framework.annotation.entity.Column;
 import com.rayn.jflask.framework.annotation.entity.Table;
 import com.rayn.jflask.framework.orm.dialect.Dialect;
-import com.rayn.jflask.framework.orm.model.ColumnInfo;
-import com.rayn.jflask.framework.orm.model.TableInfo;
+import com.rayn.jflask.framework.orm.mapping.ColumnInfo;
+import com.rayn.jflask.framework.orm.mapping.TableInfo;
+import com.rayn.jflask.framework.orm.mapping.TableMapping;
 import com.rayn.jflask.framework.util.CollectionUtil;
 import com.rayn.jflask.framework.util.StringUtil;
-import javafx.scene.control.Tab;
 
 import java.lang.reflect.Field;
 import java.util.List;

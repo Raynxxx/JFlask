@@ -79,6 +79,7 @@ public class MultipartHelper {
                 String fileName = FileUtil.getRealFileName(fileItem.getName());
                 if (StringUtil.isEmpty(fileName)) {
                     logger.warn("[JFlask][MultipartHelper] upload file 字段 => {} 文件名为空", fieldName);
+                    continue;
                 }
                 long fileSize = fileItem.getSize();
                 String contentType = fileItem.getContentType();

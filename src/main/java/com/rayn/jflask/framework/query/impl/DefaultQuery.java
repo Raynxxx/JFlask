@@ -1,6 +1,7 @@
 package com.rayn.jflask.framework.query.impl;
 
 import com.rayn.jflask.framework.orm.ORMLoader;
+import com.rayn.jflask.framework.orm.helper.SqlHelper;
 import com.rayn.jflask.framework.query.QueryProvider;
 import com.rayn.jflask.framework.orm.dialect.Dialect;
 import com.rayn.jflask.framework.query.Query;
@@ -24,6 +25,16 @@ public class DefaultQuery<T> implements Query<T> {
         StringBuffer sb = new StringBuffer(dialect.forSelectByPrimaryKey(entityClass));
         sb.append(dialect.generateSelectFirst(entityClass, false));
         return QueryProvider.queryEntity(entityClass, sb.toString(), primaryKey);
+    }
+
+    @Override
+    public <PK> PK save(T entity) {
+        if (entity == null) {
+            throw new IllegalArgumentException("[JFlask] entity to SAVE can not be NULL!");
+        }
+        String sql = dialect.forInsert(entityClass, true);
+        Object[] values = SqlHelper.transferModelValues(entityClass, entity, true);
+        return QueryProvider.insertEntity(sql, values);
     }
 
     @Override

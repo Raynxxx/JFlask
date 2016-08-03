@@ -1,7 +1,5 @@
 package com.rayn.jflask.framework.mvc.model;
 
-import com.rayn.jflask.framework.Constants;
-import com.rayn.jflask.framework.mvc.MultipartHelper;
 import com.rayn.jflask.framework.mvc.WebContext;
 
 import java.io.InputStream;

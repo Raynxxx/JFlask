@@ -2,8 +2,7 @@ package com.rayn.jflask.framework.orm.helper;
 
 import com.rayn.jflask.framework.InstanceFactory;
 import com.rayn.jflask.framework.orm.DataSourceProvider;
-import com.rayn.jflask.framework.orm.TableMapping;
-import com.rayn.jflask.framework.orm.model.TableInfo;
+import com.rayn.jflask.framework.orm.mapping.TableMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
