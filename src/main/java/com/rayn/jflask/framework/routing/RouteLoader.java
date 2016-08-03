@@ -25,7 +25,7 @@ public class RouteLoader {
 
     // 静态初始化
     static {
-        logger.info("[JFlask] RouteLoader 启动");
+        logger.info("[JFlask][RouteLoader] 启动");
         // 取得所有控制器
         List<Class<?>> controllerList = getControllerList();
         if (CollectionUtil.isNotEmpty(controllerList)) {

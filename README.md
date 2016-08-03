@@ -13,58 +13,10 @@ JFlask is light-weight Java Web Framework inspired by *Python Flask*
 
 ### Demo
 
-```java
-// Model
-import com.rayn.jflask.framework.annotation.entity.Column;
-import com.rayn.jflask.framework.annotation.entity.Table;
-import com.rayn.jflask.framework.orm.BaseModel;
-import com.rayn.jflask.framework.query.Query;
-import com.rayn.jflask.framework.query.impl.DefaultQuery;
-
-@Table(name = "user")
-public class User extends BaseModel<User> {
-
-    public static final Query<User> finder = new DefaultQuery<>(User.class);
-
-    @Column(name = "id", isPrimary = true)
-    private int id;
-
-    @Column(name = "username")
-    private String username;
-
-    @Column(name = "password")
-    private String password;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-}
-
-```
 
 ```java
 // Controller
-import com.rayn.jflask.framework.annotation.web.*;
-import com.rayn.jflask.framework.mvc.Respond;
-import com.rayn.jflask.framework.mvc.WebContext;
-import com.rayn.jflask.framework.mvc.model.Params;
-import com.rayn.jflask.framework.mvc.result.Result;
-import com.rayn.jflask.sample.models.User;
-
-import java.util.HashMap;
-import java.util.Map;
+import ......
 
 @Controller
 public class ExampleController {
@@ -99,6 +51,10 @@ public class ExampleController {
 
     @Route("/users")
     public Result users() {
+        System.out.println("find rayn: " + User.finder.select("id, username")
+            .where("username = ?", "rayn").first());
+        System.out.println("find first: " + User.finder.first());
+        System.out.println("find last: " + User.finder.last());
         return Respond.jsp("users.jsp",
                 "users", User.finder.findAll());
     }
@@ -106,12 +62,39 @@ public class ExampleController {
     @Route(value = "/users", method = "POST")
     public Result createUser(Params params) {
         User user = params.toModel(User.class);
-        // WebContext 提供上传文件的接口
-        WebContext.uploadFile(params.getFile("avatar"));
+        // 文件保存
+        MultipartFile file = params.getFile("avatar");
+        if (file != null) {
+            file.save("avatar/");
+        }
         Map<String, Object> data = new HashMap<>();
         data.put("status", "success");
         data.put("user", user.getUsername());
         return Respond.json(data);
     }
 }
+```
+
+
+```java
+// Model
+import ......
+
+@Table(name = "user")
+public class User extends BaseModel<User> {
+
+    public static final LinqQuery<User> finder = new DefaultLinqQuery<>(User.class);
+
+    @Column(name = "id", isPrimary = true)
+    private int id;
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "password")
+    private String password;
+
+    // ......
+}
+
 ```

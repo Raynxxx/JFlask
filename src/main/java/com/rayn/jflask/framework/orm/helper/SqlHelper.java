@@ -26,10 +26,10 @@ public class SqlHelper {
 
     // conditionRegex & Pattern
     private static final String conditionRegex =
-            "([a-zA-Z_]+[a-zA-Z0-9_]+)\\s+     # field variable\n" +
+            "([a-zA-Z_]+[a-zA-Z0-9_]+)\\s+      # field variable\n" +
             "(\n" +
-            "   =|!=|<>|>|>=|<|<=|                  # relation operator\n" +
-            "   (?i)like|in|between                 # case insensitive operator\n" +
+            "   =|!=|<>|>|>=|<|<=|              # relation operator\n" +
+            "   (?i)like|in|between             # case insensitive operator\n" +
             ")\\s+";
 
     private static final Pattern conditionPattern = Pattern.compile(conditionRegex, Pattern.COMMENTS);
@@ -81,7 +81,7 @@ public class SqlHelper {
         Matcher matcher = conditionPattern.matcher(conditions.trim());
         while (matcher.find()) {
             String columnName = tableMapping.toColumnName(entityClass, matcher.group(1));
-            String operator = matcher.group(3);
+            String operator = matcher.group(2).toUpperCase();
             matcher.appendReplacement(sb, columnName);
             sb.append(" ").append(operator).append(" ");
         }

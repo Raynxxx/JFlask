@@ -32,7 +32,7 @@ public class AnnotationBeanFactory implements BeanFactory {
     private static final String basePackage = ConfigHelper.getString("app.base_package");
 
     static {
-        logger.info("[JFlask] BeanFactory 启动");
+        logger.info("[JFlask][BeanFactory] 启动");
         try {
             List<Class<?>> classList = classScanner.getClassList(basePackage);
             for (Class<?> clazz : classList) {

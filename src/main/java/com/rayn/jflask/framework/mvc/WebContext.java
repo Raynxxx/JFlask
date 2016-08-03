@@ -75,6 +75,13 @@ public class WebContext {
         MultipartHelper.uploadFile(file, getBasePath() + Constants.UPLOAD_PATH);
     }
 
+    public static void uploadFile(MultipartFile file, String subDirectory) {
+        if (!subDirectory.endsWith("/")) {
+            subDirectory += "/";
+        }
+        MultipartHelper.uploadFile(file, getBasePath() + Constants.UPLOAD_PATH + subDirectory);
+    }
+
 
     /**
      * 封装 Session

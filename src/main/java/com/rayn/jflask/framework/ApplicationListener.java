@@ -23,7 +23,7 @@ public class ApplicationListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent event) {
-        logger.info("[JFlask] ApplicationListener 启动");
+        logger.info("[JFlask][ApplicationListener] 启动");
         // 获取 servletContext
         ServletContext servletContext = event.getServletContext();
         // 初始化相关工具类

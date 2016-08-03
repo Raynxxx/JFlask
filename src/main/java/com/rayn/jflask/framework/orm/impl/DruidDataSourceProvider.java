@@ -1,33 +1,24 @@
 package com.rayn.jflask.framework.orm.impl;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.alibaba.druid.pool.DruidDataSource;
 import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.util.StringUtil;
 
 import javax.sql.DataSource;
-import java.beans.PropertyVetoException;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
- * C3p0DataSourceProvider
- * Created by Raynxxx on 2016/07/24.
+ * DruidDataSourceProvider
+ * Created by Raynxxx on 2016/08/03.
  */
-public class C3p0DataSourceProvider extends AbstractDataSourceProvider {
+public class DruidDataSourceProvider extends AbstractDataSourceProvider {
 
     private String jdbcUrl;
     private String driver;
     private String username;
     private String password;
-    private int maxPoolSize = 100;
-    private int minPoolSize = 10;
-    private int initialPoolSize = 10;
-    private int maxIdleTime = 20;
-    private int acquireIncrement = 2;
-
 
     @Override
-    public void init(){
+    public void init() {
         super.init();
         // init config
         jdbcUrl = getAppConfig(Constants.JDBC.URL);
@@ -50,22 +41,11 @@ public class C3p0DataSourceProvider extends AbstractDataSourceProvider {
 
     @Override
     public DataSource getDataSource() {
-        ComboPooledDataSource dataSource;
-        try {
-            dataSource = new ComboPooledDataSource();
-            dataSource.setJdbcUrl(jdbcUrl);
-            dataSource.setDriverClass(driver);
-            dataSource.setUser(username);
-            dataSource.setPassword(password);
-            dataSource.setMaxPoolSize(maxPoolSize);
-            dataSource.setMinPoolSize(minPoolSize);
-            dataSource.setInitialPoolSize(initialPoolSize);
-            dataSource.setMaxIdleTime(maxIdleTime);
-            dataSource.setAcquireIncrement(acquireIncrement);
-        } catch (PropertyVetoException e) {
-            dataSource = null;
-            logger.error("[JFlask] Can not getDataSource ", e);
-        }
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setUrl(jdbcUrl);
+        dataSource.setDriverClassName(driver);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
         return dataSource;
     }
 }

@@ -22,7 +22,7 @@ public class MysqlDialect implements Dialect {
     public String forSelectFirst(Class<?> entity) {
         StringBuffer sb = new StringBuffer("SELECT * FROM ");
         sb.append(SqlHelper.getTableName(entity));
-        sb.append(generateSelectFirst(entity));
+        sb.append(generateSelectFirst(entity, true));
         return sb.toString();
     }
 
@@ -30,7 +30,7 @@ public class MysqlDialect implements Dialect {
     public String forSelectLast(Class<?> entity) {
         StringBuffer sb = new StringBuffer("SELECT * FROM ");
         sb.append(SqlHelper.getTableName(entity));
-        sb.append(generateSelectLast(entity));
+        sb.append(generateSelectLast(entity, true));
         return sb.toString();
     }
 
@@ -85,61 +85,67 @@ public class MysqlDialect implements Dialect {
 
     @Override
     public String generateWhere(Class<?> entity, String conditions) {
-        String ret = "";
+        StringBuffer sb = new StringBuffer();
         if (StringUtil.isNotEmpty(conditions)) {
             String cond = SqlHelper.transferCondition(entity, conditions);
-            ret += " WHERE " + cond;
+            sb.append(" WHERE ").append(cond);
         }
-        return ret;
+        return sb.toString();
     }
 
     @Override
     public String generateGroupBy(Class<?> entity, String groupBy) {
-        String ret = "";
+        StringBuffer sb = new StringBuffer();
         if (StringUtil.isNotEmpty(groupBy)) {
             String fields = SqlHelper.transferGroupBy(entity, groupBy);
-            ret += " GROUP BY " + fields;
+            sb.append(" GROUP BY ").append(fields);
         }
-        return ret;
+        return sb.toString();
     }
 
     @Override
     public String generateHaving(Class<?> entity, String having) {
-        String ret = "";
+        StringBuffer sb = new StringBuffer();
         if (StringUtil.isNotEmpty(having)) {
             String cond = SqlHelper.transferHaving(entity, having);
-            ret += " HAVING " + cond;
+            sb.append(" HAVING ").append(cond);
         }
-        return ret;
+        return sb.toString();
     }
 
     @Override
     public String generateOrderBy(Class<?> entity, String orderBy) {
-        String ret = "";
+        StringBuffer sb = new StringBuffer();
         if (StringUtil.isNotEmpty(orderBy)) {
             String fields = SqlHelper.transferOrderBy(entity, orderBy);
-            ret += " ORDER BY " + fields;
+            sb.append(" ORDER BY ").append(fields);
         }
-        return ret;
-    }
-
-
-    @Override
-    public String generateSelectFirst(Class<?> entity) {
-        StringBuffer sb = new StringBuffer(" ORDER BY ");
-        sb.append(SqlHelper.getTableInfo(entity).getPrimaryKey());
-        sb.append(" ASC LIMIT 1");
-        return sb.toString();
-    }
-
-    @Override
-    public String generateSelectLast(Class<?> entity) {
-        StringBuffer sb = new StringBuffer(" ORDER BY ");
-        sb.append(SqlHelper.getTableInfo(entity).getPrimaryKey());
-        sb.append(" DESC LIMIT 1");
         return sb.toString();
     }
 
 
+    @Override
+    public String generateSelectFirst(Class<?> entity, boolean needOrder) {
+        StringBuffer sb = new StringBuffer();
+        if (needOrder) {
+            sb.append(" ORDER BY ");
+            sb.append(SqlHelper.getTableInfo(entity).getPrimaryKey());
+            sb.append(" ASC");
+        }
+        sb.append(" LIMIT 1");
+        return sb.toString();
+    }
+
+    @Override
+    public String generateSelectLast(Class<?> entity, boolean needOrder) {
+        StringBuffer sb = new StringBuffer();
+        if (needOrder) {
+            sb.append(" ORDER BY ");
+            sb.append(SqlHelper.getTableInfo(entity).getPrimaryKey());
+            sb.append(" DESC");
+        }
+        sb.append(" LIMIT 1");
+        return sb.toString();
+    }
 
 }

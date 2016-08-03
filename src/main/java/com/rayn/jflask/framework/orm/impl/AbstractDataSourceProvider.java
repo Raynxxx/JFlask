@@ -16,12 +16,12 @@ public abstract class AbstractDataSourceProvider implements DataSourceProvider {
 
     @Override
     public void init() {
-        logger.info("[JFlask] DataSourceProvider 初始化");
+        logger.info("[JFlask][DataSourceProvider] 初始化");
     }
 
     @Override
     public void destroy() {
-        logger.info("[JFlask] DataSourceProvider 销毁中");
+        logger.info("[JFlask][DataSourceProvider] 销毁中");
     }
 
     @Override

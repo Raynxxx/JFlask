@@ -37,9 +37,9 @@ public interface Dialect {
 
     String generateOrderBy(Class<?> entity, String orderBy);
 
-    String generateSelectFirst(Class<?> entity);
+    String generateSelectFirst(Class<?> entity, boolean needOrder);
 
-    String generateSelectLast(Class<?> entity);
+    String generateSelectLast(Class<?> entity, boolean needOrder);
 
 
 

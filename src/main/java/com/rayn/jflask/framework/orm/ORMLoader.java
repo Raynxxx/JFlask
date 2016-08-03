@@ -30,7 +30,7 @@ public class ORMLoader {
     private static final Dialect defaultDialect;
 
     static {
-        logger.info("[JFlask] ORMLoader 启动");
+        logger.info("[JFlask][ORMLoader] 启动");
 
         // 初始化 defaultDialect
         String dialectConfig = ConfigHelper.getString(Constants.JDBC.DIALECT);

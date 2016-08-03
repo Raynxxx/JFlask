@@ -48,7 +48,7 @@ public class DispatcherServlet extends HttpServlet {
 
         String currentRequestMethod = request.getMethod();
         String currentRequestPath = ServletHelper.getRequestPath(request);
-        logger.info("[JFlask][DispatcherServlet] {}:{} on {}", currentRequestMethod,
+        logger.info("\n[JFlask][DispatcherServlet] {}:{} on {}", currentRequestMethod,
                 currentRequestPath, new Date());
 
         if (currentRequestPath.startsWith(Constants.STATIC_PATH)) {
@@ -73,7 +73,7 @@ public class DispatcherServlet extends HttpServlet {
             logger.error("[JFlask] {}", e.getMessage());
         } finally {
             WebContext.destroy();
-            logger.info("[JFlask][DispatcherServlet] End ******************************");
+            logger.info("[JFlask][DispatcherServlet] End ******************************\n");
         }
     }
 

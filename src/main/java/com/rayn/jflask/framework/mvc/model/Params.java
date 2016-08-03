@@ -100,7 +100,7 @@ public class Params {
         return instance;
     }
 
-    public  <T> T toModel(Class<T> modelType, T instance) {
+    public <T> T toModel(Class<T> modelType, T instance) {
         Field[] fields = modelType.getDeclaredFields();
         try {
             for (Field field : fields) {
@@ -134,4 +134,6 @@ public class Params {
         }
         return instance;
     }
+
+
 }

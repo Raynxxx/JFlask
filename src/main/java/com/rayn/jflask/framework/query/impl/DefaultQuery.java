@@ -22,7 +22,7 @@ public class DefaultQuery<T> implements Query<T> {
     @Override
     public <PK> T find(PK primaryKey) {
         StringBuffer sb = new StringBuffer(dialect.forSelectByPrimaryKey(entityClass));
-        sb.append(" LIMIT 1");
+        sb.append(dialect.generateSelectFirst(entityClass, false));
         return QueryProvider.queryEntity(entityClass, sb.toString(), primaryKey);
     }
 

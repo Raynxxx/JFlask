@@ -29,7 +29,7 @@ public class IOCBuilder {
     private static final ClassScanner classScanner = InstanceFactory.getClassScanner();
 
     static {
-        logger.info("[JFlask] IOCBuilder 启动, Dependence Injection Processing");
+        logger.info("[JFlask][IOCBuilder] 启动, Dependence Injection Processing");
         try {
             Map<Class<?>, Object> beanMap = beanFactory.getAllBeans();
             for (Map.Entry<Class<?>, Object> beanEntry : beanMap.entrySet()) {

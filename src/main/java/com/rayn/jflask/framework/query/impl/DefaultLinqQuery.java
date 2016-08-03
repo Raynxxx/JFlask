@@ -1,5 +1,7 @@
 package com.rayn.jflask.framework.query.impl;
 
+import com.rayn.jflask.framework.orm.helper.DatabaseHelper;
+import com.rayn.jflask.framework.orm.helper.SqlHelper;
 import com.rayn.jflask.framework.query.QueryProvider;
 import com.rayn.jflask.framework.query.LinqQuery;
 
@@ -14,54 +16,60 @@ import java.util.List;
 public class DefaultLinqQuery<T> extends DefaultQuery<T>
         implements LinqQuery<T> {
 
-    private String fullSql;
-    private List<Object> paramsList;
+    private ThreadLocal<String> fullSql;
+    private ThreadLocal<List<Object>> paramsList;
 
     public DefaultLinqQuery(Class<T> entityClass) {
         super(entityClass);
-        this.fullSql = null;
-        this.paramsList = new ArrayList<>();
+        this.fullSql = new ThreadLocal<>();
+        this.paramsList = new ThreadLocal<>();
     }
 
     @Override
     public LinqQuery<T> select(String selectFields) {
-        this.fullSql = dialect.forSelect(entityClass, selectFields);
+        this.fullSql.set(dialect.forSelect(entityClass, selectFields));
         return this;
     }
 
     @Override
     public LinqQuery<T> where(String conditions, Object... params) {
-        if (this.fullSql == null) {
-            this.fullSql = dialect.forSelectWhere(entityClass, conditions);
+        if (this.fullSql.get() == null) {
+            this.fullSql.set(dialect.forSelectWhere(entityClass, conditions));
         } else {
-            this.fullSql += dialect.generateWhere(entityClass, conditions);
+            this.fullSql.set(this.fullSql.get() +
+                    dialect.generateWhere(entityClass, conditions));
         }
-        Collections.addAll(this.paramsList, params);
+        if (this.paramsList.get() == null) {
+            this.paramsList.set(new ArrayList<>());
+        }
+        Collections.addAll(this.paramsList.get(), params);
         return this;
     }
 
     @Override
     public LinqQuery<T> groupBy(String groupBy) {
-        if (this.fullSql == null) {
-            this.fullSql = dialect.forSelectGroupBy(entityClass, groupBy);
+        if (this.fullSql.get() == null) {
+            this.fullSql.set(dialect.forSelectGroupBy(entityClass, groupBy));
         } else {
-            this.fullSql += dialect.generateGroupBy(entityClass, groupBy);
+            this.fullSql.set(this.fullSql.get() +
+                    dialect.generateGroupBy(entityClass, groupBy));
         }
         return this;
     }
 
     @Override
     public LinqQuery<T> having(String having) {
-        this.fullSql += dialect.generateHaving(entityClass, having);
+        this.fullSql.set(this.fullSql.get() + dialect.generateHaving(entityClass, having));
         return this;
     }
 
     @Override
     public LinqQuery<T> orderBy(String orderBy) {
-        if (this.fullSql == null) {
-            this.fullSql = dialect.forSelectOrderBy(entityClass, orderBy);
+        if (this.fullSql.get() == null) {
+            this.fullSql.set(dialect.forSelectOrderBy(entityClass, orderBy));
         } else {
-            this.fullSql += dialect.generateOrderBy(entityClass, orderBy);
+            this.fullSql.set(this.fullSql.get() +
+                    dialect.generateOrderBy(entityClass, orderBy));
         }
         return this;
     }
@@ -69,15 +77,19 @@ public class DefaultLinqQuery<T> extends DefaultQuery<T>
     @Override
     public T first() {
         T ret;
-        if (this.fullSql == null) {
-            this.fullSql = dialect.forSelectFirst(entityClass);
-            ret = QueryProvider.queryEntity(entityClass, this.fullSql);
-        } else if (this.fullSql.contains("ORDER BY")) {
-            this.fullSql += " LIMIT 1";
-            ret = QueryProvider.queryEntity(entityClass, this.fullSql, this.paramsList.toArray());
+        if (this.fullSql.get() == null) {
+            this.fullSql.set(dialect.forSelectFirst(entityClass));
+            ret = QueryProvider.queryEntity(entityClass, this.fullSql.get());
+        } else if (this.fullSql.get().contains("ORDER BY")) {
+            this.fullSql.set(this.fullSql.get() +
+                    dialect.generateSelectFirst(entityClass, false));
+            ret = QueryProvider.queryEntity(entityClass, this.fullSql.get(),
+                    this.paramsList.get().toArray());
         } else {
-            this.fullSql += dialect.generateSelectFirst(entityClass);
-            ret = QueryProvider.queryEntity(entityClass, this.fullSql, this.paramsList.toArray());
+            this.fullSql.set(this.fullSql.get() +
+                    dialect.generateSelectFirst(entityClass, true));
+            ret = QueryProvider.queryEntity(entityClass, this.fullSql.get(),
+                    this.paramsList.get().toArray());
         }
         this.reset();
         return ret;
@@ -86,15 +98,19 @@ public class DefaultLinqQuery<T> extends DefaultQuery<T>
     @Override
     public T last() {
         T ret;
-        if (this.fullSql == null) {
-            this.fullSql = dialect.forSelectLast(entityClass);
-            ret = QueryProvider.queryEntity(entityClass, this.fullSql);
-        } else if (this.fullSql.contains("ORDER BY")) {
-            this.fullSql += " LIMIT 1";
-            ret = QueryProvider.queryEntity(entityClass, this.fullSql, this.paramsList.toArray());
+        if (this.fullSql.get() == null) {
+            this.fullSql.set(dialect.forSelectLast(entityClass));
+            ret = QueryProvider.queryEntity(entityClass, this.fullSql.get());
+        } else if (this.fullSql.get().contains("ORDER BY")) {
+            this.fullSql.set(this.fullSql.get() +
+                    dialect.generateSelectLast(entityClass, false));
+            ret = QueryProvider.queryEntity(entityClass, this.fullSql.get(),
+                    this.paramsList.get().toArray());
         } else {
-            this.fullSql += dialect.generateSelectLast(entityClass);
-            ret = QueryProvider.queryEntity(entityClass, this.fullSql, this.paramsList.toArray());
+            this.fullSql.set(this.fullSql.get() +
+                    dialect.generateSelectLast(entityClass, true));
+            ret = QueryProvider.queryEntity(entityClass, this.fullSql.get(),
+                    this.paramsList.get().toArray());
         }
         this.reset();
         return ret;
@@ -103,11 +119,12 @@ public class DefaultLinqQuery<T> extends DefaultQuery<T>
     @Override
     public List<T> all() {
         List<T> ret;
-        if (this.fullSql == null) {
-            this.fullSql = dialect.forSelect(entityClass, "");
-            ret = QueryProvider.queryEntityList(entityClass, this.fullSql);
+        if (this.fullSql.get() == null) {
+            this.fullSql.set(dialect.forSelect(entityClass, ""));
+            ret = QueryProvider.queryEntityList(entityClass, this.fullSql.get());
         } else {
-            ret = QueryProvider.queryEntityList(entityClass, this.fullSql, this.paramsList.toArray());
+            ret = QueryProvider.queryEntityList(entityClass, this.fullSql.get(),
+                    this.paramsList.get().toArray());
         }
         this.reset();
         return ret;
@@ -116,17 +133,19 @@ public class DefaultLinqQuery<T> extends DefaultQuery<T>
     @Override
     public long count() {
         long ret;
-        if (this.fullSql == null) {
-            this.fullSql = dialect.forSelectCount(entityClass, "");
-            ret = QueryProvider.queryCount(this.fullSql);
+        if (this.fullSql.get() == null) {
+            this.fullSql.set(dialect.forSelectCount(entityClass, ""));
+            ret = QueryProvider.queryCount(this.fullSql.get());
         } else {
-            ret = QueryProvider.queryCount(this.fullSql, this.paramsList.toArray());
+            ret = QueryProvider.queryCount(this.fullSql.get(),
+                    this.paramsList.get().toArray());
         }
+        this.reset();
         return ret;
     }
 
     private void reset() {
-        this.fullSql = null;
-        this.paramsList.clear();
+        this.fullSql.remove();
+        this.paramsList.remove();
     }
 }
