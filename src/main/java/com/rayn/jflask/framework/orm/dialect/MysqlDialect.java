@@ -174,4 +174,13 @@ public class MysqlDialect implements Dialect {
         return sb.toString();
     }
 
+    @Override
+    public String forExists(Class<?> entity, String conditions) {
+        StringBuffer sb = new StringBuffer("SELECT 1 AS one FROM ");
+        sb.append(SqlHelper.getTableName(entity));
+        sb.append(generateWhere(entity, conditions));
+        sb.append(generateSelectFirst(entity, false));
+        return sb.toString();
+    }
+
 }

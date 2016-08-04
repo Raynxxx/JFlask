@@ -45,5 +45,8 @@ public interface Dialect {
 
     String forInsert(Class<?> entity, boolean skipPrimary);
 
+    // ***************** 生成 exist 字句 ******************
+
+    String forExists(Class<?> entity, String conditions);
 
 }

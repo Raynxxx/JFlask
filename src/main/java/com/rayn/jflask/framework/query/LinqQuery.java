@@ -1,22 +1,25 @@
 package com.rayn.jflask.framework.query;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * DefaultLinqQuery
  * Created by Raynxxx on 2016/08/02.
  */
-public interface LinqQuery<T> extends Query<T> {
+public interface LinqQuery<T, PK extends Serializable> extends Query<T, PK> {
 
-    LinqQuery<T> select(String selectFields);
+    LinqQuery<T, PK> select(String selectFields);
 
-    LinqQuery<T> where(String conditions, Object... params);
+    LinqQuery<T, PK> where(String conditions, Object... params);
 
-    LinqQuery<T> groupBy(String groupBy);
+    LinqQuery<T, PK> groupBy(String groupBy);
 
-    LinqQuery<T> having(String having);
+    LinqQuery<T, PK> having(String having);
 
-    LinqQuery<T> orderBy(String orderBy);
+    LinqQuery<T, PK> orderBy(String orderBy);
+
+    //LinqQuery<T, PK> paginate();
 
     T first();
 

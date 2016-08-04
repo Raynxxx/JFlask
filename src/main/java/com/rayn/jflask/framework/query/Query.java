@@ -1,14 +1,23 @@
 package com.rayn.jflask.framework.query;
 
+import java.io.Serializable;
+import java.util.List;
+
 /**
  * Query
  * Created by Raynxxx on 2016/07/19.
  */
-public interface Query<T> {
+public interface Query<T, PK extends Serializable> {
 
-    <PK> T find(PK primaryKey);
+    PK save(T entity);
 
-    <PK> PK save(T entity);
+    T find(PK primaryKey);
 
-    boolean exist(String conditions);
+    T findBy(String conditions, Object... params);
+
+    //List<T> findAll(List<PK> selectIds);
+
+    List<T> findAll(String conditions, Object... params);
+
+    boolean exist(String conditions, Object... params);
 }

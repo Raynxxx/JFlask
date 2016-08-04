@@ -46,7 +46,7 @@ public class QueryProvider {
                 result = queryRunner.query(sql, new BeanHandler<T>(entityClass,
                         new BasicRowProcessor(new BeanProcessor(columnMap))), params);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.error("[JFlask] queryEntity Error", e);
             throw new QueryException(e);
         }
@@ -65,8 +65,23 @@ public class QueryProvider {
                 result = queryRunner.query(sql, new BeanListHandler<T>(entityClass,
                         new BasicRowProcessor(new BeanProcessor(columnMap))), params);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.error("[JFlask] queryEntityList Error", e);
+            throw new QueryException(e);
+        }
+        SqlHelper.outputSQL(sql);
+        return result;
+    }
+
+    /**
+     * queryCount
+     */
+    public static boolean queryExists(String sql, Object... params) {
+        boolean result;
+        try {
+            result = queryRunner.query(sql, new ScalarHandler<Boolean>("one"), params);
+        } catch (Exception e) {
+            logger.error("[JFlask] queryExists Error", e);
             throw new QueryException(e);
         }
         SqlHelper.outputSQL(sql);
@@ -80,7 +95,7 @@ public class QueryProvider {
         long result;
         try {
             result = queryRunner.query(sql, new ScalarHandler<Long>("count(*)"), params);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.error("[JFlask] queryCount Error", e);
             throw new QueryException(e);
         }
@@ -88,11 +103,14 @@ public class QueryProvider {
         return result;
     }
 
+    /**
+     * insertEntity
+     */
     public static <PK> PK insertEntity(String sql, Object... params) {
         PK ret;
         try {
             ret = queryRunner.insert(sql, new ScalarHandler<PK>(), params);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.error("[JFlask] insertEntity Error", e);
             throw new QueryException(e);
         }
