@@ -3,8 +3,8 @@ package com.rayn.jflask.framework.ioc;
 import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.InstanceFactory;
 import com.rayn.jflask.framework.annotation.ioc.AutoWired;
+import com.rayn.jflask.framework.core.ClassHelper;
 import com.rayn.jflask.framework.core.ClassScanner;
-import com.rayn.jflask.framework.core.ConfigHelper;
 import com.rayn.jflask.framework.util.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,21 +15,18 @@ import java.util.Map;
 
 /**
  * 控制反转构建器
- * IOCBuilder
+ * IocInitializer
  * Created by Raynxxx on 2016/05/26.
  */
-public class IOCBuilder {
+public class IocInitializer {
 
-    private static final Logger logger = LoggerFactory.getLogger(IOCBuilder.class);
+    private static final Logger logger = LoggerFactory.getLogger(IocInitializer.class);
 
     // bean 工厂
     private static final BeanFactory beanFactory = InstanceFactory.getBeanFactory();
 
-    // 类扫描器
-    private static final ClassScanner classScanner = InstanceFactory.getClassScanner();
-
     static {
-        logger.info("[JFlask][IOCBuilder] 启动, Dependence Injection Processing");
+        logger.info("[JFlask][IocInitializer] 启动, Dependence Injection Processing");
         try {
             Map<Class<?>, Object> beanMap = beanFactory.getAllBeans();
             for (Map.Entry<Class<?>, Object> beanEntry : beanMap.entrySet()) {
@@ -54,14 +51,13 @@ public class IOCBuilder {
                             if (instance != null) {
                                 beanField.setAccessible(true);
                                 beanField.set(beanInstance, instance);
-                                logger.debug("[JFlask][IOCBuilder] 注入 {} => {}#{}", implClass.getName(),
+                                logger.debug("[JFlask][IocInitializer] 注入 {} => {}#{}", implClass.getName(),
                                         beanClass.getName(), beanField.getName());
                             } else {
                                 throw new RuntimeException(beanClass.getCanonicalName() + " / " +
-                                        beanField.getName() + " 注入失败, 不存在实现类");
+                                        beanField.getName() + " 注入失败, 实现类初始化失败");
                             }
                         } else {
-                            // TODO (to throw exception whether or not)
                             throw new RuntimeException(beanClass.getCanonicalName() + " / " +
                                     beanField.getName() + " 注入失败, 不存在实现类");
                         }
@@ -76,8 +72,7 @@ public class IOCBuilder {
 
     public static Class<?> getImplementClass(Class<?> interfaceClass) {
         Class<?> implClass = null;
-        List<Class<?>> implClassList = classScanner.getClassListBySuper(Constants.BASE_PACKAGE,
-                interfaceClass);
+        List<Class<?>> implClassList = ClassHelper.getClassListBySuper(interfaceClass);
         if (CollectionUtil.isNotEmpty(implClassList)) {
             implClass = implClassList.get(0);
         }

@@ -40,8 +40,12 @@ public class BaseModel<T, PK extends Serializable> implements Serializable {
     public PK save() {
         Class<T> entityClass = getSubClassType();
         System.out.println(entityClass.getName());
-        String sql = ORMLoader.getDefaultDialect().forInsert(entityClass, true);
+        String sql = OrmInitializer.getDefaultDialect().forInsert(entityClass, true);
         Object[] values = SqlHelper.transferModelValues(entityClass, this, true);
         return QueryProvider.insertEntity(sql, values);
+    }
+
+    public boolean destroy() {
+        return false;
     }
 }

@@ -78,12 +78,12 @@ public class DispatcherServlet extends HttpServlet {
         }
     }
 
-    private static void handleStaticResource(HttpServletRequest request,
-                                            HttpServletResponse response)
+    private static void handleStaticResource(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher rd = request.getServletContext().getNamedDispatcher("default");
         if (rd == null) {
-            throw new IllegalStateException("A RequestDispatcher could not be located for the default servlet 'default'");
+            throw new IllegalStateException("A RequestDispatcher could not be " +
+                    "located for the default servlet 'default'");
         }
         rd.forward(request, response);
     }

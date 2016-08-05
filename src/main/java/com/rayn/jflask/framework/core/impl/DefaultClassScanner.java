@@ -1,5 +1,6 @@
 package com.rayn.jflask.framework.core.impl;
 
+import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.core.ClassScanner;
 import com.rayn.jflask.framework.util.ClassUtil;
 import com.rayn.jflask.framework.util.StringUtil;
@@ -23,16 +24,16 @@ import java.util.jar.JarFile;
  */
 public class DefaultClassScanner implements ClassScanner {
 
-    private static final Logger logger = LoggerFactory.getLogger(DefaultClassScanner.class);
+    private static final Logger logger = LoggerFactory.getLogger(ClassScanner.class);
 
-    private static List<Class<?>> cacheClassList;
+
 
     /**
      * 取得指定包下的所有类
      */
     @Override
     public List<Class<?>> getClassList(final String packageName) {
-        return new ScannerHelper(packageName) {
+        return new ClassScannerSupport(packageName) {
             @Override
             public boolean accept(Class<?> clazz) {
                 String className = clazz.getName();
@@ -46,11 +47,13 @@ public class DefaultClassScanner implements ClassScanner {
      * 取得指定包下含有指定注解的所有类
      */
     @Override
-    public List<Class<?>> getClassListByAnnotation(String packageName, final Class<? extends Annotation> annotation) {
-        return new ScannerHelper(packageName) {
+    public List<Class<?>> getClassListByAnnotation(final String packageName, final Class<? extends Annotation> annotation) {
+        return new ClassScannerSupport(packageName) {
             @Override
             public boolean accept(Class<?> clazz) {
-                return clazz.isAnnotationPresent(annotation);
+                String className = clazz.getName();
+                String pkgName = className.substring(0, className.lastIndexOf("."));
+                return pkgName.startsWith(packageName) && clazz.isAnnotationPresent(annotation);
             }
         }.getClassList();
     }
@@ -60,112 +63,14 @@ public class DefaultClassScanner implements ClassScanner {
      */
     @Override
     public List<Class<?>> getClassListBySuper(String packageName, final Class<?> superClass) {
-        return new ScannerHelper(packageName) {
+        return new ClassScannerSupport(packageName) {
             @Override
             public boolean accept(Class<?> clazz) {
-                return superClass.isAssignableFrom(clazz) && !superClass.equals(clazz);
+                String className = clazz.getName();
+                String pkgName = className.substring(0, className.lastIndexOf("."));
+                return pkgName.startsWith(packageName) && superClass.isAssignableFrom(clazz) &&
+                        !superClass.equals(clazz);
             }
         }.getClassList();
-    }
-
-    /**
-     * ScannerHelper
-     */
-    private abstract class ScannerHelper {
-
-        private final String packageName;
-
-        ScannerHelper(final String packageName) {
-            this.packageName = packageName;
-        }
-
-        List<Class<?>> getClassList() {
-            if (cacheClassList != null) {
-                return filter(cacheClassList);
-            }
-            logger.info(String.format("[JFlask][ClassScanner] 启动扫描 <= %s", this.packageName));
-            cacheClassList = new ArrayList<>();
-            try {
-                // 从包内获取所有资源的URL
-                Enumeration<URL> urls = ClassUtil.getClassLoader().getResources(packageName.replace(".", "/"));
-                while (urls.hasMoreElements()) {
-                    URL url = urls.nextElement();
-                    if (url != null) {
-                        // 获取此资源URL协议 (file/jar)
-                        String protocol = url.getProtocol();
-                        if (protocol.equals("file")) {
-                            String packagePath = url.getPath().replace("%20", " ");
-                            // 子过程搜索文件或文件夹的 class
-                            addClass(cacheClassList, packagePath, packageName);
-                        } else if (protocol.equals("jar")) {
-                            JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();
-                            JarFile jarFile = jarURLConnection.getJarFile();
-                            Enumeration<JarEntry> jarEntries = jarFile.entries();
-                            // 遍历 jar 文件的所有 class
-                            while (jarEntries.hasMoreElements()) {
-                                JarEntry jarEntry = jarEntries.nextElement();
-                                String jarEntryName = jarEntry.getName();
-                                if (jarEntryName.endsWith(".class")) {
-                                    String className = jarEntryName
-                                            .substring(0, jarEntryName.lastIndexOf("."))
-                                            .replace("/", ".");
-                                    addClass(cacheClassList, className);
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                logger.error("加载类错误:", e);
-            }
-            return filter(cacheClassList);
-        }
-
-        private void addClass(List<Class<?>> classList, String packagePath, String packageName) {
-            File[] files = new File(packagePath).listFiles(new FileFilter() {
-                @Override
-                public boolean accept(File file) {
-                    return (file.isFile() && file.getName().endsWith(".class")) || file.isDirectory();
-                }
-            });
-            for (File file : files) {
-                String filename = file.getName();
-                if (file.isFile()) {
-                    String className = filename.substring(0, filename.lastIndexOf("."));
-                    if (StringUtil.isNotEmpty(packageName)) {
-                        className = packageName + "." + className;
-                    }
-                    addClass(classList, className);
-                } else {
-                    String subPackagePath = filename;
-                    String subPackageName = filename;
-                    if (StringUtil.isNotEmpty(packagePath)) {
-                        subPackagePath = packagePath + "/" + filename;
-                    }
-                    if (StringUtil.isNotEmpty(packageName)) {
-                        subPackageName = packageName + "." + filename;
-                    }
-                    addClass(classList, subPackagePath, subPackageName);
-                }
-            }
-        }
-
-        private void addClass(List<Class<?>> classList, String className) {
-            logger.debug("[JFlask][ClassScanner] 加入缓存 class {}", className);
-            Class<?> clazz = ClassUtil.loadClass(className, false);
-            classList.add(clazz);
-        }
-
-        private List<Class<?>> filter(List<Class<?>> classList) {
-            List<Class<?>> tmp = new ArrayList<>();
-            for (Class<?> clazz : classList) {
-                if (accept(clazz)) {
-                    tmp.add(clazz);
-                }
-            }
-            return tmp;
-        }
-
-        public abstract boolean accept(Class<?> clazz);
     }
 }

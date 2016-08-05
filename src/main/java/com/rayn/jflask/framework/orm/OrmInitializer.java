@@ -2,6 +2,7 @@ package com.rayn.jflask.framework.orm;
 
 import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.InstanceFactory;
+import com.rayn.jflask.framework.core.ClassHelper;
 import com.rayn.jflask.framework.core.ClassScanner;
 import com.rayn.jflask.framework.core.ConfigHelper;
 import com.rayn.jflask.framework.orm.dialect.Dialect;
@@ -14,13 +15,13 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * ORMLoader
+ * OrmInitializer
  * Created by Raynxxx on 2016/07/15.
  */
-public class ORMLoader {
+public class OrmInitializer {
 
     // logger
-    private static final Logger logger = LoggerFactory.getLogger(ORMLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(OrmInitializer.class);
 
     // dataSourceProvider
     private static final DataSourceProvider dataSourceProvider
@@ -30,7 +31,7 @@ public class ORMLoader {
     private static final Dialect defaultDialect;
 
     static {
-        logger.info("[JFlask][ORMLoader] 启动");
+        logger.info("[JFlask][OrmInitializer] 启动");
 
         // 初始化 defaultDialect
         String dialectConfig = ConfigHelper.getString(Constants.JDBC.DIALECT);
@@ -60,15 +61,9 @@ public class ORMLoader {
             throw new RuntimeException(e);
         }
 
-        List<Class<?>> modelList = getModelList();
+        List<Class<?>> modelList = ClassHelper.getClassListBySuper(BaseModel.class);
         // 任务转交给 TableBuilder
         TableBuilder.build(modelList, defaultDialect);
-    }
-    
-    private static List<Class<?>> getModelList() {
-        final ClassScanner classScanner = InstanceFactory.getClassScanner();
-        final String basePackage = ConfigHelper.getString("app.base_package");
-        return classScanner.getClassListBySuper(basePackage, BaseModel.class);
     }
 
     public static Dialect getDefaultDialect() {

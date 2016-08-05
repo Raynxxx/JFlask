@@ -1,23 +1,23 @@
 package com.rayn.jflask.framework;
 
 import com.rayn.jflask.framework.core.ConfigHelper;
-import com.rayn.jflask.framework.ioc.IOCBuilder;
-import com.rayn.jflask.framework.orm.ORMLoader;
-import com.rayn.jflask.framework.routing.RouteLoader;
+import com.rayn.jflask.framework.ioc.IocInitializer;
+import com.rayn.jflask.framework.orm.OrmInitializer;
+import com.rayn.jflask.framework.routing.RouteInitializer;
 import com.rayn.jflask.framework.util.ClassUtil;
 
 /**
- * AppLoader
+ * ComponentLoader
  * Created by Raynxxx on 2016/05/23.
  */
-public final class AppLoader {
+public final class ComponentLoader {
 
     public static void init() {
         Class<?>[] loadWhenAppInit = {
                 ConfigHelper.class,
-                RouteLoader.class,
-                ORMLoader.class,
-                IOCBuilder.class
+                RouteInitializer.class,
+                OrmInitializer.class,
+                IocInitializer.class
         };
 
         for (Class<?> cls : loadWhenAppInit) {

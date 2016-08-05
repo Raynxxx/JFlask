@@ -18,6 +18,7 @@
     <commons-io.version>2.5</commons-io.version>
     <commons-dbutils.version>1.6</commons-dbutils.version>
     <druid-version>1.0.22</druid-version>
+    <cglib-version>3.2.4</cglib-version>
   </properties>
 
   <build>
@@ -40,7 +41,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.rayn.jflask.framework.AppLoader</mainClass>
+              <mainClass>com.rayn.jflask.framework.ComponentLoader</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
@@ -104,6 +105,13 @@
       <version>${druid-version}</version>
     </dependency>
 
+    <!-- Aop -->
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib</artifactId>
+      <version>${cglib-version}</version>
+    </dependency>
+
     <!-- Log -->
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -128,6 +136,12 @@
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
       <version>${commons-fileupload.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-io</artifactId>
+          <groupId>commons-io</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>

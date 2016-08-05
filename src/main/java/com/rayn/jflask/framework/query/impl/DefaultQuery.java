@@ -1,6 +1,6 @@
 package com.rayn.jflask.framework.query.impl;
 
-import com.rayn.jflask.framework.orm.ORMLoader;
+import com.rayn.jflask.framework.orm.OrmInitializer;
 import com.rayn.jflask.framework.orm.helper.SqlHelper;
 import com.rayn.jflask.framework.query.QueryProvider;
 import com.rayn.jflask.framework.orm.dialect.Dialect;
@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class DefaultQuery<T, PK extends Serializable> implements Query<T, PK> {
 
-    protected static final Dialect dialect = ORMLoader.getDefaultDialect();
+    protected static final Dialect dialect = OrmInitializer.getDefaultDialect();
 
     protected final Class<T> entityClass;
 
