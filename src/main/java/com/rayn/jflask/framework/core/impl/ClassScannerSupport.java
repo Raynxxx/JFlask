@@ -26,21 +26,22 @@ public abstract class ClassScannerSupport {
 
     private final String packageName;
 
-    private static List<Class<?>> cacheClassList = new ArrayList<>();
+    private static List<Class<?>> cacheClassList;
 
     public ClassScannerSupport(String packageName) {
         this.packageName = packageName;
+        scanClass(this.packageName);
     }
 
     public List<Class<?>> getClassList() {
         if (cacheClassList != null) {
             return filter(cacheClassList);
         }
-        scanClass();
+        scanClass(this.packageName);
         return filter(cacheClassList);
     }
 
-    private void scanClass() {
+    private void scanClass(String packageName) {
         logger.info(String.format("[JFlask][ClassScanner] 启动扫描 <= %s", this.packageName));
         cacheClassList = new ArrayList<>();
         try {

@@ -1,8 +1,10 @@
 package com.rayn.jflask.framework.ioc.impl;
 
 import com.rayn.jflask.framework.InstanceFactory;
+import com.rayn.jflask.framework.annotation.aop.Service;
 import com.rayn.jflask.framework.annotation.ioc.Bean;
 import com.rayn.jflask.framework.annotation.web.Controller;
+import com.rayn.jflask.framework.core.ClassHelper;
 import com.rayn.jflask.framework.core.ClassScanner;
 import com.rayn.jflask.framework.core.ConfigHelper;
 import com.rayn.jflask.framework.ioc.BeanFactory;
@@ -25,19 +27,15 @@ public class AnnotationBeanFactory implements BeanFactory {
     // BeanMap
     private static final Map<Class<?>, Object> beanMap = new HashMap<>();
 
-    // 类扫描器
-    private static final ClassScanner classScanner = InstanceFactory.getClassScanner();
-
-    // 应用的基础包名
-    private static final String basePackage = ConfigHelper.getString("app.base_package");
-
     static {
         logger.info("[JFlask][BeanFactory] 启动");
         try {
-            List<Class<?>> classList = classScanner.getClassList(basePackage);
+            List<Class<?>> classList = ClassHelper.getClassList();
             for (Class<?> clazz : classList) {
                 if (clazz.isAnnotationPresent(Bean.class) ||
-                        clazz.isAnnotationPresent(Controller.class)) {
+                    clazz.isAnnotationPresent(Controller.class) ||
+                        clazz.isAnnotationPresent(Service.class)) {
+
                     Object instance = clazz.newInstance();
                     beanMap.put(clazz, instance);
                     logger.debug("[JFlask][BeanFactory] 加入Bean {}", clazz.getName());

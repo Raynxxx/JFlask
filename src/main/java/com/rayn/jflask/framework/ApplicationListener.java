@@ -1,5 +1,6 @@
 package com.rayn.jflask.framework;
 
+import com.rayn.jflask.framework.core.ClassHelper;
 import com.rayn.jflask.framework.core.ClassScanner;
 import com.rayn.jflask.framework.core.ConfigHelper;
 import com.rayn.jflask.framework.util.ClassUtil;
@@ -67,8 +68,7 @@ public class ApplicationListener implements ServletContextListener {
     private Application getApplication() {
         Application application = null;
         try {
-            List<Class<?>> applicationList = classScanner.getClassListBySuper(
-                    Constants.BASE_PACKAGE, Application.class);
+            List<Class<?>> applicationList = ClassHelper.getClassListBySuper(Application.class);
             if (CollectionUtil.isNotEmpty(applicationList)) {
                 if (applicationList.size() >= 2) {
                     logger.warn("[JFlask] More than one class extends from <Application>, that's useless.");

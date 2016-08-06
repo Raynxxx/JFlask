@@ -48,16 +48,20 @@ public class DispatcherServlet extends HttpServlet {
 
         String currentRequestMethod = request.getMethod();
         String currentRequestPath = ServletHelper.getRequestPath(request);
-        logger.info("\n[JFlask][DispatcherServlet] {}:{} on {}", currentRequestMethod,
-                currentRequestPath, new Date());
 
         if (currentRequestPath.startsWith(Constants.STATIC_PATH)) {
+            logger.info("[JFlask][StaticResource] {}:{} on {}", currentRequestMethod,
+                    currentRequestPath, new Date());
             handleStaticResource(request, response);
+            return;
         }
 
         if (currentRequestPath.endsWith("/") && !currentRequestPath.equals("/")) {
             currentRequestPath = currentRequestPath.substring(0, currentRequestPath.length() - 1);
         }
+
+        logger.info("[JFlask][DispatcherServlet] {}:{} on {}", currentRequestMethod,
+                currentRequestPath, new Date());
 
         Handler handler = handlerMapping.getHandler(currentRequestMethod, currentRequestPath);
         if (handler == null) {

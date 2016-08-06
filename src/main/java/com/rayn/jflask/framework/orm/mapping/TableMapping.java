@@ -2,7 +2,6 @@ package com.rayn.jflask.framework.orm.mapping;
 
 import com.rayn.jflask.framework.core.exception.QueryException;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

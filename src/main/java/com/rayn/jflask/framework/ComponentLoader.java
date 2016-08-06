@@ -2,7 +2,7 @@ package com.rayn.jflask.framework;
 
 import com.rayn.jflask.framework.core.ConfigHelper;
 import com.rayn.jflask.framework.ioc.IocInitializer;
-import com.rayn.jflask.framework.orm.OrmInitializer;
+import com.rayn.jflask.framework.orm.ActiveRecordInitializer;
 import com.rayn.jflask.framework.routing.RouteInitializer;
 import com.rayn.jflask.framework.util.ClassUtil;
 
@@ -16,7 +16,7 @@ public final class ComponentLoader {
         Class<?>[] loadWhenAppInit = {
                 ConfigHelper.class,
                 RouteInitializer.class,
-                OrmInitializer.class,
+                ActiveRecordInitializer.class,
                 IocInitializer.class
         };
 

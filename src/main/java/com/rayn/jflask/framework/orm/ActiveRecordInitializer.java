@@ -3,7 +3,6 @@ package com.rayn.jflask.framework.orm;
 import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.InstanceFactory;
 import com.rayn.jflask.framework.core.ClassHelper;
-import com.rayn.jflask.framework.core.ClassScanner;
 import com.rayn.jflask.framework.core.ConfigHelper;
 import com.rayn.jflask.framework.orm.dialect.Dialect;
 import com.rayn.jflask.framework.orm.dialect.DialectMap;
@@ -15,13 +14,13 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * OrmInitializer
+ * ActiveRecordInitializer
  * Created by Raynxxx on 2016/07/15.
  */
-public class OrmInitializer {
+public class ActiveRecordInitializer {
 
     // logger
-    private static final Logger logger = LoggerFactory.getLogger(OrmInitializer.class);
+    private static final Logger logger = LoggerFactory.getLogger(ActiveRecordInitializer.class);
 
     // dataSourceProvider
     private static final DataSourceProvider dataSourceProvider
@@ -31,7 +30,7 @@ public class OrmInitializer {
     private static final Dialect defaultDialect;
 
     static {
-        logger.info("[JFlask][OrmInitializer] 启动");
+        logger.info("[JFlask][ActiveRecordInitializer] 启动");
 
         // 初始化 defaultDialect
         String dialectConfig = ConfigHelper.getString(Constants.JDBC.DIALECT);

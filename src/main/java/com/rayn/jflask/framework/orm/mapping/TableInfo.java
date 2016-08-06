@@ -1,6 +1,5 @@
 package com.rayn.jflask.framework.orm.mapping;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

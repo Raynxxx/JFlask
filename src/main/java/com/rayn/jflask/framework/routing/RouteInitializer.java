@@ -34,6 +34,9 @@ public class RouteInitializer {
                 // 取得控制器的命名空间
                 Controller controllerAnnotation = controller.getAnnotation(Controller.class);
                 String namespace = controllerAnnotation.namespace();
+                if (namespace.equals("/")) {
+                    namespace = "";
+                }
                 // 取得控制器中的路由方法
                 Method[] routeMethods = controller.getDeclaredMethods();
                 if (CollectionUtil.isEmpty(routeMethods))
@@ -45,6 +48,9 @@ public class RouteInitializer {
                         for (String method : methods) {
                             // 转到路由处理方法, 并保存
                             String requestPath = namespace + route.value();
+                            if (requestPath.endsWith("/")) {
+                                requestPath = requestPath.substring(0, requestPath.length() - 1);
+                            }
                             Router.addRoute(method, requestPath, controller, routeMethod);
                         }
                     }

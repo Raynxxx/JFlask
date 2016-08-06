@@ -1,6 +1,7 @@
 package com.rayn.jflask.test.core;
 
 import com.rayn.jflask.framework.annotation.ioc.Bean;
+import com.rayn.jflask.framework.core.ClassHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import com.rayn.jflask.framework.InstanceFactory;
@@ -20,8 +21,7 @@ public class ClassScannerTest {
 
     @Test
     public void testMain() {
-        ClassScanner classScanner = InstanceFactory.getClassScanner();
-        List<Class<?>> classList = classScanner.getClassList("com.rayn.jflask.framework");
+        List<Class<?>> classList = ClassHelper.getClassList();
         Assert.assertTrue(classList.contains(Bean.class));
     }
 }

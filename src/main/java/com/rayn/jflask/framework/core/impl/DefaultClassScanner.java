@@ -27,7 +27,6 @@ public class DefaultClassScanner implements ClassScanner {
     private static final Logger logger = LoggerFactory.getLogger(ClassScanner.class);
 
 
-
     /**
      * 取得指定包下的所有类
      */
