@@ -45,7 +45,7 @@ public class IocInitializer {
                         Class<?> injectInterface = beanField.getType();
                         // 获取对应类型的第一个实现类
                         Class<?> implClass = getImplementClass(injectInterface);
-                        if (implClass != null) {
+                        if (implClass != null && !implClass.isInterface()) {
                             // 从 beanMap 获取实例
                             Object instance = beanMap.get(implClass);
                             if (instance != null) {
@@ -65,7 +65,7 @@ public class IocInitializer {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException("IOCBuilder构建过程出错", e);
+            throw new RuntimeException("IocInitializer 构建过程出错", e);
         }
 
     }

@@ -1,7 +1,7 @@
-package com.rayn.jflask.framework.mvc.impl;
+package com.rayn.jflask.framework.mvc.handler.impl;
 
-import com.rayn.jflask.framework.mvc.HandlerMapping;
-import com.rayn.jflask.framework.routing.Router;
+import com.rayn.jflask.framework.mvc.handler.HandlerMapping;
+import com.rayn.jflask.framework.routing.RouterManager;
 import com.rayn.jflask.framework.routing.handler.Handler;
 
 
@@ -21,7 +21,7 @@ public class DefaultHandlerMapping implements HandlerMapping {
      */
     @Override
     public Handler getHandler(String currentRequestMethod, String currentRequestPath) {
-        Handler handler = Router.matchHandler(currentRequestMethod, currentRequestPath);
+        Handler handler = RouterManager.matchHandler(currentRequestMethod, currentRequestPath);
         return handler;
     }
 }

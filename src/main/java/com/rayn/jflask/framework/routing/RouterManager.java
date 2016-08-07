@@ -19,13 +19,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Router
+ * RouterManager
  * Created by Raynxxx on 2016/07/12.
  */
-public class Router {
+public class RouterManager {
 
     // logger
-    private static final Logger logger = LoggerFactory.getLogger(Router.class);
+    private static final Logger logger = LoggerFactory.getLogger(RouterManager.class);
 
     // Rule Regex String
     private static final String ruleString =
@@ -94,7 +94,7 @@ public class Router {
             Request request = new DynamicRequest(requestMethod, Pattern.compile(regexPath));
             dynamicRouters.put(request, handler);
         }
-        logger.debug("[JFlask][Router] {}:{} => {}#{}", requestMethod, requestPath,
+        logger.debug("[JFlask][RouterManager] {}:{} => {}#{}", requestMethod, requestPath,
                 controller.getName(), routeMethod.getName());
     }
 

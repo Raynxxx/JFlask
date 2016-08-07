@@ -30,7 +30,9 @@ public abstract class ClassScannerSupport {
 
     public ClassScannerSupport(String packageName) {
         this.packageName = packageName;
-        scanClass(this.packageName);
+        if (cacheClassList == null) {
+            scanClass(this.packageName);
+        }
     }
 
     public List<Class<?>> getClassList() {

@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class ProxyChain {
 
-    private List<Proxy> proxyList = new ArrayList<>();
+    private List<Proxy> proxyList;
     private int proxyIndex = 0;
 
     private final Class<?> targetClass;
@@ -23,20 +23,17 @@ public class ProxyChain {
 
 
     public ProxyChain(Class<?> targetClass, Object targetObject, Method targetMethod,
-                      Object[] methodParams, MethodProxy methodProxy) {
+                      Object[] methodParams, MethodProxy methodProxy, List<Proxy> proxyList) {
         this.targetClass = targetClass;
         this.targetObject = targetObject;
         this.targetMethod = targetMethod;
         this.methodParams = methodParams;
         this.methodProxy = methodProxy;
+        this.proxyList = proxyList;
     }
 
     public Class<?> getTargetClass() {
         return targetClass;
-    }
-
-    public Object getTargetObject() {
-        return targetObject;
     }
 
     public Method getTargetMethod() {

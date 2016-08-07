@@ -1,4 +1,4 @@
-package com.rayn.jflask.framework.mvc;
+package com.rayn.jflask.framework.mvc.handler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

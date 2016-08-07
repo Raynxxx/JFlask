@@ -1,4 +1,4 @@
-package com.rayn.jflask.framework.mvc;
+package com.rayn.jflask.framework.mvc.handler;
 
 import com.rayn.jflask.framework.routing.handler.Handler;
 

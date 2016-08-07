@@ -1,6 +1,5 @@
-package com.rayn.jflask.framework.mvc;
+package com.rayn.jflask.framework.mvc.result;
 
-import com.rayn.jflask.framework.mvc.result.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

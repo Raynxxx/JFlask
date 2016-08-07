@@ -2,6 +2,8 @@ package com.rayn.jflask.framework.core;
 
 import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.InstanceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
@@ -12,11 +14,19 @@ import java.util.List;
  */
 public class ClassHelper {
 
+    // logger
+    private static final Logger logger = LoggerFactory.getLogger(ClassHelper.class);
+
     // base package
     private static final String basePackage = Constants.BASE_PACKAGE;
 
     // 类扫描器
     private static final ClassScanner classScanner = InstanceFactory.getClassScanner();
+
+    static {
+        logger.info("[JFlask][ClassHelper] 启动");
+        getClassList(basePackage);
+    }
 
     public static List<Class<?>> getClassList() {
         return classScanner.getClassList(basePackage);

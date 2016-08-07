@@ -1,11 +1,8 @@
 package com.rayn.jflask.framework.routing;
 
-import com.rayn.jflask.framework.Constants;
-import com.rayn.jflask.framework.InstanceFactory;
 import com.rayn.jflask.framework.annotation.web.Controller;
 import com.rayn.jflask.framework.annotation.web.Route;
 import com.rayn.jflask.framework.core.ClassHelper;
-import com.rayn.jflask.framework.core.ClassScanner;
 import com.rayn.jflask.framework.util.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,17 +12,17 @@ import java.util.List;
 
 /**
  * 所有路由函数的扫描初始化
- * RouteInitializer
+ * RouterInitializer
  * Created by Raynxxx on 2016/05/13.
  */
-public class RouteInitializer {
+public class RouterInitializer {
 
     // logger
-    private static final Logger logger = LoggerFactory.getLogger(RouteInitializer.class);
+    private static final Logger logger = LoggerFactory.getLogger(RouterInitializer.class);
 
     // 静态初始化
     static {
-        logger.info("[JFlask][RouteInitializer] 启动");
+        logger.info("[JFlask][RouterInitializer] 启动");
         // 取得所有控制器
         List<Class<?>> controllerList = ClassHelper.getClassListByAnnotation(Controller.class);
         if (CollectionUtil.isNotEmpty(controllerList)) {
@@ -51,7 +48,7 @@ public class RouteInitializer {
                             if (requestPath.endsWith("/")) {
                                 requestPath = requestPath.substring(0, requestPath.length() - 1);
                             }
-                            Router.addRoute(method, requestPath, controller, routeMethod);
+                            RouterManager.addRoute(method, requestPath, controller, routeMethod);
                         }
                     }
                 }

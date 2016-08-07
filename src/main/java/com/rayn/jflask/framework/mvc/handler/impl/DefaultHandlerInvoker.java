@@ -1,10 +1,10 @@
-package com.rayn.jflask.framework.mvc.impl;
+package com.rayn.jflask.framework.mvc.handler.impl;
 
 import com.rayn.jflask.framework.InstanceFactory;
 import com.rayn.jflask.framework.ioc.BeanFactory;
-import com.rayn.jflask.framework.mvc.HandlerInvoker;
-import com.rayn.jflask.framework.mvc.MultipartHelper;
-import com.rayn.jflask.framework.mvc.ServletHelper;
+import com.rayn.jflask.framework.mvc.handler.HandlerInvoker;
+import com.rayn.jflask.framework.mvc.helper.MultipartHelper;
+import com.rayn.jflask.framework.mvc.helper.ServletHelper;
 import com.rayn.jflask.framework.mvc.model.Params;
 import com.rayn.jflask.framework.routing.handler.DynamicHandler;
 import com.rayn.jflask.framework.routing.handler.Handler;
@@ -110,7 +110,7 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
             }
             Class<?> paramType = routeParamTypes[i - 1];
 
-            // 支持基本类型 int, long, double, float, String
+            // 支持基本类型 boolean, int, long, double, float, String
             if (ClassUtil.isBoolean(paramType)) {
                 pathParamList.add(ClassUtil.toBoolean(param));
             } else if (ClassUtil.isInteger(paramType)) {

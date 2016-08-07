@@ -30,15 +30,19 @@ public class AopInitializer {
     private static final BeanFactory beanFactory = InstanceFactory.getBeanFactory();
 
     static {
+        logger.info("[JFlask][AopInitializer] 启动");
         try {
             // targetClass => Array(proxyClass)
-            Map<Class<?>, List<Proxy>> taqrgetProxyListMap = loadTaqrgetProxyListMap();
-            for (Map.Entry<Class<?>, List<Proxy>> targetEntry : taqrgetProxyListMap.entrySet()) {
+            Map<Class<?>, List<Proxy>> targetProxyListMap = loadTaqrgetProxyListMap();
+            for (Map.Entry<Class<?>, List<Proxy>> targetEntry : targetProxyListMap.entrySet()) {
                 Class<?> targetClass = targetEntry.getKey();
                 List<Proxy> proxyClassList = targetEntry.getValue();
 
+                logger.debug("[JFlask][AOP] {} <==> {} proxy", targetClass.getName(), proxyClassList.size());
+
                 Object proxyInstance = ProxyManager.createProxy(targetClass, proxyClassList);
                 beanFactory.registerBean(targetClass, proxyInstance);
+
             }
         } catch (Exception e) {
             logger.error("[JFlask] 初始化 AopInitializer 失败!", e);

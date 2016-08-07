@@ -3,12 +3,16 @@ JFlask is light-weight Java Web Framework inspired by *Python Flask*
 
 ### 开发进度
 - [X] 基于Servlet 3.0 的 MVC 的 Web 架构
-- [X] 实现注解完成 URL 配置，自动参数注入
-- [X] Restful 风格接口支持
-- [X] 实现注解驱动的依赖注入
+- [X] 约定大于配置的契约式编程风格
+- [X] 实现注解完成控制器 URL 配置，参数自动注入
+- [X] Restful 风格路由接口
+- [ ] 多种格式的路由响应 (jsp, html, json 等)
+- [X] IOC 实现注解驱动的依赖注入
 - [X] 文件上传支持
+- [ ] 对静态资源的支持
+- [ ] 控制器 Filter (前置, 后置)
 - [ ] ActiveRecord 支持 ~~整合 Ebean, 实现 JPA 规范~~
-- [ ] AOP 支持
+- [ ] AOP (面向切面) 支持
 - [ ] 更多......
 
 ### Demo

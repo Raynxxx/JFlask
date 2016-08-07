@@ -2,6 +2,12 @@ package com.rayn.jflask.framework.mvc;
 
 import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.InstanceFactory;
+import com.rayn.jflask.framework.mvc.handler.HandlerExceptionResolver;
+import com.rayn.jflask.framework.mvc.handler.HandlerInvoker;
+import com.rayn.jflask.framework.mvc.handler.HandlerMapping;
+import com.rayn.jflask.framework.mvc.handler.ResultResolver;
+import com.rayn.jflask.framework.mvc.helper.MultipartHelper;
+import com.rayn.jflask.framework.mvc.helper.ServletHelper;
 import com.rayn.jflask.framework.routing.handler.Handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +27,7 @@ import java.util.Date;
  * DispatcherServlet
  * Created by Raynxxx on 2016/05/13.
  */
-@WebServlet(urlPatterns = "/*", loadOnStartup = 0)
+@WebServlet(urlPatterns = "/", loadOnStartup = 0)
 public class DispatcherServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
@@ -65,6 +71,7 @@ public class DispatcherServlet extends HttpServlet {
 
         Handler handler = handlerMapping.getHandler(currentRequestMethod, currentRequestPath);
         if (handler == null) {
+            logger.info("[JFlask][DispatcherServlet] Handler not found!\n");
             ServletHelper.responseError(response, HttpServletResponse.SC_NOT_FOUND, "Not Found");
             return;
         }

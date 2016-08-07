@@ -1,6 +1,6 @@
-package com.rayn.jflask.framework.mvc.impl;
+package com.rayn.jflask.framework.mvc.handler.impl;
 
-import com.rayn.jflask.framework.mvc.HandlerExceptionResolver;
+import com.rayn.jflask.framework.mvc.handler.HandlerExceptionResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

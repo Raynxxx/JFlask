@@ -1,4 +1,4 @@
-package com.rayn.jflask.framework.mvc;
+package com.rayn.jflask.framework.mvc.helper;
 
 import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.util.CollectionUtil;
