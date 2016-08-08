@@ -26,7 +26,8 @@ public class DispatcherFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain filterChain)
             throws IOException, ServletException {
-        logger.info("[JFlask][DispatcherFilter] {}", request.getServerName());
+        logger.info("[JFlask][DispatcherFilter] {}:{}", request.getServerName(),
+                request.getServerPort());
         filterChain.doFilter(request, response);
     }
 

@@ -1,5 +1,6 @@
 package com.rayn.jflask.framework.orm.helper;
 
+import com.alibaba.druid.sql.ast.SQLKeep;
 import com.rayn.jflask.framework.Constants;
 import com.rayn.jflask.framework.core.exception.QueryException;
 import com.rayn.jflask.framework.orm.mapping.TableMapping;
@@ -59,6 +60,11 @@ public class SqlHelper {
 
     public static int getColumnSize(Class<?> entity) {
         return getTableInfo(entity).getColumnInfoMap().size();
+    }
+
+    public static String getPrimaryKeyColumn(Class<?> entity) {
+        String primaryKeyField = SqlHelper.getTableInfo(entity).getPrimaryKey();
+        return tableMapping.toColumnName(entity, primaryKeyField);
     }
 
     /**

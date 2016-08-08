@@ -35,15 +35,16 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
     private static final BeanFactory beanFactory = InstanceFactory.getBeanFactory();
 
     /**
-     * 执行 staticHandler
+     * 执行 Handler
      *
      * @param request  请求对象
      * @param response 响应对象
      * @param handler  处理机
-     * @throws Exception 异常
+     * @throws Throwable 异常
      */
     @Override
-    public Object invokeHandler(HttpServletRequest request, HttpServletResponse response, Handler handler) throws Exception {
+    public Object invokeHandler(HttpServletRequest request, HttpServletResponse response,
+                                Handler handler) throws Throwable {
         // 获取控制器类和路由方法
         Class<?> controllerClass = handler.getController();
         Method routeMethod = handler.getRouteMethod();
@@ -56,15 +57,19 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
 
         // 参数数量错误
         if (routeParamList.size() != routeMethod.getParameterTypes().length) {
-            throw new RuntimeException(String.format("[%s#%s] 请求参数(%d) 和路由函数参数(%d) 数目不匹配",
+            throw new RuntimeException(String.format(
+                    "[%s#%s] 请求参数(%d) 和路由函数参数(%d) 数目不匹配",
                     controllerClass.getName(), routeMethod.getName(), routeParamList.size(),
-                    routeMethod.getParameterTypes().length));
+                    routeMethod.getParameterTypes().length
+            ));
         }
 
-        return invokeRouteMethod(controllerInstance, routeMethod, routeParamList);
+        routeMethod.setAccessible(true);
+        return routeMethod.invoke(controllerInstance, routeParamList.toArray());
     }
 
-    private List<Object> getRouteParamList(HttpServletRequest request, Handler handler) throws Exception {
+    private List<Object> getRouteParamList(HttpServletRequest request, Handler handler)
+            throws Exception {
         List<Object> paramList = new ArrayList<>();
         // 获取参数类型
         Class<?>[] paramTypes = handler.getRouteMethod().getParameterTypes();
@@ -126,11 +131,6 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
             }
         }
         return pathParamList;
-    }
-
-    private Object invokeRouteMethod(Object controllerInstance, Method routeMethod, List<Object> routeParamList) throws InvocationTargetException, IllegalAccessException {
-        routeMethod.setAccessible(true);
-        return routeMethod.invoke(controllerInstance, routeParamList.toArray());
     }
 
 }

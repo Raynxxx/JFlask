@@ -22,6 +22,6 @@ public class JsonResult extends Result {
 
     @Override
     public String toString() {
-        return "<JsonResult>";
+        return super.toString() + "<JSON>";
     }
 }

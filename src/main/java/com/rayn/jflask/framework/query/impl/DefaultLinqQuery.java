@@ -1,6 +1,5 @@
 package com.rayn.jflask.framework.query.impl;
 
-import com.rayn.jflask.framework.orm.helper.DatabaseHelper;
 import com.rayn.jflask.framework.orm.helper.SqlHelper;
 import com.rayn.jflask.framework.query.QueryProvider;
 import com.rayn.jflask.framework.query.LinqQuery;
@@ -83,14 +82,38 @@ public class DefaultLinqQuery<T, PK extends Serializable>
     }
 
     @Override
+    public LinqQuery<T, PK> limit(long size) {
+        if (this.fullSql.get() == null) {
+            this.fullSql.set(dialect.forSelect(entityClass, ""));
+        } else {
+            this.fullSql.set(this.fullSql.get() +
+                    dialect.generateLimit(size));
+        }
+        SqlHelper.outputSQL(this.fullSql.get());
+        return this;
+    }
+
+    @Override
+    public LinqQuery<T, PK> offset(long size) {
+        if (this.fullSql.get() == null) {
+            this.fullSql.set(dialect.forSelect(entityClass, ""));
+        } else {
+            this.fullSql.set(this.fullSql.get() +
+                    dialect.generateOffset(size));
+        }
+        SqlHelper.outputSQL(this.fullSql.get());
+        return this;
+    }
+
+    @Override
     public T first() {
         T ret;
         if (this.fullSql.get() == null) {
-            this.fullSql.set(dialect.forSelectFirst(entityClass));
+            this.fullSql.set(dialect.forSelectFirst(entityClass, 1));
         } else {
             boolean needOrder = !this.fullSql.get().contains("ORDER BY");
             this.fullSql.set(this.fullSql.get() +
-                    dialect.generateSelectFirst(entityClass, needOrder));
+                    dialect.generateSelectFirst(entityClass, needOrder, 1));
         }
         if (CollectionUtil.isEmpty(this.paramsList.get())) {
             ret = QueryProvider.queryEntity(entityClass, this.fullSql.get());
@@ -107,11 +130,11 @@ public class DefaultLinqQuery<T, PK extends Serializable>
     public T last() {
         T ret;
         if (this.fullSql.get() == null) {
-            this.fullSql.set(dialect.forSelectLast(entityClass));
+            this.fullSql.set(dialect.forSelectLast(entityClass, 1));
         } else {
             boolean needOrder = !this.fullSql.get().contains("ORDER BY");
             this.fullSql.set(this.fullSql.get() +
-                    dialect.generateSelectLast(entityClass, needOrder));
+                    dialect.generateSelectLast(entityClass, needOrder, 1));
         }
         if (CollectionUtil.isEmpty(this.paramsList.get())) {
             ret = QueryProvider.queryEntity(entityClass, this.fullSql.get());
@@ -125,8 +148,50 @@ public class DefaultLinqQuery<T, PK extends Serializable>
     }
 
     @Override
-    public List<T> all() {
-        List<T> ret;
+    public Iterable<T> first(long size) {
+        Iterable<T> ret;
+        if (this.fullSql.get() == null) {
+            this.fullSql.set(dialect.forSelectFirst(entityClass, size));
+        } else {
+            boolean needOrder = !this.fullSql.get().contains("ORDER BY");
+            this.fullSql.set(this.fullSql.get() +
+                    dialect.generateSelectFirst(entityClass, needOrder, size));
+        }
+        if (CollectionUtil.isEmpty(this.paramsList.get())) {
+            ret = QueryProvider.queryEntityList(entityClass, this.fullSql.get());
+        } else {
+            ret = QueryProvider.queryEntityList(entityClass, this.fullSql.get(),
+                    this.paramsList.get().toArray());
+        }
+        SqlHelper.outputSQL(this.fullSql.get());
+        this.reset();
+        return ret;
+    }
+
+    @Override
+    public Iterable<T> last(long size) {
+        Iterable<T> ret;
+        if (this.fullSql.get() == null) {
+            this.fullSql.set(dialect.forSelectLast(entityClass, size));
+        } else {
+            boolean needOrder = !this.fullSql.get().contains("ORDER BY");
+            this.fullSql.set(this.fullSql.get() +
+                    dialect.generateSelectLast(entityClass, needOrder, size));
+        }
+        if (CollectionUtil.isEmpty(this.paramsList.get())) {
+            ret = QueryProvider.queryEntityList(entityClass, this.fullSql.get());
+        } else {
+            ret = QueryProvider.queryEntityList(entityClass, this.fullSql.get(),
+                    this.paramsList.get().toArray());
+        }
+        SqlHelper.outputSQL(this.fullSql.get());
+        this.reset();
+        return ret;
+    }
+
+    @Override
+    public Iterable<T> all() {
+        Iterable<T> ret;
         if (this.fullSql.get() == null) {
             this.fullSql.set(dialect.forSelect(entityClass, ""));
         }
@@ -135,7 +200,6 @@ public class DefaultLinqQuery<T, PK extends Serializable>
         } else {
             ret = QueryProvider.queryEntityList(entityClass, this.fullSql.get(),
                     this.paramsList.get().toArray());
-
         }
         SqlHelper.outputSQL(this.fullSql.get());
         this.reset();
@@ -158,6 +222,7 @@ public class DefaultLinqQuery<T, PK extends Serializable>
         this.reset();
         return ret;
     }
+
 
     private void reset() {
         this.fullSql.remove();

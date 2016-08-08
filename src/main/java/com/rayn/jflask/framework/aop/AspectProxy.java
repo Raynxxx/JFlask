@@ -38,7 +38,6 @@ public abstract class AspectProxy implements Proxy {
         return true;
     }
 
-
     public void before(Class<?> targetClass, Method targetMethod, Object[] params) {
 
     }

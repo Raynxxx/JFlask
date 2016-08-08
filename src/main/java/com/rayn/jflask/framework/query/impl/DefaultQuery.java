@@ -15,8 +15,10 @@ import java.util.List;
  */
 public class DefaultQuery<T, PK extends Serializable> implements Query<T, PK> {
 
+    // dialect
     protected static final Dialect dialect = ActiveRecordInitializer.getDefaultDialect();
 
+    // entityClass
     protected final Class<T> entityClass;
 
     public DefaultQuery(Class<T> entityClass) {
@@ -34,26 +36,32 @@ public class DefaultQuery<T, PK extends Serializable> implements Query<T, PK> {
     }
 
     @Override
+    public Iterable<PK> save(Iterable<T> entities) {
+        return null;
+    }
+
+    @Override
     public T find(PK primaryKey) {
         StringBuffer sb = new StringBuffer(dialect.forSelectByPrimaryKey(entityClass));
-        sb.append(dialect.generateSelectFirst(entityClass, false));
+        sb.append(dialect.generateSelectFirst(entityClass, false, 1));
         return QueryProvider.queryEntity(entityClass, sb.toString(), primaryKey);
     }
 
     @Override
     public T findBy(String conditions, Object... params) {
         StringBuffer sb = new StringBuffer(dialect.forSelectWhere(entityClass, conditions));
-        sb.append(dialect.generateSelectFirst(entityClass, true));
+        sb.append(dialect.generateSelectFirst(entityClass, true, 1));
         return QueryProvider.queryEntity(entityClass, sb.toString(), params);
     }
 
-    //@Override
-    public List<T> findAll(List<PK> selectIds) {
+    @Override
+    public Iterable<T> findAll(List<PK> selectIds) {
+        // TODO
         return null;
     }
 
     @Override
-    public List<T> findAll(String conditions, Object... params) {
+    public Iterable<T> findAll(String conditions, Object... params) {
         StringBuffer sb = new StringBuffer(dialect.forSelectWhere(entityClass, conditions));
         return QueryProvider.queryEntityList(entityClass, sb.toString(), params);
     }
@@ -62,5 +70,23 @@ public class DefaultQuery<T, PK extends Serializable> implements Query<T, PK> {
     public boolean exist(String conditions, Object... params) {
         String sql = dialect.forExists(entityClass, conditions);
         return QueryProvider.queryExists(sql, params);
+    }
+
+    @Override
+    public void delete(PK primaryKey) {
+        String primaryKeyColumn = SqlHelper.getPrimaryKeyColumn(entityClass);
+        String sql = dialect.forDelete(entityClass, primaryKeyColumn + " = ?");
+    }
+
+    @Override
+    public void delete(T entity) {
+        String primaryKeyColumn = SqlHelper.getPrimaryKeyColumn(entityClass);
+        String sql = dialect.forDelete(entityClass, primaryKeyColumn + " = ?");
+    }
+
+    @Override
+    public void deleteAll(Iterable<T> entities) {
+        // TODO
+
     }
 }

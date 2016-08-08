@@ -22,12 +22,19 @@ public class DefaultResultResolver implements ResultResolver {
 
     private static final Logger logger = LoggerFactory.getLogger(ResultResolver.class);
 
+
+    /**
+     * resolveResult
+     *
+     * @param request  请求对象
+     * @param response 响应对象
+     * @param routeResult 路由返回结果
+     */
     @Override
-    public void resolveResult(HttpServletRequest request, HttpServletResponse response, Object routeResult) {
+    public void resolveResult(HttpServletRequest request, HttpServletResponse response,
+                              Object routeResult) {
         if (routeResult != null) {
-            /**
-             * 处理 JSP 转发
-             */
+            // 处理 JSP 转发
             if (routeResult instanceof JspResult) {
                 JspResult jspResult = (JspResult) routeResult;
                 String path = Constants.VIEW_PATH + jspResult.getPath();
@@ -39,16 +46,12 @@ public class DefaultResultResolver implements ResultResolver {
                 }
                 ServletHelper.forwardRequest(path, request, response);
             }
-            /**
-             * 重定向
-             */
+            // 重定向
             else if (routeResult instanceof RedirectResult) {
                 RedirectResult result = (RedirectResult) routeResult;
                 ServletHelper.redirectRequest(result.getPath(), request, response);
             }
-            /**
-             * 结果响应 HTML 文件
-             */
+            // 结果响应 HTML 文件
             else  if (routeResult instanceof HtmlResult) {
                 HtmlResult result = (HtmlResult) routeResult;
                 String path = Constants.VIEW_PATH + result.getPath();
@@ -60,23 +63,17 @@ public class DefaultResultResolver implements ResultResolver {
                     ServletHelper.responseText(response, text);
                 }
             }
-            /**
-             * 结果响应 纯文本数据
-             */
+            // 结果响应 纯文本数据
             else if (routeResult instanceof TextResult) {
                 TextResult result = (TextResult) routeResult;
                 ServletHelper.responseText(response, result.getText());
             }
-            /**
-             * 结果转为 Json
-             */
+            // 结果转为 Json
             else if (routeResult instanceof JsonResult) {
                 JsonResult result = (JsonResult) routeResult;
                 ServletHelper.responseJSON(response, result.getData());
             }
-            /**
-             * 未支持方法
-             */
+            // 未支持方法
             else {
                 logger.error("[JFlask][ResultResolver] 不支持的路由返回值类型 {}", routeResult);
             }

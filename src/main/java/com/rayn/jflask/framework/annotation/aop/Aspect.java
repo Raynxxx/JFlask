@@ -11,10 +11,12 @@ import java.lang.annotation.*;
 @Documented
 public @interface Aspect {
 
-    String packageName() default "";
+    String targetPackage() default "";
 
-    String className() default "";
+    String targetClass() default "";
 
-    Class<? extends Annotation> annotation() default Aspect.class;
+    Class<? extends Annotation> targetAnnotation() default Aspect.class;
+
+    int order() default 0;
 
 }

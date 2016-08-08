@@ -17,6 +17,6 @@ public class TextResult extends Result {
 
     @Override
     public String toString() {
-        return "<TextResult>";
+        return super.toString() + "<PlainText>";
     }
 }

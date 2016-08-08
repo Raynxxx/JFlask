@@ -24,24 +24,24 @@ public class MysqlDialect implements Dialect {
     }
 
     @Override
-    public String forSelectFirst(Class<?> entity) {
+    public String forSelectFirst(Class<?> entity, long size) {
         StringBuffer sb = new StringBuffer("SELECT * FROM ");
         sb.append(SqlHelper.getTableName(entity));
-        sb.append(generateSelectFirst(entity, true));
+        sb.append(generateSelectFirst(entity, true, size));
         return sb.toString();
     }
 
     @Override
-    public String forSelectLast(Class<?> entity) {
+    public String forSelectLast(Class<?> entity, long size) {
         StringBuffer sb = new StringBuffer("SELECT * FROM ");
         sb.append(SqlHelper.getTableName(entity));
-        sb.append(generateSelectLast(entity, true));
+        sb.append(generateSelectLast(entity, true, size));
         return sb.toString();
     }
 
     @Override
     public String forSelectByPrimaryKey(Class<?> entity) {
-        String conditions = SqlHelper.getTableInfo(entity).getPrimaryKey() + " = ?";
+        String conditions = SqlHelper.getPrimaryKeyColumn(entity) + " = ?";
         return forSelectWhere(entity, conditions);
     }
 
@@ -130,27 +130,37 @@ public class MysqlDialect implements Dialect {
 
 
     @Override
-    public String generateSelectFirst(Class<?> entity, boolean needOrder) {
+    public String generateSelectFirst(Class<?> entity, boolean needOrder, long size) {
         StringBuffer sb = new StringBuffer();
         if (needOrder) {
             sb.append(" ORDER BY ");
-            sb.append(SqlHelper.getTableInfo(entity).getPrimaryKey());
+            sb.append(SqlHelper.getPrimaryKeyColumn(entity));
             sb.append(" ASC");
         }
-        sb.append(" LIMIT 1");
+        sb.append(generateLimit(size));
         return sb.toString();
     }
 
     @Override
-    public String generateSelectLast(Class<?> entity, boolean needOrder) {
+    public String generateSelectLast(Class<?> entity, boolean needOrder, long size) {
         StringBuffer sb = new StringBuffer();
         if (needOrder) {
             sb.append(" ORDER BY ");
-            sb.append(SqlHelper.getTableInfo(entity).getPrimaryKey());
+            sb.append(SqlHelper.getPrimaryKeyColumn(entity));
             sb.append(" DESC");
         }
-        sb.append(" LIMIT 1");
+        sb.append(generateLimit(size));
         return sb.toString();
+    }
+
+    @Override
+    public String generateLimit(long size) {
+        return String.format(" LIMIT %d", size);
+    }
+
+    @Override
+    public String generateOffset(long size) {
+        return String.format(" LIMIT %d", size);
     }
 
     @Override
@@ -179,8 +189,16 @@ public class MysqlDialect implements Dialect {
         StringBuffer sb = new StringBuffer("SELECT 1 AS one FROM ");
         sb.append(SqlHelper.getTableName(entity));
         sb.append(generateWhere(entity, conditions));
-        sb.append(generateSelectFirst(entity, false));
+        sb.append(generateSelectFirst(entity, false, 1));
         return sb.toString();
+    }
+
+    @Override
+    public String forDelete(Class<?> entity, String conditions) {
+        StringBuffer sb = new StringBuffer("DELETE FROM ");
+        sb.append(SqlHelper.getTableName(entity));
+        sb.append(generateWhere(entity, conditions));
+        return null;
     }
 
 }

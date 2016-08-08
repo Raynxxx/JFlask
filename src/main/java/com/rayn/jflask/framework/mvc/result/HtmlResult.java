@@ -18,6 +18,6 @@ public class HtmlResult extends Result {
 
     @Override
     public String toString() {
-        return "<HtmlResult>";
+        return super.toString() + "<HTML>";
     }
 }

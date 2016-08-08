@@ -12,12 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 public interface HandlerInvoker {
 
     /**
-     * 执行 staticHandler
+     * 执行 Handler
      *
      * @param request  请求对象
      * @param response 响应对象
      * @param handler  处理机
-     * @throws Exception 异常
+     * @throws Throwable 异常
      */
-    Object invokeHandler(HttpServletRequest request, HttpServletResponse response, Handler handler) throws Exception;
+    Object invokeHandler(HttpServletRequest request, HttpServletResponse response,
+                         Handler handler) throws Throwable;
 }

@@ -1,6 +1,7 @@
 package com.rayn.jflask.framework.query;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -19,13 +20,19 @@ public interface LinqQuery<T, PK extends Serializable> extends Query<T, PK> {
 
     LinqQuery<T, PK> orderBy(String orderBy);
 
-    //LinqQuery<T, PK> paginate();
+    LinqQuery<T, PK> limit(long size);
+
+    LinqQuery<T, PK> offset(long size);
 
     T first();
 
     T last();
 
-    List<T> all();
+    Iterable<T> first(long size);
+
+    Iterable<T> last(long size);
+
+    Iterable<T> all();
 
     long count();
 }

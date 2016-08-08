@@ -6,7 +6,7 @@ JFlask is light-weight Java Web Framework inspired by *Python Flask*
 - [X] 约定大于配置的契约式编程风格
 - [X] 实现注解完成控制器 URL 配置，参数自动注入
 - [X] Restful 风格路由接口
-- [ ] 多种格式的路由响应 (jsp, html, json 等)
+- [X] 多种格式的路由响应 (jsp, html, json 等)
 - [X] IOC 实现注解驱动的依赖注入
 - [X] 文件上传支持
 - [ ] 对静态资源的支持

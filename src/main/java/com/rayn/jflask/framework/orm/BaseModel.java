@@ -45,7 +45,11 @@ public class BaseModel<T, PK extends Serializable> implements Serializable {
         return QueryProvider.insertEntity(sql, values);
     }
 
-    public boolean destroy() {
+    public boolean update() {
+        return false;
+    }
+
+    public boolean delete() {
         return false;
     }
 }

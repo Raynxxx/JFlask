@@ -11,9 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 public interface HandlerExceptionResolver {
 
     /**
+     * resolveHandlerException
+     *
      * @param request  请求对象
      * @param response 响应对象
-     * @param e        异常对象
+     * @param ex       异常对象
      */
-    void resolveHandlerException(HttpServletRequest request, HttpServletResponse response, Exception e);
+    void resolveHandlerException(HttpServletRequest request, HttpServletResponse response,
+                                 Throwable ex);
 }

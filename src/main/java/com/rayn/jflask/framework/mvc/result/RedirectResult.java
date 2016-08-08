@@ -18,6 +18,6 @@ public class RedirectResult extends Result {
 
     @Override
     public String toString() {
-        return "<RedirectResult>";
+        return super.toString() + "<Redirect>";
     }
 }

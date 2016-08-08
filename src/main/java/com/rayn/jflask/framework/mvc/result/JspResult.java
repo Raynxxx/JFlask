@@ -39,6 +39,6 @@ public class JspResult extends Result {
 
     @Override
     public String toString() {
-        return "<JspResult>";
+        return super.toString() + "<JSP>";
     }
 }

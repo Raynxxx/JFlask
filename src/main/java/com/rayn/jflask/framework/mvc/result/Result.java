@@ -22,6 +22,6 @@ public abstract class Result implements Serializable {
 
     @Override
     public String toString() {
-        return "<Result>";
+        return "[Respond Result]";
     }
 }

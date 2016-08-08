@@ -10,6 +10,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface ResultResolver {
 
+    /**
+     * resolveResult
+     *
+     * @param request  请求对象
+     * @param response 响应对象
+     * @param routeResult 路由返回结果
+     */
     void resolveResult(HttpServletRequest request, HttpServletResponse response,
                      Object routeResult);
 

@@ -57,8 +57,8 @@ public class QueryProvider {
     /**
      * queryEntityList
      */
-    public static <T> List<T> queryEntityList(Class<T> entityClass, String sql, Object... params) {
-        List<T> result = null;
+    public static <T> Iterable<T> queryEntityList(Class<T> entityClass, String sql, Object... params) {
+        Iterable<T> result = null;
         try {
             Map<String, String> columnMap = tableMapping.getColumnMap(entityClass);
             if (CollectionUtil.isNotEmpty(columnMap)) {

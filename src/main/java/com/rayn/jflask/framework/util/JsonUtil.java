@@ -34,7 +34,7 @@ public class JsonUtil {
 
     /**
      * DefaultExclusionStrategy
-     * annotation @SkipJson will skip
+     * targetAnnotation @SkipJson will skip
      */
     private static class DefaultExclusionStrategy implements ExclusionStrategy {
 

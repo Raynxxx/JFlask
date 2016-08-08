@@ -11,13 +11,21 @@ public interface Query<T, PK extends Serializable> {
 
     PK save(T entity);
 
+    Iterable<PK> save(Iterable<T> entities);
+
     T find(PK primaryKey);
 
     T findBy(String conditions, Object... params);
 
-    //List<T> findAll(List<PK> selectIds);
+    Iterable<T> findAll(List<PK> selectIds);
 
-    List<T> findAll(String conditions, Object... params);
+    Iterable<T> findAll(String conditions, Object... params);
 
     boolean exist(String conditions, Object... params);
+
+    void delete(PK primaryKey);
+
+    void delete(T entity);
+
+    void deleteAll(Iterable<T> entities);
 }

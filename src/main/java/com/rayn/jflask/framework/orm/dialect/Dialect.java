@@ -11,9 +11,9 @@ public interface Dialect {
 
     String forSelect(Class<?> entity, String selectFields);
 
-    String forSelectFirst(Class<?> entity);
+    String forSelectFirst(Class<?> entity, long size);
 
-    String forSelectLast(Class<?> entity);
+    String forSelectLast(Class<?> entity, long size);
 
     String forSelectByPrimaryKey(Class<?> entity);
 
@@ -37,16 +37,24 @@ public interface Dialect {
 
     String generateOrderBy(Class<?> entity, String orderBy);
 
-    String generateSelectFirst(Class<?> entity, boolean needOrder);
+    String generateSelectFirst(Class<?> entity, boolean needOrder, long size);
 
-    String generateSelectLast(Class<?> entity, boolean needOrder);
+    String generateSelectLast(Class<?> entity, boolean needOrder, long size);
+
+    String generateLimit(long size);
+
+    String generateOffset(long size);
 
     // ***************** 生成 insert 字句 ******************
 
     String forInsert(Class<?> entity, boolean skipPrimary);
 
-    // ***************** 生成 exist 字句 ******************
+    // ***************** 生成 exist 字句 *******************
 
     String forExists(Class<?> entity, String conditions);
+
+    // ***************** 生成 delete 字句 ******************
+
+    String forDelete(Class<?> entity, String conditions);
 
 }
