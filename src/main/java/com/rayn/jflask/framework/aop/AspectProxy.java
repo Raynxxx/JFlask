@@ -46,11 +46,13 @@ public abstract class AspectProxy implements Proxy {
 
     }
 
-    public void afterThrow(Class<?> targetClass, Method targetMethod, Object[] params, Throwable ex) {
+    public void afterThrow(Class<?> targetClass, Method targetMethod, Object[] params,
+                           Throwable ex) {
 
     }
 
-    public void afterReturn(Class<?> targetClass, Method targetMethod, Object[] params, Object result) {
+    public void afterReturn(Class<?> targetClass, Method targetMethod, Object[] params,
+                            Object result) {
 
     }
 }

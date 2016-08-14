@@ -18,6 +18,6 @@ public interface ResultResolver {
      * @param routeResult 路由返回结果
      */
     void resolveResult(HttpServletRequest request, HttpServletResponse response,
-                     Object routeResult);
+                     Object routeResult) throws Throwable;
 
 }

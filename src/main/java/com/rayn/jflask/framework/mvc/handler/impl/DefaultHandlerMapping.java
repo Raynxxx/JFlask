@@ -21,7 +21,6 @@ public class DefaultHandlerMapping implements HandlerMapping {
      */
     @Override
     public Handler getHandler(String currentRequestMethod, String currentRequestPath) {
-        Handler handler = RouterManager.matchHandler(currentRequestMethod, currentRequestPath);
-        return handler;
+        return RouterManager.matchHandler(currentRequestMethod, currentRequestPath);
     }
 }

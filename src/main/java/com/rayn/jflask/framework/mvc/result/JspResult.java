@@ -1,5 +1,11 @@
 package com.rayn.jflask.framework.mvc.result;
 
+import com.rayn.jflask.framework.Constants;
+import com.rayn.jflask.framework.mvc.helper.ServletHelper;
+import com.rayn.jflask.framework.util.CollectionUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,5 +46,18 @@ public class JspResult extends Result {
     @Override
     public String toString() {
         return super.toString() + "<JSP>";
+    }
+
+    @Override
+    public void render(HttpServletRequest request, HttpServletResponse response)
+            throws Throwable {
+        String path = Constants.VIEW_PATH + this.getPath();
+        Map<String, Object> data = this.getData();
+        if (CollectionUtil.isNotEmpty(data)) {
+            for (Map.Entry<String, Object> entry : data.entrySet()) {
+                request.setAttribute(entry.getKey(), entry.getValue());
+            }
+        }
+        ServletHelper.forwardRequest(path, request, response);
     }
 }

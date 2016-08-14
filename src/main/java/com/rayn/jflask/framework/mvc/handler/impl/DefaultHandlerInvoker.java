@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +76,7 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
         if (handler instanceof DynamicHandler) {
             // 获取路径占位符的参数列表
             DynamicHandler dynamicHandler = (DynamicHandler) handler;
-            paramList.addAll(getPathParamList(dynamicHandler, paramTypes));
+            paramList.addAll(parsePathParamList(dynamicHandler, paramTypes));
         }
 
         // 根据 contentType 类型提供不同处理
@@ -98,7 +97,7 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
         return paramList;
     }
 
-    private List<Object> getPathParamList(DynamicHandler dynamicHandler, Class<?>[] routeParamTypes) {
+    private List<Object> parsePathParamList(DynamicHandler dynamicHandler, Class<?>[] routeParamTypes) {
         List<Object> pathParamList = new ArrayList<>();
         Matcher pathMatcher = dynamicHandler.getPathMatcher();
         if (pathMatcher.groupCount() - 1 > routeParamTypes.length) {
