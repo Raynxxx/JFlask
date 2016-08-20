@@ -37,10 +37,10 @@ public class DefaultLinqQuery<T, PK extends Serializable>
     @Override
     public LinqQuery<T, PK> where(String conditions, Object... params) {
         if (this.fullSql.get() == null) {
-            this.fullSql.set(dialect.forSelectWhere(entityClass, conditions));
+            this.fullSql.set(dialect.forSelectWhere(entityClass, conditions, params));
         } else {
             this.fullSql.set(this.fullSql.get() +
-                    dialect.generateWhere(entityClass, conditions));
+                    dialect.generateWhere(entityClass, conditions, params));
         }
         SqlHelper.outputSQL(this.fullSql.get());
         if (this.paramsList.get() == null) {

@@ -1,4 +1,4 @@
-package com.rayn.jflask.framework.query;
+package com.rayn.jflask.framework.orm;
 
 import com.rayn.jflask.framework.annotation.entity.Transactional;
 import com.rayn.jflask.framework.aop.proxy.Proxy;

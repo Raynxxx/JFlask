@@ -2,6 +2,7 @@ package com.rayn.jflask.framework.orm.dialect;
 
 import com.rayn.jflask.framework.orm.helper.SqlHelper;
 import com.rayn.jflask.framework.orm.mapping.ColumnInfo;
+import com.rayn.jflask.framework.util.CollectionUtil;
 import com.rayn.jflask.framework.util.StringUtil;
 
 import java.util.ArrayList;
@@ -40,24 +41,24 @@ public class MysqlDialect implements Dialect {
     }
 
     @Override
-    public String forSelectByPrimaryKey(Class<?> entity) {
+    public String forSelectByPrimaryKey(Class<?> entity, Object... params) {
         String conditions = SqlHelper.getPrimaryKeyColumn(entity) + " = ?";
-        return forSelectWhere(entity, conditions);
+        return forSelectWhere(entity, conditions, params);
     }
 
     @Override
-    public String forSelectCount(Class<?> entity, String conditions) {
+    public String forSelectCount(Class<?> entity, String conditions, Object... params) {
         StringBuffer sb = new StringBuffer("SELECT COUNT(*) FROM ");
         sb.append(SqlHelper.getTableName(entity));
-        sb.append(generateWhere(entity, conditions));
+        sb.append(generateWhere(entity, conditions, params));
         return sb.toString();
     }
 
     @Override
-    public String forSelectWhere(Class<?> entity, String conditions) {
+    public String forSelectWhere(Class<?> entity, String conditions, Object... params) {
         StringBuffer sb = new StringBuffer("SELECT * FROM ");
         sb.append(SqlHelper.getTableName(entity));
-        sb.append(generateWhere(entity, conditions));
+        sb.append(generateWhere(entity, conditions, params));
         return sb.toString();
     }
 
@@ -74,7 +75,7 @@ public class MysqlDialect implements Dialect {
         StringBuffer sb = new StringBuffer("SELECT * FROM ");
         sb.append(SqlHelper.getTableName(entity));
         sb.append(generateOrderBy(entity, orderBy));
-        return null;
+        return sb.toString();
     }
 
     @Override
@@ -89,10 +90,10 @@ public class MysqlDialect implements Dialect {
     }
 
     @Override
-    public String generateWhere(Class<?> entity, String conditions) {
+    public String generateWhere(Class<?> entity, String conditions, Object... params) {
         StringBuffer sb = new StringBuffer();
         if (StringUtil.isNotEmpty(conditions)) {
-            String cond = SqlHelper.transferCondition(entity, conditions);
+            String cond = SqlHelper.transferCondition(entity, conditions, params);
             sb.append(" WHERE ").append(cond);
         }
         return sb.toString();
@@ -185,19 +186,19 @@ public class MysqlDialect implements Dialect {
     }
 
     @Override
-    public String forExists(Class<?> entity, String conditions) {
+    public String forExists(Class<?> entity, String conditions, Object... params) {
         StringBuffer sb = new StringBuffer("SELECT 1 AS one FROM ");
         sb.append(SqlHelper.getTableName(entity));
-        sb.append(generateWhere(entity, conditions));
+        sb.append(generateWhere(entity, conditions, params));
         sb.append(generateSelectFirst(entity, false, 1));
         return sb.toString();
     }
 
     @Override
-    public String forDelete(Class<?> entity, String conditions) {
+    public String forDelete(Class<?> entity, String conditions, Object... params) {
         StringBuffer sb = new StringBuffer("DELETE FROM ");
         sb.append(SqlHelper.getTableName(entity));
-        sb.append(generateWhere(entity, conditions));
+        sb.append(generateWhere(entity, conditions, params));
         return null;
     }
 

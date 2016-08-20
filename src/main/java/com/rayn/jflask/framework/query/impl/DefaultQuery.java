@@ -7,6 +7,8 @@ import com.rayn.jflask.framework.orm.dialect.Dialect;
 import com.rayn.jflask.framework.query.Query;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -37,12 +39,19 @@ public class DefaultQuery<T, PK extends Serializable> implements Query<T, PK> {
 
     @Override
     public Iterable<PK> save(Iterable<T> entities) {
-        return null;
+        Iterator<T> iterator = entities.iterator();
+        List<PK> ids = new ArrayList<>();
+        while (iterator.hasNext()) {
+            T entity = iterator.next();
+            PK id = save(entity);
+            ids.add(id);
+        }
+        return ids;
     }
 
     @Override
     public T find(PK primaryKey) {
-        StringBuffer sb = new StringBuffer(dialect.forSelectByPrimaryKey(entityClass));
+        StringBuffer sb = new StringBuffer(dialect.forSelectByPrimaryKey(entityClass, primaryKey));
         sb.append(dialect.generateSelectFirst(entityClass, false, 1));
         return QueryProvider.queryEntity(entityClass, sb.toString(), primaryKey);
     }
@@ -68,7 +77,7 @@ public class DefaultQuery<T, PK extends Serializable> implements Query<T, PK> {
 
     @Override
     public boolean exist(String conditions, Object... params) {
-        String sql = dialect.forExists(entityClass, conditions);
+        String sql = dialect.forExists(entityClass, conditions, params);
         return QueryProvider.queryExists(sql, params);
     }
 
@@ -86,7 +95,10 @@ public class DefaultQuery<T, PK extends Serializable> implements Query<T, PK> {
 
     @Override
     public void deleteAll(Iterable<T> entities) {
-        // TODO
-
+        Iterator<T> iterator = entities.iterator();
+        while (iterator.hasNext()) {
+            T entity = iterator.next();
+            delete(entity);
+        }
     }
 }

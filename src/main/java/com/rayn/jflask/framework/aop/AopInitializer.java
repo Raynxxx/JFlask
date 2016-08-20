@@ -7,7 +7,7 @@ import com.rayn.jflask.framework.aop.proxy.Proxy;
 import com.rayn.jflask.framework.aop.proxy.ProxyManager;
 import com.rayn.jflask.framework.core.ClassHelper;
 import com.rayn.jflask.framework.ioc.BeanFactory;
-import com.rayn.jflask.framework.query.TransactionProxy;
+import com.rayn.jflask.framework.orm.TransactionProxy;
 import com.rayn.jflask.framework.util.ClassUtil;
 import com.rayn.jflask.framework.util.StringUtil;
 import org.slf4j.Logger;

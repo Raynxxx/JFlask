@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,11 +33,11 @@ public class SqlHelper {
 
     // conditionRegex & Pattern
     private static final String conditionRegex =
-            "([a-zA-Z_]+[a-zA-Z0-9_]+)\\s+      # field variable\n" +
+            "([a-zA-Z_]+[a-zA-Z0-9_]+)\\s*      # field variable\n" +
             "(\n" +
             "   =|!=|<>|>|>=|<|<=|              # relation operator\n" +
             "   (?i)like|in|between             # case insensitive operator\n" +
-            ")\\s+";
+            ")\\s+(\\?\\s+(and\\s+\\?)?)?";
 
     private static final Pattern conditionPattern = Pattern.compile(conditionRegex, Pattern.COMMENTS);
 
@@ -93,19 +94,42 @@ public class SqlHelper {
     /**
      * 根据映射信息转换 Where SQL 语句
      */
-    public static String transferCondition(Class<?> entityClass, String conditions) {
+    public static String transferCondition(Class<?> entityClass, String conditions, Object... params) {
         StringBuffer sb = new StringBuffer();
         if (StringUtil.isEmpty(conditions)) return sb.toString();
 
         Matcher matcher = conditionPattern.matcher(conditions.trim());
+        int paramsIndex = 0;
         while (matcher.find()) {
             String columnName = tableMapping.toColumnName(entityClass, matcher.group(1));
             String operator = matcher.group(2).toUpperCase();
             matcher.appendReplacement(sb, columnName);
             sb.append(" ").append(operator).append(" ");
+            // in, between 复杂条件
+            if (matcher.groupCount() >= 3) {
+                if (paramsIndex >= params.length) {
+                    throw new QueryException("[JFlask] 参数数目不匹配");
+                }
+                if (operator.equalsIgnoreCase("in")) {
+                    transferInCondition(params, paramsIndex);
+                    matcher.appendReplacement(sb, " (?) ");
+                } else {
+                    matcher.appendReplacement(sb, matcher.group(3));
+                    sb.append(" ");
+                }
+                paramsIndex += matcher.groupCount() - 2;
+            }
         }
         matcher.appendTail(sb);
         return sb.toString();
+    }
+
+    private static void transferInCondition(Object[] params, int paramIndex) {
+        Object inParam = params[paramIndex];
+        if (inParam != null && inParam instanceof Object[]) {
+            Object[] inList = (Object[]) inParam;
+            params[paramIndex] = StringUtil.join(inList, ",");
+        }
     }
 
     /**

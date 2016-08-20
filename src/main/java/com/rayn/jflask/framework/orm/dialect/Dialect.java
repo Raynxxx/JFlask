@@ -15,11 +15,11 @@ public interface Dialect {
 
     String forSelectLast(Class<?> entity, long size);
 
-    String forSelectByPrimaryKey(Class<?> entity);
+    String forSelectByPrimaryKey(Class<?> entity, Object... params);
 
-    String forSelectCount(Class<?> entity, String conditions);
+    String forSelectCount(Class<?> entity, String conditions, Object... params);
 
-    String forSelectWhere(Class<?> entity, String conditions);
+    String forSelectWhere(Class<?> entity, String conditions, Object... params);
 
     String forSelectGroupBy(Class<?> entity, String groupBy);
 
@@ -29,7 +29,7 @@ public interface Dialect {
 
     String generateSelect(Class<?> entity, String selectFields);
 
-    String generateWhere(Class<?> entity, String conditions);
+    String generateWhere(Class<?> entity, String conditions, Object... params);
 
     String generateGroupBy(Class<?> entity, String groupBy);
 
@@ -51,10 +51,10 @@ public interface Dialect {
 
     // ***************** 生成 exist 字句 *******************
 
-    String forExists(Class<?> entity, String conditions);
+    String forExists(Class<?> entity, String conditions, Object... params);
 
     // ***************** 生成 delete 字句 ******************
 
-    String forDelete(Class<?> entity, String conditions);
+    String forDelete(Class<?> entity, String conditions, Object... params);
 
 }
